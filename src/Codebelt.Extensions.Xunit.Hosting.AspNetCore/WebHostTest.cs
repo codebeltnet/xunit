@@ -55,6 +55,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 
         protected override void InitializeHostFixture(AspNetCoreHostFixture hostFixture)
         {
+            // intentionally left blank due to constructor initialization (need to refactor this "call from virtual method" challenge)
         }
 
         public override void ConfigureApplication(IApplicationBuilder app)

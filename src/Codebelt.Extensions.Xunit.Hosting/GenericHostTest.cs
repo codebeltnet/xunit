@@ -46,6 +46,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
 
         protected override void InitializeHostFixture(HostFixture hostFixture)
         {
+            // intentionally left blank due to constructor initialization (need to refactor this "call from virtual method" challenge)
         }
 
         protected override void ConfigureHost(IHostBuilder hb)
