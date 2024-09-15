@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Cuemon;
+using Cuemon.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,7 +36,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         public virtual void ConfigureHost(Test hostTest)
         {
             Validator.ThrowIfNull(hostTest);
-            Validator.ThrowIfNotContainsType(hostTest, nameof(hostTest), $"{nameof(hostTest)} is not assignable from HostTest<T>.", typeof(HostTest<>));
+            Validator.ThrowIfNotContainsType(hostTest, Arguments.ToArrayOf(typeof(HostTest<>)), $"{nameof(hostTest)} is not assignable from HostTest<T>.");
 
             var hb = new HostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())

@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
     <RootNamespace>Codebelt.Extensions.Xunit.Hosting.AspNetCore</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cuemon.AspNetCore" Version="8.3.2" />
-    <PackageReference Include="Cuemon.Extensions.IO" Version="8.3.2" />
+    <PackageReference Include="Cuemon.AspNetCore" Version="9.0.0-preview.5" />
+    <PackageReference Include="Cuemon.Extensions.IO" Version="9.0.0-preview.5" />
   </ItemGroup>
 
   <ItemGroup>
