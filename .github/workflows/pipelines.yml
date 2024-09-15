@@ -1,0 +1,192 @@
+name: ClassLibrary1 CI/CD Pipeline
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - .codecov
+      - .docfx
+      - .github
+      - .nuget
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      configuration:
+        type: choice
+        description: The build configuration to use in the deploy stage.
+        required: true
+        default: Release
+        options:
+          - Debug
+          - Release
+
+jobs:
+  build:
+    name: 🛠️ Build
+    runs-on: ubuntu-22.04
+    outputs:
+      version: ${{ steps.minver-calculate.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: codebeltnet/git-checkout@main
+
+      - name: Install .NET
+        uses: codebeltnet/install-dotnet@main
+
+      - name: Install MinVer
+        uses: codebeltnet/dotnet-tool-install-minver@main
+
+      - id: minver-calculate
+        name: Calculate Version
+        uses: codebeltnet/minver-calculate@main
+
+      - name: Download classlibrary1.snk file
+        uses: codebeltnet/gcp-download-file@main
+        with: 
+          serviceAccountKey: ${{ secrets.GCP_TOKEN }}
+          bucketName: ${{ secrets.GCP_BUCKETNAME }}
+          objectName: classlibrary1.snk
+
+      - name: Restore Dependencies
+        uses: codebeltnet/dotnet-restore@main
+
+      - name: Build for Preview
+        uses: codebeltnet/dotnet-build@main
+        with:
+          configuration: Debug
+
+      - name: Build for Production
+        uses: codebeltnet/dotnet-build@main
+        with:
+          configuration: Release
+
+  pack:
+    name: 📦 Pack
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+    needs: [build]
+    steps:     
+      - name: Pack for ${{ matrix.configuration }}
+        uses: codebeltnet/dotnet-pack@main
+        with:
+          configuration: ${{ matrix.configuration }}
+          uploadPackedArtifact: true
+          version: ${{ needs.build.outputs.version }}
+
+  test:
+    name: 🧪 Test
+    needs: [build]
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: codebeltnet/git-checkout@main
+
+      - name: Install .NET
+        uses: codebeltnet/install-dotnet@main
+
+      - name: Install .NET Tool - Report Generator
+        uses: codebeltnet/dotnet-tool-install-reportgenerator@main
+
+      - name: Test with Debug build
+        uses: codebeltnet/dotnet-test@main
+        with:
+          configuration: Debug
+          buildSwitches: -p:SkipSignAssembly=true
+
+      - name: Test with Release build
+        uses: codebeltnet/dotnet-test@main
+        with:
+          configuration: Release
+          buildSwitches: -p:SkipSignAssembly=true
+
+  sonarcloud:
+    name: 🔬 Code Quality Analysis
+    needs: [build,test]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: codebeltnet/git-checkout@main
+
+      - name: Install .NET
+        uses: codebeltnet/install-dotnet@main
+
+      - name: Install .NET Tool - Sonar Scanner
+        uses: codebeltnet/dotnet-tool-install-sonarscanner@main
+
+      - name: Restore Dependencies
+        uses: codebeltnet/dotnet-restore@main
+
+      - name: Run SonarCloud Analysis
+        uses: codebeltnet/sonarcloud-scan@main
+        with:
+          token: ${{ secrets.SONAR_TOKEN }}
+          organization: geekle
+          projectKey: sharedkernel
+          version: ${{ needs.build.outputs.version }}
+
+      - name: Build
+        uses: codebeltnet/dotnet-build@main
+        with:
+          buildSwitches: -p:SkipSignAssembly=true
+          uploadBuildArtifact: false
+
+      - name: Finalize SonarCloud Analysis
+        uses: codebeltnet/sonarcloud-scan-finalize@main
+        with:
+          token: ${{ secrets.SONAR_TOKEN }}
+
+  codecov:
+    name: 📊 Code Coverage Analysis
+    needs: [build,test]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: codebeltnet/git-checkout@main
+
+      - name: Run CodeCov Analysis
+        uses: codebeltnet/codecov-scan@main
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          repository: codebeltnet/shared-kernel
+          
+  codeql:
+    name: 🛡️ Security Analysis
+    needs: [build,test]
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: codebeltnet/git-checkout@main
+
+      - name: Install .NET
+        uses: codebeltnet/install-dotnet@main
+
+      - name: Restore Dependencies
+        uses: codebeltnet/dotnet-restore@main
+
+      - name: Prepare CodeQL SAST Analysis
+        uses: codebeltnet/codeql-scan@main
+
+      - name: Build
+        uses: codebeltnet/dotnet-build@main
+        with:
+          buildSwitches: -p:SkipSignAssembly=true
+          uploadBuildArtifact: false
+
+      - name: Finalize CodeQL SAST Analysis
+        uses: codebeltnet/codeql-scan-finalize@main
+
+  deploy:
+    name: 🚀 Deploy v${{ needs.build.outputs.version }}
+    runs-on: ubuntu-22.04
+    needs: [build,pack,test,sonarcloud,codecov,codeql]
+    environment: Production
+    steps:
+      - uses: codebeltnet/nuget-push@main
+        with:
+          token: ${{ secrets.NUGET_TOKEN }}
+          configuration: ${{ inputs.configuration == '' && 'Release' || inputs.configuration }}
