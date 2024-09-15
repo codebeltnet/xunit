@@ -21,7 +21,7 @@ Provides a focused API for unit-testing specific types of .NET projects.
 
 Provides a convenient set of default API additions for unit-testing various types of .NET projects.
 
-### Contributing to Extensions for xUnit API by Codebelt
+### Contributing to `Extensions for xUnit API by Codebelt`
 Contributions are welcome! 
 Feel free to submit issues, feature requests, or pull requests to help improve this library.
 
