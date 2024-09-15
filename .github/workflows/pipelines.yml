@@ -1,4 +1,4 @@
-name: ClassLibrary1 CI/CD Pipeline
+name: xUnit CI/CD Pipeline
 on:
   pull_request:
     branches: [main]
