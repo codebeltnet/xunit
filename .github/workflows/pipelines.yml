@@ -52,12 +52,26 @@ jobs:
           bucketName: ${{ secrets.GCP_BUCKETNAME }}
           objectName: xunit.snk
 
+      - name: Set environment variable for projects
+        run: |
+          if [ "${{ matrix.framework }}" == "netstandard2.0" ]; then
+            projects=(
+              "src/**/Codebelt.Extensions.Xunit.csproj"
+              "src/**/Codebelt.Extensions.Xunit.Hosting.csproj"
+            )
+            echo "PROJECTS=$(IFS=' '; echo "${projects[*]}")" >> $GITHUB_ENV
+          else
+            echo "PROJECTS=src/**/*.csproj" >> $GITHUB_ENV
+          fi
+        shell: bash
+
       - name: Restore Dependencies
         uses: codebeltnet/dotnet-restore@v2
 
       - name: Build for ${{ matrix.framework }} (${{ matrix.configuration }})
         uses: codebeltnet/dotnet-build@v2
         with:
+          projects: ${{ env.PROJECTS }}
           configuration: ${{ matrix.configuration }}
           framework: ${{ matrix.framework }}
 
@@ -114,6 +128,7 @@ jobs:
     name: 🔬 Code Quality Analysis
     needs: [build,test]
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: codebeltnet/git-checkout@v1
@@ -152,6 +167,7 @@ jobs:
     name: 📊 Code Coverage Analysis
     needs: [build,test]
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: codebeltnet/git-checkout@v1
@@ -166,6 +182,7 @@ jobs:
     name: 🛡️ Security Analysis
     needs: [build,test]
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: codebeltnet/git-checkout@v1
