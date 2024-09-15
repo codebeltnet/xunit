@@ -189,6 +189,8 @@ jobs:
 
       - name: Install .NET
         uses: codebeltnet/install-dotnet@v1
+        with:
+          includePreview: true
 
       - name: Restore Dependencies
         uses: codebeltnet/dotnet-restore@v2
