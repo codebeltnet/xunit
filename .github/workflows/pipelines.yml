@@ -149,7 +149,7 @@ jobs:
         with:
           token: ${{ secrets.SONAR_TOKEN }}
           organization: geekle
-          projectKey: sharedkernel
+          projectKey: xunit
           version: ${{ needs.build.outputs.version }}
 
       - name: Build
