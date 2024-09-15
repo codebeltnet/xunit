@@ -1,7 +1,10 @@
 <Project>
+
   <PropertyGroup>
     <IsTestProject>$(MSBuildProjectName.EndsWith('Tests'))</IsTestProject>
-    <IsMainAuthor Condition="'$(EMAIL)' == 'classlibrary1@dot.net'">true</IsMainAuthor>
+    <IsLinux>$([MSBuild]::IsOSPlatform('Linux'))</IsLinux>
+    <IsWindows>$([MSBuild]::IsOSPlatform('Windows'))</IsWindows>
+    <IsMainAuthor Condition="'$(EMAIL)' == 'michael@geekle.io'">true</IsMainAuthor>
     <SkipSignAssembly>false</SkipSignAssembly>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -12,16 +15,16 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'false'">
-    <TargetFrameworks>net8.0</TargetFrameworks>
-    <Copyright>Copyright © ClassLibrary1 2024. All rights reserved.</Copyright>
-    <Authors>ClassLibrary1</Authors>
-    <Company>ClassLibrary1</Company>
-    <Product>ClassLibrary1</Product>
+    <TargetFrameworks>net8.0;net6.0;netstandard2.0</TargetFrameworks>
+    <Copyright>Copyright © Geekle 2024. All rights reserved.</Copyright>
+    <Authors>gimlichael</Authors>
+    <Company>Geekle</Company>
+    <Product>Extensions for xUnit API by Codebelt</Product>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>https://www.classlibrary1.net/</PackageProjectUrl>
+    <PackageProjectUrl>https://www.codebelt.net/</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/classlibrary1/ClassLibrary1</RepositoryUrl>
+    <RepositoryUrl>https://github.com/codebeltnet/xunit</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage>en-US</NeutralLanguage>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -30,23 +33,30 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SignAssembly Condition="('$(CI)' == 'true' OR '$(IsMainAuthor)' == 'true') AND '$(SkipSignAssembly)' == 'false'">true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)ClassLibrary1.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)xunit.snk</AssemblyOriginatorKeyFile>
     <NoWarn>7035,CA2260</NoWarn>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(NuGetPackageRoot)' != ''">
-    <SourceRoot Include="$(NuGetPackageRoot)" RepositoryUrl="https://github.com/classlibrary1/ClassLibrary1" />
+    <SourceRoot Include="$(NuGetPackageRoot)" RepositoryUrl="https://github.com/codebeltnet/xuni" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsTestProject)' == 'false'">
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
-    <PackageReference Include="MinVer" Version="5.0.0" PrivateAssets="all" />
+    <PackageReference Include="MinVer" Version="6.0.0" PrivateAssets="all" />
     <None Include="..\..\.nuget\$(MSBuildProjectName)\icon.png" Pack="true" Visible="false" PackagePath="\" />
     <None Include="..\..\.nuget\$(MSBuildProjectName)\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true' AND '$(IsLinux)' == 'true'">
+    <TargetFrameworks>net8.0;net6.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(IsTestProject)' == 'true' AND '$(IsWindows)' == 'true'">
+    <TargetFrameworks>net8.0;net6.0;net48</TargetFrameworks>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
-    <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <RunAnalyzers>false</RunAnalyzers>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
@@ -54,15 +64,15 @@
     <SonarQubeExclude>true</SonarQubeExclude>
     <WarningLevel>0</WarningLevel>
     <AnalysisLevel>none</AnalysisLevel>
-    <NoWarn>NU1701,NETSDK1206</NoWarn>
+    <NoWarn>NU1701,NU1903,NETSDK1206</NoWarn>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'">
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-    <PackageReference Include="xunit" Version="2.7.1" />
-    <PackageReference Include="xunit.runner.console" Version="2.7.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.8" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.0" />
+    <PackageReference Include="xunit.runner.console" Version="2.9.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
     <PackageReference Include="coverlet.msbuild" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -71,7 +81,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Cuemon.Extensions.Xunit.App" Version="8.3.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+    <ProjectReference Include="..\..\src\Codebelt.Extensions.Xunit\Codebelt.Extensions.Xunit.csproj" />
   </ItemGroup>
 
 </Project>

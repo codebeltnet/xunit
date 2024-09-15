@@ -1,14 +1,12 @@
-name: ClassLibrary1 CI/CD Pipeline
+name: xUnit CI/CD Pipeline
 on:
-  push:
+  pull_request:
     branches: [main]
     paths-ignore:
       - .codecov
       - .docfx
       - .github
       - .nuget
-  pull_request:
-    branches: [main]
   workflow_dispatch:
     inputs:
       configuration:
@@ -24,52 +22,75 @@ jobs:
   build:
     name: 🛠️ Build
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+        framework: [net8.0, net6.0, netstandard2.0]
     outputs:
       version: ${{ steps.minver-calculate.outputs.version }}
     steps:
       - name: Checkout
-        uses: codebeltnet/git-checkout@main
+        uses: codebeltnet/git-checkout@v1
 
       - name: Install .NET
-        uses: codebeltnet/install-dotnet@main
+        uses: codebeltnet/install-dotnet@v1
+        with:
+          includePreview: true
 
       - name: Install MinVer
-        uses: codebeltnet/dotnet-tool-install-minver@main
+        uses: codebeltnet/dotnet-tool-install-minver@v1
 
       - id: minver-calculate
         name: Calculate Version
-        uses: codebeltnet/minver-calculate@main
+        uses: codebeltnet/minver-calculate@v2
 
-      - name: Download classlibrary1.snk file
-        uses: codebeltnet/gcp-download-file@main
-        with: 
+      - name: Download xunit.snk file
+        uses: codebeltnet/gcp-download-file@v1
+        with:
           serviceAccountKey: ${{ secrets.GCP_TOKEN }}
           bucketName: ${{ secrets.GCP_BUCKETNAME }}
-          objectName: classlibrary1.snk
+          objectName: xunit.snk
+
+      - name: Set environment variable for projects
+        run: |
+          if [ "${{ matrix.framework }}" == "netstandard2.0" ]; then
+            projects=(
+              "src/**/Codebelt.Extensions.Xunit.csproj"
+              "src/**/Codebelt.Extensions.Xunit.Hosting.csproj"
+            )
+            echo "PROJECTS=$(IFS=' '; echo "${projects[*]}")" >> $GITHUB_ENV
+          else
+            echo "PROJECTS=src/**/*.csproj" >> $GITHUB_ENV
+          fi
+        shell: bash
 
       - name: Restore Dependencies
-        uses: codebeltnet/dotnet-restore@main
+        uses: codebeltnet/dotnet-restore@v2
 
-      - name: Build for Preview
-        uses: codebeltnet/dotnet-build@main
+      - name: Build for ${{ matrix.framework }} (${{ matrix.configuration }})
+        uses: codebeltnet/dotnet-build@v2
         with:
-          configuration: Debug
-
-      - name: Build for Production
-        uses: codebeltnet/dotnet-build@main
-        with:
-          configuration: Release
+          projects: ${{ env.PROJECTS }}
+          configuration: ${{ matrix.configuration }}
+          framework: ${{ matrix.framework }}
 
   pack:
     name: 📦 Pack
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
     strategy:
       matrix:
         configuration: [Debug, Release]
     needs: [build]
-    steps:     
+    steps:
+      - name: Install .NET
+        uses: codebeltnet/install-dotnet@v1
+        with:
+          includePreview: true
+
       - name: Pack for ${{ matrix.configuration }}
-        uses: codebeltnet/dotnet-pack@main
+        uses: codebeltnet/dotnet-pack@v2
         with:
           configuration: ${{ matrix.configuration }}
           uploadPackedArtifact: true
@@ -79,64 +100,66 @@ jobs:
     name: 🧪 Test
     needs: [build]
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-22.04, windows-2022]
+        configuration: [Debug, Release]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: codebeltnet/git-checkout@main
+        uses: codebeltnet/git-checkout@v1
 
       - name: Install .NET
-        uses: codebeltnet/install-dotnet@main
+        uses: codebeltnet/install-dotnet@v1
+        with:
+          includePreview: true
 
       - name: Install .NET Tool - Report Generator
-        uses: codebeltnet/dotnet-tool-install-reportgenerator@main
+        uses: codebeltnet/dotnet-tool-install-reportgenerator@v1
 
-      - name: Test with Debug build
-        uses: codebeltnet/dotnet-test@main
+      - name: Test with ${{ matrix.configuration }} build
+        uses: codebeltnet/dotnet-test@v3
         with:
-          configuration: Debug
-          buildSwitches: -p:SkipSignAssembly=true
-
-      - name: Test with Release build
-        uses: codebeltnet/dotnet-test@main
-        with:
-          configuration: Release
+          configuration: ${{ matrix.configuration }}
           buildSwitches: -p:SkipSignAssembly=true
 
   sonarcloud:
     name: 🔬 Code Quality Analysis
     needs: [build,test]
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: codebeltnet/git-checkout@main
+        uses: codebeltnet/git-checkout@v1
 
       - name: Install .NET
-        uses: codebeltnet/install-dotnet@main
+        uses: codebeltnet/install-dotnet@v1
+        with:
+          includePreview: true
 
       - name: Install .NET Tool - Sonar Scanner
-        uses: codebeltnet/dotnet-tool-install-sonarscanner@main
+        uses: codebeltnet/dotnet-tool-install-sonarscanner@v1
 
       - name: Restore Dependencies
-        uses: codebeltnet/dotnet-restore@main
+        uses: codebeltnet/dotnet-restore@v2
 
       - name: Run SonarCloud Analysis
-        uses: codebeltnet/sonarcloud-scan@main
+        uses: codebeltnet/sonarcloud-scan@v1
         with:
           token: ${{ secrets.SONAR_TOKEN }}
           organization: geekle
-          projectKey: sharedkernel
+          projectKey: xunit
           version: ${{ needs.build.outputs.version }}
 
       - name: Build
-        uses: codebeltnet/dotnet-build@main
+        uses: codebeltnet/dotnet-build@v2
         with:
           buildSwitches: -p:SkipSignAssembly=true
           uploadBuildArtifact: false
 
       - name: Finalize SonarCloud Analysis
-        uses: codebeltnet/sonarcloud-scan-finalize@main
+        uses: codebeltnet/sonarcloud-scan-finalize@v1
         with:
           token: ${{ secrets.SONAR_TOKEN }}
 
@@ -144,49 +167,53 @@ jobs:
     name: 📊 Code Coverage Analysis
     needs: [build,test]
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: codebeltnet/git-checkout@main
+        uses: codebeltnet/git-checkout@v1
 
       - name: Run CodeCov Analysis
-        uses: codebeltnet/codecov-scan@main
+        uses: codebeltnet/codecov-scan@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          repository: codebeltnet/shared-kernel
+          repository: codebeltnet/xunit
           
   codeql:
     name: 🛡️ Security Analysis
     needs: [build,test]
     runs-on: ubuntu-22.04
+    timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: codebeltnet/git-checkout@main
+        uses: codebeltnet/git-checkout@v1
 
       - name: Install .NET
-        uses: codebeltnet/install-dotnet@main
+        uses: codebeltnet/install-dotnet@v1
 
       - name: Restore Dependencies
-        uses: codebeltnet/dotnet-restore@main
+        uses: codebeltnet/dotnet-restore@v2
 
       - name: Prepare CodeQL SAST Analysis
-        uses: codebeltnet/codeql-scan@main
+        uses: codebeltnet/codeql-scan@v1
 
       - name: Build
-        uses: codebeltnet/dotnet-build@main
+        uses: codebeltnet/dotnet-build@v2
         with:
           buildSwitches: -p:SkipSignAssembly=true
           uploadBuildArtifact: false
 
       - name: Finalize CodeQL SAST Analysis
-        uses: codebeltnet/codeql-scan-finalize@main
+        uses: codebeltnet/codeql-scan-finalize@v1
 
   deploy:
+    if: github.event_name != 'pull_request'
     name: 🚀 Deploy v${{ needs.build.outputs.version }}
     runs-on: ubuntu-22.04
-    needs: [build,pack,test,sonarcloud,codecov,codeql]
+    timeout-minutes: 15
+    needs: [build, pack, test, sonarcloud, codecov, codeql]
     environment: Production
     steps:
-      - uses: codebeltnet/nuget-push@main
+      - uses: codebeltnet/nuget-push@v1
         with:
           token: ${{ secrets.NUGET_TOKEN }}
           configuration: ${{ inputs.configuration == '' && 'Release' || inputs.configuration }}
