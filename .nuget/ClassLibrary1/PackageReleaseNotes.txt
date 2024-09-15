@@ -1,6 +1,0 @@
-Version: 0.1.0
-Availability: .NET 8
- 
-# New Features
-- ADDED 
- 
