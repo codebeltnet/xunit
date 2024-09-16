@@ -1,5 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Cuemon.AspNetCore.Diagnostics;
+using Cuemon.Extensions.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -12,13 +20,13 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         }
 
         [Fact]
-        public void CreateMiddlewareTest_CallerTypeShouldHaveDeclaringTypeOfMiddlewareTestFactoryTest()
+        public void Create_CallerTypeShouldHaveDeclaringTypeOfMiddlewareTestFactoryTest()
         {
             Type sut1 = GetType();
             string sut2 = null;
             var middleware = WebHostTestFactory.Create(Assert.NotNull, Assert.NotNull, host =>
               {
-                  host.ConfigureAppConfiguration((context, configuration) =>
+                  host.ConfigureAppConfiguration((context, _) =>
                   {
                       sut2 = context.HostingEnvironment.ApplicationName;
                   });
@@ -29,11 +37,11 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         }
 
         [Fact]
-        public Task RunMiddlewareTest_ShouldHaveApplicationNameEqualToThisAssembly()
+        public Task RunAsync_ShouldHaveApplicationNameEqualToThisAssembly()
         {
             return WebHostTestFactory.RunAsync(Assert.NotNull, Assert.NotNull, host =>
               {
-                  host.ConfigureAppConfiguration((context, configuration) =>
+                  host.ConfigureAppConfiguration((context, _) =>
                   {
                       TestOutput.WriteLine(context.HostingEnvironment.ApplicationName);
                       Assert.Equal(GetType().Assembly.GetName().Name, context.HostingEnvironment.ApplicationName);
@@ -42,7 +50,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         }
 
         [Fact]
-        public Task RunMiddlewareTest_ShouldHaveApplicationNameEqualToThisAssembly_WithHostBuilderContext()
+        public Task RunWithHostBuilderContextAsync_ShouldHaveApplicationNameEqualToThisAssembly_WithHostBuilderContext()
         {
             return WebHostTestFactory.RunWithHostBuilderContextAsync((context, app) =>
                 {
@@ -68,6 +76,39 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                         Assert.Equal(GetType().Assembly.GetName().Name, context.HostingEnvironment.ApplicationName);
                     });
                 });
+        }
+
+        [Fact]
+        public async Task RunAsync_ShouldWorkWithXunitTestLogging()
+        {
+            using var response = await WebHostTestFactory.RunAsync(
+                services =>
+                {
+                    services.AddXunitTestLogging(TestOutput);
+                    services.AddServerTiming(o => o.SuppressHeaderPredicate = _ => false);
+                }
+                , app =>
+                {
+                    app.UseServerTiming();
+                    app.Use(async (context, next) =>
+                    {
+                        var sw = Stopwatch.StartNew();
+                        context.Response.OnStarting(() =>
+                        {
+                            sw.Stop();
+                            context.RequestServices.GetRequiredService<IServerTiming>().AddServerTiming("use-middleware", sw.Elapsed);
+                            return Task.CompletedTask;
+                        });
+                        await next(context).ConfigureAwait(false);
+                    });
+                    app.Run(context =>
+                    {
+                        Thread.Sleep(400);
+                        return context.Response.WriteAsync("Hello World!");
+                    });
+                }).ConfigureAwait(false);
+
+            Assert.StartsWith("use-middleware;dur=", response.Headers.Single(kvp => kvp.Key == ServerTiming.HeaderName).Value.FirstOrDefault());
         }
     }
 }

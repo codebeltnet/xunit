@@ -34,6 +34,9 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 
             Assert.Equal("Hello awesome developers!", context!.Response.Body.ToEncodedString(o => o.LeaveOpen = true));
 
+            var logger = _pipeline.ApplicationServices.GetRequiredService<ILogger<AspNetCoreHostTestTest>>();
+            logger.LogInformation("Hello from {0}", nameof(ShouldHaveResultOfBoolMiddlewareInBody));
+
             await pipeline(context);
 
             Assert.Equal("A:True, B:False, C:True, D:False, E:True, F:False", context.Response.Body.ToEncodedString());
@@ -68,8 +71,8 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                 o.C = true;
                 o.E = true;
             });
-            services.AddXunitTestOutputHelperAccessor();
-            services.AddXunitTestLogging(TestOutput);
+            services.AddXunitTestLoggingOutputHelperAccessor();
+            services.AddXunitTestLogging(new TestOutputHelperAccessor(TestOutput));
         }
     }
 }
