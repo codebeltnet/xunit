@@ -15,7 +15,7 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 - ITestOutputHelperAccessor interface in the Codebelt.Extensions.Xunit namespace that provides access to the ITestOutputHelper instance
 - TestOutputHelperAccessor class in the Codebelt.Extensions.Xunit namespace that provides a default implementation of the ITestOutputHelper interface
 - ServiceProviderExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IServiceProvider interface: GetRequiredScopedService
-- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace was extended with three new extension methods for the IServiceCollection interface: AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T}
+- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace was extended with three new extension methods for the IServiceCollection interface: AddXunitTestOutputHelperAccessor, AddXunitTestOutputHelperAccessor{T} and an overload of AddXunitTestLogging
 
 ### Changed
 

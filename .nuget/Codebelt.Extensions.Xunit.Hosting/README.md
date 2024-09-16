@@ -1,7 +1,6 @@
 ## About
 
-An open-source project (MIT license) that targets and complements the Microsoft .NET platform. It provides vast ways of possibilities for all breeds of coders, programmers, developers and the likes thereof.
-Your ideal companion for .NET 8, .NET 7, .NET 6, .NET Standard 2 and .NET Framework 4.6.2 and newer.
+An open-source project (MIT license) that targets and complements the xUnit.net test platform. It provides a uniform and convenient way of doing unit test for all project types in .NET.
 
 It is, by heart, free, flexible and built to extend and boost your agile codebelt.
 
