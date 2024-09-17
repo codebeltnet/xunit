@@ -11,6 +11,16 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 
 This major release is first and foremost focused on ironing out any wrinkles that have been introduced with .NET 9 preview releases so the final release is production ready together with the official launch from Microsoft.
 
+## [8.4.1] - 2024-09-16
+
+### Added
+
+- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace was extended with one new extension method for the IServiceCollection interface: An overload of AddXunitTestLogging
+
+### Changed
+
+- AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T} on the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace was renamed to AddXunitTestLoggingOutputHelperAccessor and AddXunitTestLoggingOutputHelperAccessor{T} (for consistency)
+
 ## [8.4.0] - 2024-09-15
 
 ### Added
@@ -19,7 +29,7 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 - ITestOutputHelperAccessor interface in the Codebelt.Extensions.Xunit namespace that provides access to the ITestOutputHelper instance
 - TestOutputHelperAccessor class in the Codebelt.Extensions.Xunit namespace that provides a default implementation of the ITestOutputHelper interface
 - ServiceProviderExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IServiceProvider interface: GetRequiredScopedService
-- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace was extended with three new extension methods for the IServiceCollection interface: AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T}
+- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace was extended with two new extension methods for the IServiceCollection interface: AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T}
 
 ### Changed
 
