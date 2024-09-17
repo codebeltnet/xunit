@@ -22,6 +22,14 @@ This major release is first and foremost focused on ironing out any wrinkles tha
     }
     ```
 
+### Changed
+
+- AddXunitTestLogging method in the Codebelt.Extensions.Xunit.Hosting namespace to use an ILoggerProvider that utilizes either the ITestOutputHelper instance or a previously provided ITestOutputHelperAccessor service
+
+### Removed
+
+- AddXunitTestLogging method (the overload that took an ITestOutputHelperAccessor argument) from the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace
+
 ## [8.4.1] - 2024-09-16
 
 ### Added

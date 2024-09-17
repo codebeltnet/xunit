@@ -5,6 +5,12 @@ Availability: .NET 9, .NET 8 and .NET Standard 2.0
 - CHANGED Dependencies to latest and greatest with respect to TFMs
 - REMOVED Support for TFM .NET 6 (LTS)
  
+# Breaking Changes
+- REMOVED AddXunitTestLogging method (the overload that took an ITestOutputHelperAccessor argument) from the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace
+ 
+# Improvements
+- CHANGED AddXunitTestLogging method in the Codebelt.Extensions.Xunit.Hosting namespace to use an ILoggerProvider that utilizes either the ITestOutputHelper instance or a previously provided ITestOutputHelperAccessor service
+ 
 Version 8.4.1
 Availability: .NET 8, .NET 6 and .NET Standard 2.0
  
