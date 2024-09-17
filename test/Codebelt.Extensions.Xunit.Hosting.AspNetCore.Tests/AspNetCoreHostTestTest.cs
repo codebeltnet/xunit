@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Assets;
 using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http;
@@ -34,6 +35,9 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 
             Assert.Equal("Hello awesome developers!", context!.Response.Body.ToEncodedString(o => o.LeaveOpen = true));
 
+            var logger = _pipeline.ApplicationServices.GetRequiredService<ILogger<AspNetCoreHostTestTest>>(); 
+            logger.LogInformation("Hello from {0}", nameof(ShouldHaveResultOfBoolMiddlewareInBody)); 
+
             await pipeline(context);
 
             Assert.Equal("A:True, B:False, C:True, D:False, E:True, F:False", context.Response.Body.ToEncodedString());
@@ -51,6 +55,11 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         {
             var logger = _pipeline.ApplicationServices.GetRequiredService<ILogger<AspNetCoreHostTestTest>>();
             logger.LogInformation("Hello from {0}", nameof(ShouldLogToXunitTestLogging));
+            var store = _pipeline.ApplicationServices.GetRequiredService<ILogger<AspNetCoreHostTestTest>>().GetTestStore();
+            var entry = store.Query(entry => entry.Message.Contains("Hello from", StringComparison.OrdinalIgnoreCase)).SingleOrDefault();
+            
+            Assert.NotNull(entry);
+            Assert.Equal("Information: Hello from ShouldLogToXunitTestLogging", entry.Message);
         }
 
         public override void ConfigureApplication(IApplicationBuilder app)
@@ -68,8 +77,8 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                 o.C = true;
                 o.E = true;
             });
-            services.AddXunitTestOutputHelperAccessor();
-            services.AddXunitTestLogging(TestOutput);
+            services.AddXunitTestLoggingOutputHelperAccessor();
+            services.AddXunitTestLogging(new TestOutputHelperAccessor(TestOutput));
         }
     }
 }

@@ -5,6 +5,18 @@ Availability: .NET 9, .NET 8 and .NET Standard 2.0
 - CHANGED Dependencies to latest and greatest with respect to TFMs
 - REMOVED Support for TFM .NET 6 (LTS)
  
+Version 8.4.1
+Availability: .NET 8, .NET 6 and .NET Standard 2.0
+ 
+# ALM
+- CHANGED Dependencies to latest and greatest with respect to TFMs
+ 
+# Breaking Changes
+- RENAMED AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T} on the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to AddXunitTestLoggingOutputHelperAccessor and AddXunitTestLoggingOutputHelperAccessor{T} (for consistency)
+ 
+# New Features
+- EXTENDED ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace with one new extension method for the IServiceCollection interface: An overload of AddXunitTestLogging
+ 
 Version 8.4.0
 Availability: .NET 8, .NET 6 and .NET Standard 2.0
  
@@ -13,7 +25,7 @@ Availability: .NET 8, .NET 6 and .NET Standard 2.0
  
 # New Features
 - ADDED ServiceProviderExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IServiceProvider interface: GetRequiredScopedService
-- EXTENDED ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace with three new extension methods for the IServiceCollection interface: AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T}
+- EXTENDED ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace with two new extension methods for the IServiceCollection interface: AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T}
  
 Version 8.3.2
 Availability: .NET 8, .NET 6 and .NET Standard 2.0

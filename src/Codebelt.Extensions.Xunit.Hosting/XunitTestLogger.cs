@@ -28,6 +28,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
             var message = builder.ToString();
             if (_accessor != null)
             {
+                if (_accessor.TestOutput == null) { throw new InvalidOperationException($"{nameof(ITestOutputHelperAccessor)}.{nameof(ITestOutputHelperAccessor.TestOutput)} is null."); }
                 _accessor.TestOutput.WriteLine(message);
             }
             else

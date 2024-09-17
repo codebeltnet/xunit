@@ -5,6 +5,9 @@ Availability: .NET 9 and .NET 8
 - CHANGED Dependencies to latest and greatest with respect to TFMs
 - REMOVED Support for TFM .NET 6 (LTS)
  
+# Bug Fixes
+- FIXED AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to preserve ExecutionContext and AsyncLocal{T} values from the client to the server (vital for ITestOutputHelperAccessor combined with xUnit test logging when using HttpClient)
+ 
 Version 8.4.0
 Availability: .NET 8 and .NET 6
  

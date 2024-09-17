@@ -1,6 +1,9 @@
 ## About
 
-An open-source project (MIT license) that targets and complements the [xUnit.net](https://xunit.net/) test platform. It provides a uniform and convenient way of doing unit test for all project types in .NET.
+An open-source project (MIT license) that targets and complements the xUnit.net test platform. It provides a uniform and convenient way of doing unit test for all project types in .NET.
+
+Perhaps even more convenient than what [WebApplicationFactory](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.testing.webapplicationfactory-1) has to offer?
+
 It is, by heart, free, flexible and built to extend and boost your agile codebelt.
 
 ## **Codebelt.Extensions.Xunit.Hosting.AspNetCore** for .NET
