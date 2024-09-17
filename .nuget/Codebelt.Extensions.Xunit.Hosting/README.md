@@ -38,7 +38,7 @@ public class AspNetCoreHostTestTest : AspNetCoreHostTest<AspNetCoreHostFixture>
 
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.AddXunitTestOutputHelperAccessor();
+        services.AddXunitTestLoggingOutputHelperAccessor();
         services.AddXunitTestLogging(new TestOutputHelperAccessor(TestOutput));
     }
 }

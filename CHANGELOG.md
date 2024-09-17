@@ -11,11 +11,22 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 
 This major release is first and foremost focused on ironing out any wrinkles that have been introduced with .NET 9 preview releases so the final release is production ready together with the official launch from Microsoft.
 
+### Fixed
+
+- AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to preserve ExecutionContext and AsyncLocal{T} values from the client to the server (vital for ITestOutputHelperAccessor combined with xUnit test logging when using HttpClient)
+  - Prior to this release, you can override `ConfigureHost` on your `AspNetCoreHostTest` implementation and apply this code:
+    ```csharp
+    protected override void ConfigureHost(IHostBuilder hb)
+    {
+        hb.ConfigureWebHost(builder => builder.UseTestServer(o => o.PreserveExecutionContext = true));
+    }
+    ```
+
 ## [8.4.1] - 2024-09-16
 
 ### Added
 
-- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace was extended with one new extension method for the IServiceCollection interface: An overload of AddXunitTestLogging
+- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace received one new extension method for the IServiceCollection interface: An overload of AddXunitTestLogging
 
 ### Changed
 
@@ -29,7 +40,7 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 - ITestOutputHelperAccessor interface in the Codebelt.Extensions.Xunit namespace that provides access to the ITestOutputHelper instance
 - TestOutputHelperAccessor class in the Codebelt.Extensions.Xunit namespace that provides a default implementation of the ITestOutputHelper interface
 - ServiceProviderExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IServiceProvider interface: GetRequiredScopedService
-- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace was extended with two new extension methods for the IServiceCollection interface: AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T}
+- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace received two new extension methods for the IServiceCollection interface: AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T}
 
 ### Changed
 

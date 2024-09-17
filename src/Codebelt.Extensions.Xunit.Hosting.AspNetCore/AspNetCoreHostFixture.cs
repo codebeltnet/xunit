@@ -47,7 +47,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                 .ConfigureWebHost(webBuilder =>
                 {
                     webBuilder
-                        .UseTestServer()
+                        .UseTestServer(o => o.PreserveExecutionContext = true)
                         .UseContentRoot(Directory.GetCurrentDirectory())
                         .UseEnvironment("Development")
                         .ConfigureAppConfiguration((context, config) =>
@@ -82,16 +82,19 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                         .UseSetting(HostDefaults.ApplicationKey, hostTest.CallerType.Assembly.GetName().Name);
                 });
 
-            ConfigureHostCallback(hb);
-
             hb.UseDefaultServiceProvider(o =>
             {
                 o.ValidateOnBuild = true;
                 o.ValidateScopes = true;
             });
 
+            ConfigureHostCallback(hb);
+
             var host = hb.Build();
-            Task.Run(() => host.StartAsync()).GetAwaiter().GetResult();
+            Task.Run(() => host.StartAsync().ConfigureAwait(false))
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
             Host = host;
         }
 
