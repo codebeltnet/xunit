@@ -84,6 +84,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'">
+    <PackageReference Include="Cuemon.Core" Version="9.0.0-preview.5" PrivateAssets="all" />
     <ProjectReference Include="..\..\src\Codebelt.Extensions.Xunit\Codebelt.Extensions.Xunit.csproj" />
   </ItemGroup>
 
