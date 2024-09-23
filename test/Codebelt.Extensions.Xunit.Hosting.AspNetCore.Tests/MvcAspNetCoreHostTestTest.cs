@@ -46,7 +46,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                 .AddApplicationPart(typeof(FakeController).Assembly);
 
             services.AddXunitTestLoggingOutputHelperAccessor();
-            services.AddXunitTestLogging(new TestOutputHelperAccessor(TestOutput));
+            services.AddXunitTestLogging(TestOutput);
         }
 
         public override void ConfigureApplication(IApplicationBuilder app)

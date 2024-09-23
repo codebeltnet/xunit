@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Linq;
 using Cuemon;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
@@ -14,7 +12,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
     public static class LoggerExtensions
     {
         /// <summary>
-        /// Returns the associated <see cref="ITestStore{T}"/> that is provided when settings up services from either <see cref="ServiceCollectionExtensions.AddXunitTestLogging(IServiceCollection,ITestOutputHelper,LogLevel)"/> or <see cref="ServiceCollectionExtensions.AddXunitTestLogging(IServiceCollection,ITestOutputHelperAccessor,LogLevel)"/>.
+        /// Returns the associated <see cref="ITestStore{T}"/> that is provided when settings up services from <see cref="ServiceCollectionExtensions.AddXunitTestLogging"/>.
         /// </summary>
         /// <param name="logger">The <see cref="ILogger{TCategoryName}"/> from which to retrieve the <see cref="ITestStore{T}"/>.</param>
         /// <returns>Returns an implementation of <see cref="ITestStore{T}"/> with all logged entries expressed as <see cref="XunitTestLoggerEntry"/>.</returns>

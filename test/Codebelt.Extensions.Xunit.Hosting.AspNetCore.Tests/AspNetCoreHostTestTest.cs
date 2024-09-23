@@ -78,7 +78,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                 o.E = true;
             });
             services.AddXunitTestLoggingOutputHelperAccessor();
-            services.AddXunitTestLogging(new TestOutputHelperAccessor(TestOutput));
+            services.AddXunitTestLogging(TestOutput);
         }
     }
 }
