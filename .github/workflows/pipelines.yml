@@ -1,4 +1,4 @@
-name: xUnit CI/CD Pipeline
+name: xUnit Ext. CI/CD Pipeline
 on:
   pull_request:
     branches: [main]
