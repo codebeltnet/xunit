@@ -1,6 +1,6 @@
 ## About
 
-An open-source project (MIT license) that targets and complements the xUnit.net test platform. It provides a uniform and convenient way of doing unit test for all project types in .NET.
+An open-source project (MIT license) that targets and complements the [xUnit.net](https://xunit.net/) test platform. It provides a uniform and convenient way of doing unit test for all project types in .NET.
 
 It is, by heart, free, flexible and built to extend and boost your agile codebelt.
 

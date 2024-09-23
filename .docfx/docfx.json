@@ -20,7 +20,8 @@
   ],
   "build": {
     "xref": [
-      "https://docs.cuemon.net/xrefmap.yml"
+      "https://docs.cuemon.net/xrefmap.yml",
+      "https://github.com/dotnet/docfx/raw/main/.xrefmap.json"
     ],
     "content": [
       {
@@ -53,7 +54,7 @@
       "_enableSearch": false,
       "_disableContribution": false,
       "_gitContribute": {
-        "repo": "https://github.com/codebeltnet/xuni",
+        "repo": "https://github.com/codebeltnet/xunit",
         "branch": "main"
       },
       "_gitUrlPattern": "github"
@@ -81,8 +82,6 @@
     "noLangKeyword": false,
     "keepFileLink": false,
     "cleanupCacheHistory": false,
-    "disableGitFeatures": false,
-    "xrefService": [
-      "https://xref.docs.microsoft.com/query?uid={uid}" ]
+    "disableGitFeatures": false
   }
 }
