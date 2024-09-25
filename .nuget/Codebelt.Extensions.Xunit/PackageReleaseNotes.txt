@@ -17,6 +17,7 @@ Availability: .NET 8, .NET 6 and .NET Standard 2.0
 # New Features
 - ADDED ITestOutputHelperAccessor interface in the Codebelt.Extensions.Xunit namespace that provides access to the ITestOutputHelper instance
 - ADDED TestOutputHelperAccessor class in the Codebelt.Extensions.Xunit namespace that provides a default implementation of the ITestOutputHelper interface
+- ADDED StringExtensions class in the Codebelt.Extensions.Xunit namespace with one extension method (TFM netstandard2.0) for the String class: ReplaceLineEndings
  
 Version 8.3.2
 Availability: .NET 8, .NET 6 and .NET Standard 2.0
