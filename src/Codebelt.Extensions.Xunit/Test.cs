@@ -9,9 +9,8 @@ namespace Codebelt.Extensions.Xunit
     /// <summary>
     /// Represents the base class from which all implementations of unit testing should derive.
     /// </summary>
-    /// <seealso cref="Disposable"/>
     /// <seealso cref="ITestOutputHelper"/>
-    public abstract class Test : Disposable, ITest
+    public abstract class Test : ITest
     {
         /// <summary>
         /// Provides a way, with wildcard support, to determine if <paramref name="actual" /> matches <paramref name="expected" />.
@@ -71,10 +70,47 @@ namespace Codebelt.Extensions.Xunit
         protected bool HasTestOutput => TestOutput != null;
 
         /// <summary>
-        /// Called when this object is being disposed by either <see cref="M:Cuemon.Disposable.Dispose" /> or <see cref="M:Cuemon.Disposable.Dispose(System.Boolean)" /> having <c>disposing</c> set to <c>true</c> and <see cref="P:Cuemon.Disposable.Disposed" /> is <c>false</c>.
+        /// Gets a value indicating whether this <see cref="Test"/> object is disposed.
         /// </summary>
-        protected override void OnDisposeManagedResources()
+        /// <value><c>true</c> if this <see cref="Test"/> object is disposed; otherwise, <c>false</c>.</value>
+        public bool Disposed { get; private set; }
+
+        /// <summary>
+        /// Called when this object is being disposed by either <see cref="Dispose()" /> or <see cref="Dispose(bool)" /> having <c>disposing</c> set to <c>true</c> and <see cref="Disposed" /> is <c>false</c>.
+        /// </summary>
+        protected virtual void OnDisposeManagedResources()
         {
+        }
+
+        /// <summary>
+        /// Called when this object is being disposed by either <see cref="Dispose()"/> or <see cref="Dispose(bool)"/> and <see cref="Disposed"/> is <c>false</c>.
+        /// </summary>
+        protected virtual void OnDisposeUnmanagedResources()
+        {
+        }
+
+        /// <summary>
+        /// Releases all resources used by the <see cref="Test"/> object.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="Test"/> object and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected void Dispose(bool disposing)
+        {
+            if (Disposed) { return; }
+            if (disposing)
+            {
+                OnDisposeManagedResources();
+            }
+            OnDisposeUnmanagedResources();
+            Disposed = true;
         }
     }
 }
