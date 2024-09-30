@@ -1,9 +1,8 @@
 ﻿using System.IO;
-using Cuemon;
 
 namespace Codebelt.Extensions.Xunit.Assets
 {
-    public class ManagedDisposable : Disposable
+    public class ManagedDisposable : Test
     {
         public ManagedDisposable()
         {
