@@ -70,9 +70,9 @@ namespace Codebelt.Extensions.Xunit
         protected bool HasTestOutput => TestOutput != null;
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="Disposable"/> object is disposed.
+        /// Gets a value indicating whether this <see cref="Test"/> object is disposed.
         /// </summary>
-        /// <value><c>true</c> if this <see cref="Disposable"/> object is disposed; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if this <see cref="Test"/> object is disposed; otherwise, <c>false</c>.</value>
         public bool Disposed { get; private set; }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Codebelt.Extensions.Xunit
         }
 
         /// <summary>
-        /// Releases all resources used by the <see cref="Disposable"/> object.
+        /// Releases all resources used by the <see cref="Test"/> object.
         /// </summary>
         public void Dispose()
         {
@@ -99,7 +99,7 @@ namespace Codebelt.Extensions.Xunit
         }
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="Disposable"/> object and optionally releases the managed resources.
+        /// Releases the unmanaged resources used by the <see cref="Test"/> object and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected void Dispose(bool disposing)
