@@ -13,3 +13,4 @@ Complements: [xUnit: Capturing Output](https://xunit.net/docs/capturing-output) 
 |Type|Ext|Methods|
 |--:|:-:|---|
 |ITestOutputHelper|⬇️|`WriteLines`|
+|String|⬇️|`ReplaceLineEndings` (TFM netstandard2.0)|
