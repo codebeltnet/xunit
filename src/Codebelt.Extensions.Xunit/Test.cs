@@ -66,7 +66,7 @@ namespace Codebelt.Extensions.Xunit
         /// <summary>
         /// Gets a value indicating whether <see cref="TestOutput"/> has a reference to an implementation of <see cref="ITestOutputHelper"/>.
         /// </summary>
-        /// <value><c>true</c> if this instance has has a reference to an implementation of <see cref="ITestOutputHelper"/>; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if this instance has a reference to an implementation of <see cref="ITestOutputHelper"/>; otherwise, <c>false</c>.</value>
         protected bool HasTestOutput => TestOutput != null;
 
         /// <summary>
