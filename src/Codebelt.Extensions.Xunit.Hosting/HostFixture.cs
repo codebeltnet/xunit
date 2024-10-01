@@ -11,9 +11,8 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// <summary>
     /// Provides a default implementation of the <see cref="IHostFixture"/> interface.
     /// </summary>
-    /// <seealso cref="Disposable" />
     /// <seealso cref="IHostFixture" />
-    public class HostFixture : Disposable, IHostFixture
+    public class HostFixture : IDisposable, IHostFixture
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HostFixture"/> class.
@@ -127,15 +126,52 @@ namespace Codebelt.Extensions.Xunit.Hosting
 #endif
 
         /// <summary>
-        /// Called when this object is being disposed by either <see cref="M:Cuemon.Disposable.Dispose" /> or <see cref="M:Cuemon.Disposable.Dispose(System.Boolean)" /> having <c>disposing</c> set to <c>true</c> and <see cref="P:Cuemon.Disposable.Disposed" /> is <c>false</c>.
+        /// Gets a value indicating whether this <see cref="HostFixture"/> object is disposed.
         /// </summary>
-        protected override void OnDisposeManagedResources()
+        /// <value><c>true</c> if this <see cref="HostFixture"/> object is disposed; otherwise, <c>false</c>.</value>
+        public bool Disposed { get; private set; }
+
+        /// <summary>
+        /// Called when this object is being disposed by either <see cref="Dispose()" /> or <see cref="Dispose(bool)" /> having <c>disposing</c> set to <c>true</c> and <see cref="Disposed" /> is <c>false</c>.
+        /// </summary>
+        protected virtual void OnDisposeManagedResources()
         {
             if (ServiceProvider is ServiceProvider sp)
             {
                 sp.Dispose();
             }
             Host?.Dispose();
+        }
+
+        /// <summary>
+        /// Called when this object is being disposed by either <see cref="Dispose()"/> or <see cref="Dispose(bool)"/> and <see cref="Disposed"/> is <c>false</c>.
+        /// </summary>
+        protected virtual void OnDisposeUnmanagedResources()
+        {
+        }
+
+        /// <summary>
+        /// Releases all resources used by the <see cref="HostFixture"/> object.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases the unmanaged resources used by the <see cref="HostFixture"/> object and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected void Dispose(bool disposing)
+        {
+            if (Disposed) { return; }
+            if (disposing)
+            {
+                OnDisposeManagedResources();
+            }
+            OnDisposeUnmanagedResources();
+            Disposed = true;
         }
     }
 }

@@ -82,7 +82,6 @@ namespace Codebelt.Extensions.Xunit.Assets
             Dispose(false);
         }
 
-
         protected override void OnDisposeManagedResources()
         {
 
