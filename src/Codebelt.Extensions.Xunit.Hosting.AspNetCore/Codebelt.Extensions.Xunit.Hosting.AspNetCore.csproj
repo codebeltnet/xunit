@@ -24,8 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cuemon.Extensions.DependencyInjection" Version="9.0.0-preview.9" />
-    <PackageReference Include="Cuemon.IO" Version="9.0.0-preview.9" />
+    <PackageReference Include="Cuemon.Core" Version="9.0.0-preview.9" PrivateAssets="compile" />
   </ItemGroup>
 
   <ItemGroup>

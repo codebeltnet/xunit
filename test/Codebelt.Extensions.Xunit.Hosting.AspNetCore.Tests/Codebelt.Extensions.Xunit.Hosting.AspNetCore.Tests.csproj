@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cuemon.AspNetCore" Version="9.0.0-preview.9" />
     <PackageReference Include="Cuemon.Extensions.AspNetCore" Version="9.0.0-preview.9" />
     <PackageReference Include="Cuemon.Extensions.IO" Version="9.0.0-preview.9" />
   </ItemGroup>
