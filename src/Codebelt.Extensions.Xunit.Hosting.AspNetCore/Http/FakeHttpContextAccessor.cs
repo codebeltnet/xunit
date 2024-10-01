@@ -1,5 +1,8 @@
-﻿using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features;
-using Cuemon.IO;
+﻿using System;
+using System.IO;
+using System.Text;
+using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features;
+using Cuemon;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 
@@ -20,8 +23,21 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http
             var fc = new FeatureCollection();
             fc.Set<IHttpResponseFeature>(new FakeHttpResponseFeature());
             fc.Set<IHttpRequestFeature>(new FakeHttpRequestFeature());
-            fc.Set<IHttpResponseBodyFeature>(new StreamResponseBodyFeature(StreamFactory.Create(writer => writer.Write("Hello awesome developers!"))));
+            fc.Set<IHttpResponseBodyFeature>(new StreamResponseBodyFeature(MakeGreeting("Hello awesome developers!")));
             HttpContext = new DefaultHttpContext(fc);
+        }
+
+        private Stream MakeGreeting(string greeting)
+        {
+            return Patterns.SafeInvoke(() => new MemoryStream(), ms =>
+            {
+                var sw = new StreamWriter(ms, Encoding.UTF8);
+                sw.Write(greeting);
+                sw.Flush();
+                ms.Flush();
+                ms.Position = 0;
+                return ms;
+            }, ex => throw new InvalidOperationException("There is an error in the Stream being written.", ex));
         }
 
         /// <summary>
