@@ -1,7 +1,6 @@
 ﻿#if NETSTANDARD2_0_OR_GREATER
 using System;
 using System.Text.RegularExpressions;
-using Cuemon;
 
 namespace Codebelt.Extensions.Xunit
 {
@@ -36,8 +35,8 @@ namespace Codebelt.Extensions.Xunit
         /// </exception>
         public static string ReplaceLineEndings(this string input, string replacementText)
         {
-            Validator.ThrowIfNull(input);
-            Validator.ThrowIfNull(replacementText);
+            if (input == null) { throw new ArgumentNullException(nameof(input)); }
+            if (replacementText == null) { throw new ArgumentNullException(nameof(replacementText)); }
             return NewLineRegex.Replace(input, replacementText);
         }
     }

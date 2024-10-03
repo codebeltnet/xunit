@@ -1,12 +1,11 @@
 ﻿using System;
-using Cuemon.Configuration;
 
 namespace Codebelt.Extensions.Xunit
 {
     /// <summary>
     /// Configuration options for <see cref="Test.Match"/>.
     /// </summary>
-    public class WildcardOptions : IParameterObject
+    public class WildcardOptions
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WildcardOptions"/> class.
