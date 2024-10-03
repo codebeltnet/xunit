@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Cuemon;
 using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit
@@ -25,7 +24,8 @@ namespace Codebelt.Extensions.Xunit
         /// </exception>
         public static bool Match(string expected, string actual, Action<WildcardOptions> setup = null)
         {
-            Validator.ThrowIfInvalidConfigurator(setup, out var options);
+            var options = new WildcardOptions();
+            setup?.Invoke(options);
 
             var pattern = $"^{Regex.Escape(expected).Replace(options.SingleCharacter, ".").Replace(options.GroupOfCharacters, ".*")}$";
 
