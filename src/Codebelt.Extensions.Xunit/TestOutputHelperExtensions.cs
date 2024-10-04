@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cuemon;
 using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit
@@ -21,7 +20,7 @@ namespace Codebelt.Extensions.Xunit
         /// </exception>
         public static void WriteLines(this ITestOutputHelper helper, params object[] values)
         {
-            Validator.ThrowIfNull(helper);
+            if (helper == null) { throw new ArgumentNullException(nameof(helper)); }
             helper.WriteLine(DelimitedString.Create(values, o => o.Delimiter = Environment.NewLine));
         }
 
@@ -48,7 +47,7 @@ namespace Codebelt.Extensions.Xunit
         /// </exception>
         public static void WriteLines<T>(this ITestOutputHelper helper, IEnumerable<T> values)
         {
-            Validator.ThrowIfNull(helper);
+            if (helper == null) { throw new ArgumentNullException(nameof(helper)); }
             helper.WriteLine(DelimitedString.Create(values, o => o.Delimiter = Environment.NewLine));
         }
     }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using Cuemon;
-using Cuemon.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,8 +32,8 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// </exception>
         public virtual void ConfigureHost(Test hostTest)
         {
-            Validator.ThrowIfNull(hostTest);
-            Validator.ThrowIfNotContainsType(hostTest, Arguments.ToArrayOf(typeof(HostTest<>)), $"{nameof(hostTest)} is not assignable from HostTest<T>.");
+            if (hostTest == null) { throw new ArgumentNullException(nameof(hostTest)); }
+            if (!HasTypes(hostTest.GetType(), typeof(HostTest<>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(HostTest<>), $"{nameof(hostTest)} is not assignable from HostTest<T>."); }
 
             var hb = new HostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
@@ -63,6 +61,27 @@ namespace Codebelt.Extensions.Xunit.Hosting
 #endif
 
             Host = hb.Build();
+        }
+
+        /// <summary>
+        /// Determines whether the specified <paramref name="type"/> contains one or more of the specified target <paramref name="types"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> to validate.</param>
+        /// <param name="types">The target types to be matched against.</param>
+        /// <returns><c>true</c> if the <paramref name="type"/> contains one or more of the specified target types; otherwise, <c>false</c>.</returns>
+        protected static bool HasTypes(Type type, params Type[] types)
+        {
+            foreach (var tt in types)
+            {
+                var st = type;
+                while (st != null)
+                {
+                    if (st.IsGenericType && tt == st.GetGenericTypeDefinition()) { return true; }
+                    if (st == tt) { return true; }
+                    st = st.BaseType;
+                }
+            }
+            return false;
         }
 
 #if NETSTANDARD2_0_OR_GREATER

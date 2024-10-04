@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Cuemon;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
@@ -22,7 +21,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <remarks>Designed to be used in conjunction with <see cref="WebHostTestFactory.RunAsync"/> and <see cref="WebHostTestFactory.RunWithHostBuilderContextAsync"/>.</remarks>
         public static async Task<HttpResponseMessage> ToHttpResponseMessageAsync(this HttpClient client, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null)
         {
-            Validator.ThrowIfNull(client);
+            if (client == null) { throw new ArgumentNullException(nameof(client)); }
             responseFactory ??= c => c.GetAsync("/");
             return await responseFactory(client).ConfigureAwait(false);
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Cuemon;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
@@ -25,8 +24,8 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// </exception> 
         public static IServiceCollection AddXunitTestLogging(this IServiceCollection services, ITestOutputHelper output, LogLevel minimumLevel = LogLevel.Trace) 
         { 
-            Validator.ThrowIfNull(services); 
-            Validator.ThrowIfNull(output);
+            if (services == null) { throw new ArgumentNullException(nameof(services)); }
+            if (output == null) { throw new ArgumentNullException(nameof(output)); }
             if (services.Any(sd => sd.ServiceType == typeof(ITestOutputHelperAccessor)))
             {
                 services.AddLogging(builder => 
@@ -73,7 +72,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// </exception>
         public static IServiceCollection AddXunitTestLoggingOutputHelperAccessor<T>(this IServiceCollection services) where T : class, ITestOutputHelperAccessor
         {
-            Validator.ThrowIfNull(services);
+            if (services == null) { throw new ArgumentNullException(nameof(services)); }
             services.AddSingleton<ITestOutputHelperAccessor, T>();
             return services;
         }

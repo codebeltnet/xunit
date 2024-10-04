@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Cuemon;
-using Cuemon.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
@@ -40,8 +38,8 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// </exception>
         public override void ConfigureHost(Test hostTest)
         {
-            Validator.ThrowIfNull(hostTest);
-            Validator.ThrowIfNotContainsType(hostTest, Arguments.ToArrayOf(typeof(AspNetCoreHostTest<>)), $"{nameof(hostTest)} is not assignable from AspNetCoreHostTest<T>.");
+            if (hostTest == null) { throw new ArgumentNullException(nameof(hostTest)); }
+            if (!HasTypes(hostTest.GetType(), typeof(HostTest<>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(HostTest<>), $"{nameof(hostTest)} is not assignable from AspNetCoreHostTest<T>."); }
 
             var hb = new HostBuilder()
                 .ConfigureWebHost(webBuilder =>
