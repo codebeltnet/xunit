@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cuemon.Core" Version="9.0.0-preview.9" PrivateAssets="compile" />
+    
     <PackageReference Include="xunit.assert" Version="2.9.2" />
     <PackageReference Include="xunit.abstractions" Version="2.0.3" />
   </ItemGroup>
