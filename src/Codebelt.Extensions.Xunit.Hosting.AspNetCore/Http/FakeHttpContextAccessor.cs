@@ -2,7 +2,6 @@
 using System.IO;
 using System.Text;
 using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features;
-using Cuemon;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 
@@ -29,15 +28,33 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http
 
         private Stream MakeGreeting(string greeting)
         {
-            return Patterns.SafeInvoke(() => new MemoryStream(), ms =>
+            Stream interim = null;
+            Stream result = null;
+            try
             {
-                var sw = new StreamWriter(ms, Encoding.UTF8);
-                sw.Write(greeting);
-                sw.Flush();
-                ms.Flush();
-                ms.Position = 0;
-                return ms;
-            }, ex => throw new InvalidOperationException("There is an error in the Stream being written.", ex));
+                interim = new MemoryStream();
+
+                using (var sw = new StreamWriter(interim, Encoding.UTF8, leaveOpen: true))
+                {
+                    sw.Write(greeting);
+                    sw.Flush();
+                }
+
+                interim.Flush();
+                interim.Position = 0;
+
+                result = interim;
+                interim = null;
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("There is an error in the Stream being written.", ex);
+            }
+            finally
+            {
+                interim?.Dispose();
+            }
+            return result;
         }
 
         /// <summary>

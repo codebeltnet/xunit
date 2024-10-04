@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using Cuemon;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 
 namespace Codebelt.Extensions.Xunit.Hosting
@@ -24,13 +24,13 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// </exception>
         public static ITestStore<XunitTestLoggerEntry> GetTestStore<T>(this ILogger<T> logger)
         {
-            Validator.ThrowIfNull(logger);
+            if (logger == null) { throw new ArgumentNullException(nameof(logger)); }
             var loggerType = logger.GetType();
-            var internalLogger = Decorator.Enclose(loggerType).GetAllFields().SingleOrDefault(fi => fi.Name == "_logger")?.GetValue(logger);
+            var internalLogger = loggerType.GetRuntimeFields().SingleOrDefault(fi => fi.Name == "_logger")?.GetValue(logger);
             if (internalLogger != null)
             {
                 var internalLoggerType = internalLogger.GetType();
-                var internalLoggers = Decorator.Enclose(internalLoggerType).GetAllProperties().SingleOrDefault(pi => pi.Name == "Loggers")?.GetValue(internalLogger);
+                var internalLoggers = internalLoggerType.GetRuntimeProperties().SingleOrDefault(pi => pi.Name == "Loggers")?.GetValue(internalLogger);
                 if (internalLoggers != null)
                 {
                     foreach (var loggerInformation in (IEnumerable)internalLoggers)

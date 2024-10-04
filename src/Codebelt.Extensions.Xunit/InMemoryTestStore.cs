@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cuemon;
 
 namespace Codebelt.Extensions.Xunit
 {
@@ -49,7 +48,9 @@ namespace Codebelt.Extensions.Xunit
         /// <returns>An <see cref="IEnumerable{T}" /> that satisfies the condition.</returns>
         public virtual IEnumerable<T> Query(Func<T, bool> predicate = null)
         {
-            return Condition.TernaryIf(predicate == null, () => _store, () => _store.Where(predicate!));
+            return predicate == null
+                ? _store
+                : _store.Where(predicate!);
         }
 
         /// <summary>

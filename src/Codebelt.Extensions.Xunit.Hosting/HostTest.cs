@@ -1,5 +1,4 @@
 ﻿using System;
-using Cuemon;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,7 +24,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <param name="callerType">The <see cref="Type"/> of caller that ends up invoking this instance.</param>
         protected HostTest(T hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(output, callerType)
         {
-            Validator.ThrowIfNull(hostFixture);
+            if (hostFixture == null) { throw new ArgumentNullException(nameof(hostFixture)); }
             InitializeHostFixture(hostFixture);
         }
 
