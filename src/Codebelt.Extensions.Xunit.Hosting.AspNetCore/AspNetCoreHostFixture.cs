@@ -80,11 +80,13 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                         .UseSetting(HostDefaults.ApplicationKey, hostTest.CallerType.Assembly.GetName().Name);
                 });
 
+#if NET9_0_OR_GREATER
             hb.UseDefaultServiceProvider(o =>
             {
                 o.ValidateOnBuild = true;
                 o.ValidateScopes = true;
             });
+#endif
 
             ConfigureHostCallback(hb);
 

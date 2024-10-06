@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -54,13 +55,22 @@ namespace Codebelt.Extensions.Xunit.Hosting
                     ConfigureServicesCallback(services);
                 });
 
-            ConfigureHostCallback(hb);
-
 #if NET9_0_OR_GREATER
-            hb.UseDefaultServiceProvider(o => o.ValidateScopes = false); // this is by intent
+            hb.UseDefaultServiceProvider(o =>
+            {
+                o.ValidateOnBuild = true;
+                o.ValidateScopes = true;
+            });
 #endif
 
-            Host = hb.Build();
+            ConfigureHostCallback(hb);
+
+            var host = hb.Build();
+            Task.Run(() => host.StartAsync().ConfigureAwait(false))
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+            Host = host;
         }
 
         /// <summary>
