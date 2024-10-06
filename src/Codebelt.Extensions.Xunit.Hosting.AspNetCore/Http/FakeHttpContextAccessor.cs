@@ -4,6 +4,7 @@ using System.Text;
 using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http
 {
@@ -13,17 +14,20 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http
     /// <seealso cref="IHttpContextAccessor" />
     public class FakeHttpContextAccessor : IHttpContextAccessor
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeHttpContextAccessor"/> class.
         /// </summary>
-        public FakeHttpContextAccessor()
+        public FakeHttpContextAccessor(IServiceScopeFactory factory = null)
         {
+            var context = new DefaultHttpContext();
             var fc = new FeatureCollection();
+            fc.Set<IServiceProvidersFeature>(new RequestServicesFeature(context, factory));
             fc.Set<IHttpResponseFeature>(new FakeHttpResponseFeature());
             fc.Set<IHttpRequestFeature>(new FakeHttpRequestFeature());
             fc.Set<IHttpResponseBodyFeature>(new StreamResponseBodyFeature(MakeGreeting("Hello awesome developers!")));
-            HttpContext = new DefaultHttpContext(fc);
+            context.Uninitialize();
+            context.Initialize(fc);
+            HttpContext = context;
         }
 
         private Stream MakeGreeting(string greeting)

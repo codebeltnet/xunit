@@ -83,7 +83,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                 hbc.HostingEnvironment = HostingEnvironment;
                 return hbc;
             }), services);
-            services.AddFakeHttpContextAccessor(ServiceLifetime.Singleton);
+            services.AddFakeHttpContextAccessor();
         }
     }
 }
