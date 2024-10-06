@@ -14,16 +14,18 @@ namespace Codebelt.Extensions.Xunit.Hosting
     [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
     public class HostTestTest : HostTest<HostFixture>
     {
+        private readonly IServiceScope _scope;
         private readonly Func<IList<ICorrelationToken>> _correlationsFactory;
-        private static readonly ConcurrentBag<ICorrelationToken> ScopedCorrelations = new ConcurrentBag<ICorrelationToken>();
+        private static readonly ConcurrentBag<ICorrelationToken> ScopedCorrelations = new();
 
         public HostTestTest(HostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
         {
-            _correlationsFactory = () => hostFixture.ServiceProvider.GetServices<ICorrelationToken>().ToList();
+            _scope = hostFixture.ServiceProvider.CreateScope();
+            _correlationsFactory = () => _scope.ServiceProvider.GetServices<ICorrelationToken>().ToList();
         }
 
         [Fact, Priority(1)]
-        public void Test_SingletonShouldBeSame()
+        public void Test_SingletonShouldBeSame() // simulate a request
         {
             ScopedCorrelations.Add(_correlationsFactory().Single(c => c is ScopedCorrelation));
             var c1 = _correlationsFactory().Single(c => c is SingletonCorrelation);
@@ -32,7 +34,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         }
 
         [Fact, Priority(2)]
-        public void Test_TransientShouldBeDifferent()
+        public void Test_TransientShouldBeDifferent() // simulate a request
         {
             ScopedCorrelations.Add(_correlationsFactory().Single(c => c is ScopedCorrelation));
             var c1 = _correlationsFactory().Single(c => c is TransientCorrelation);
@@ -41,21 +43,12 @@ namespace Codebelt.Extensions.Xunit.Hosting
         }
 
         [Fact, Priority(3)]
-        public void Test_ScopedShouldBeSame()
+        public void Test_ScopedShouldBeSame() // simulate a request
         {
             ScopedCorrelations.Add(_correlationsFactory().Single(c => c is ScopedCorrelation));
             var c1 = _correlationsFactory().Single(c => c is ScopedCorrelation);
             var c2 = _correlationsFactory().Single(c => c is ScopedCorrelation);
             Assert.Equal(c1.CorrelationId, c2.CorrelationId);
-        }
-
-        [Fact]
-        public void Test_ScopedShouldBeSameInLastTestRun()
-        {
-            var c1 = _correlationsFactory().Single(c => c is ScopedCorrelation);
-            if (ScopedCorrelations.IsEmpty) { return; }
-            Assert.Equal(3, ScopedCorrelations.Count);
-            Assert.All(ScopedCorrelations, c => Assert.Equal(c1.CorrelationId, c.CorrelationId));
         }
 
         [Fact]
@@ -68,6 +61,11 @@ namespace Codebelt.Extensions.Xunit.Hosting
         public void Test_ShouldHaveEnvironmentOfDevelopment()
         {
             Assert.Equal("Development", HostingEnvironment.EnvironmentName);
+        }
+
+        protected override void OnDisposeManagedResources()
+        {
+            _scope?.Dispose();
         }
 
         public override void ConfigureServices(IServiceCollection services)
