@@ -15,6 +15,12 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 - StringExtensions class in the Codebelt.Extensions.Xunit namespace with one extension method (TFM netstandard2.0) for the String class: ReplaceLineEndings
 
+### Changed
+
+- HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to enable `ValidateOnBuild` and `ValidateScopes` when TFM is .NET 9 (or greater) and started the Host for consistency with AspNetCoreHostFixture
+- FakeHttpContextAccessor class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http namespace to support IServiceProvidersFeature (e.g., `RequestServices` property will be available for consumption by tests)
+- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to have AddFakeHttpContextAccessor `lifetime` argument as optional with a default value of `ServiceLifetime.Singleton`
+
 ### Removed
 
 - AddXunitTestLogging overloaded extension method from the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace (breaking)
@@ -29,6 +35,7 @@ This major release is first and foremost focused on ironing out any wrinkles tha
         hb.ConfigureWebHost(builder => builder.UseTestServer(o => o.PreserveExecutionContext = true));
     }
     ```
+- AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to only enable `ValidateOnBuild` and `ValidateScopes` when TFM is .NET 9 (or greater)
 
 ## [8.4.1] - 2024-09-16
 

@@ -8,6 +8,9 @@ Availability: .NET 9, .NET 8 and .NET Standard 2.0
 # Breaking Changes
 - REMOVED AddXunitTestLogging overloaded extension method from the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace
  
+# New Features
+- EXTENDED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to enable ValidateOnBuild and ValidateScopes when TFM is .NET 9 (or greater) and started the Host for consistency with AspNetCoreHostFixture
+ 
 Version 8.4.1
 Availability: .NET 8, .NET 6 and .NET Standard 2.0
  
