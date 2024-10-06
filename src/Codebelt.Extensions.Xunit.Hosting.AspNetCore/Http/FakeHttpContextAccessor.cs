@@ -15,8 +15,9 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http
     public class FakeHttpContextAccessor : IHttpContextAccessor
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FakeHttpContextAccessor"/> class.
+        /// Initializes a new instance of the <see cref="FakeHttpContextAccessor" /> class.
         /// </summary>
+        /// <param name="factory">An optional <see cref="IServiceScopeFactory"/> for resolving services.</param>
         public FakeHttpContextAccessor(IServiceScopeFactory factory = null)
         {
             var context = new DefaultHttpContext();
