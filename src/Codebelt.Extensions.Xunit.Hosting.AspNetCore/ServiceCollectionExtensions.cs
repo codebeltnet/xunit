@@ -16,9 +16,9 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// Adds a unit test optimized implementation for the <see cref="IHttpContextAccessor"/> service.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection" /> to extend.</param>
-        /// <param name="lifetime">The lifetime of the service.</param>
+        /// <param name="lifetime">The lifetime of the service. Default is <see cref="ServiceLifetime.Singleton"/>.</param>
         /// <returns>A reference to <paramref name="services"/> after the operation has completed.</returns>
-        public static IServiceCollection AddFakeHttpContextAccessor(this IServiceCollection services, ServiceLifetime lifetime)
+        public static IServiceCollection AddFakeHttpContextAccessor(this IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         {
             switch (lifetime)
             {
@@ -39,8 +39,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 
         private static IHttpContextAccessor FakeHttpContextAccessorFactory(IServiceProvider provider)
         {
-            var contextAccessor = new FakeHttpContextAccessor { HttpContext = { RequestServices = provider } };
-            return contextAccessor;
+            return new FakeHttpContextAccessor(provider.GetRequiredService<IServiceScopeFactory>());
         }
     }
 }

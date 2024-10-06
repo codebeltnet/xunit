@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,6 +13,8 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// <seealso cref="IHostFixture" />
     public class HostFixture : IDisposable, IHostFixture
     {
+        private readonly object _lock = new();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HostFixture"/> class.
         /// </summary>
@@ -54,13 +57,22 @@ namespace Codebelt.Extensions.Xunit.Hosting
                     ConfigureServicesCallback(services);
                 });
 
-            ConfigureHostCallback(hb);
-
 #if NET9_0_OR_GREATER
-            hb.UseDefaultServiceProvider(o => o.ValidateScopes = false); // this is by intent
+            hb.UseDefaultServiceProvider(o =>
+            {
+                o.ValidateOnBuild = true;
+                o.ValidateScopes = true;
+            });
 #endif
 
-            Host = hb.Build();
+            ConfigureHostCallback(hb);
+
+            var host = hb.Build();
+            Task.Run(() => host.StartAsync().ConfigureAwait(false))
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+            Host = host;
         }
 
         /// <summary>
@@ -185,12 +197,16 @@ namespace Codebelt.Extensions.Xunit.Hosting
         protected void Dispose(bool disposing)
         {
             if (Disposed) { return; }
-            if (disposing)
+            lock (_lock)
             {
-                OnDisposeManagedResources();
+                if (Disposed) { return; }
+                if (disposing)
+                {
+                    OnDisposeManagedResources();
+                }
+                OnDisposeUnmanagedResources();
+                Disposed = true;
             }
-            OnDisposeUnmanagedResources();
-            Disposed = true;
         }
     }
 }
