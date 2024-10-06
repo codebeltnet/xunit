@@ -13,6 +13,8 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// <seealso cref="IHostFixture" />
     public class HostFixture : IDisposable, IHostFixture
     {
+        private readonly object _lock = new();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HostFixture"/> class.
         /// </summary>
@@ -195,12 +197,16 @@ namespace Codebelt.Extensions.Xunit.Hosting
         protected void Dispose(bool disposing)
         {
             if (Disposed) { return; }
-            if (disposing)
+            lock (_lock)
             {
-                OnDisposeManagedResources();
+                if (Disposed) { return; }
+                if (disposing)
+                {
+                    OnDisposeManagedResources();
+                }
+                OnDisposeUnmanagedResources();
+                Disposed = true;
             }
-            OnDisposeUnmanagedResources();
-            Disposed = true;
         }
     }
 }
