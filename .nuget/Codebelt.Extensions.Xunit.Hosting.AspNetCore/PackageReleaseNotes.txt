@@ -7,6 +7,13 @@ Availability: .NET 9 and .NET 8
  
 # Bug Fixes
 - FIXED AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to preserve ExecutionContext and AsyncLocal{T} values from the client to the server (vital for ITestOutputHelperAccessor combined with xUnit test logging when using HttpClient)
+- FIXED AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to only enable ValidateOnBuild and ValidateScopes when TFM is .NET 9 (or greater)
+ 
+# New Features
+- EXTENDED FakeHttpContextAccessor class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http namespace to support IServiceProvidersFeature (e.g., RequestServices property will be available for consumption by tests)
+ 
+# Improvements
+- CHANGED ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to have AddFakeHttpContextAccessor lifetime argument as optional with a default value of ServiceLifetime.Singleton
  
 Version 8.4.0
 Availability: .NET 8 and .NET 6
