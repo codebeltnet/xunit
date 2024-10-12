@@ -13,7 +13,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// <seealso cref="IHostFixture" />
     public class HostFixture : IDisposable, IHostFixture
     {
-        private readonly object _lock = new();
+        private readonly Lock _lock = LockFactory.Create();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HostFixture"/> class.
