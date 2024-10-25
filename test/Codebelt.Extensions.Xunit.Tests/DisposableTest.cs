@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Codebelt.Extensions.Xunit.Assets;
 using Xunit;
 using Xunit.Abstractions;
@@ -11,7 +12,39 @@ namespace Codebelt.Extensions.Xunit
         {
         }
 
+#if NET8_0_OR_GREATER
+        [Fact]
+        public async Task AsyncDisposable_VerifyThatAssetIsBeingDisposed()
+        {
+            AsyncDisposable ad = new AsyncDisposable();
+            await using (ad.ConfigureAwait(false))
+            {
+                Assert.NotNull(ad);
+                Assert.False(ad.DisposableResourceCalled);
+                Assert.False(ad.AsyncDisposableResourceCalled);
+            }
 
+            Assert.NotNull(ad);
+            Assert.True(ad.DisposableResourceCalled);
+            Assert.True(ad.AsyncDisposableResourceCalled);
+        }
+#else
+        [Fact]
+        public async Task AsyncDisposable_VerifyThatAssetIsBeingDisposed()
+        {
+            AsyncDisposable ad = new AsyncDisposable();
+
+            Assert.NotNull(ad);
+            Assert.False(ad.DisposableResourceCalled);
+            Assert.False(ad.AsyncDisposableResourceCalled);
+
+            await ad.DisposeAsync().ConfigureAwait(false);
+
+            Assert.NotNull(ad);
+            Assert.True(ad.DisposableResourceCalled);
+            Assert.True(ad.AsyncDisposableResourceCalled);
+        }
+#endif
 
         [Fact]
         public void ManagedDisposable_VerifyThatAssetIsBeingDisposed()
