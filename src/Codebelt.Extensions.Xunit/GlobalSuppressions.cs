@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Major Code Smell", "S3881:\"IDisposable\" should be implemented correctly", Justification = "This is a base class implementation of the IDisposable interface tailored to avoid wrong implementations.", Scope = "type", Target = "~T:Codebelt.Extensions.Xunit.Test")]
+[assembly: SuppressMessage("Major Code Smell", "S3971:\"GC.SuppressFinalize\" should not be called", Justification = "False-Positive due to IAsyncDisposable living side-by-side with IDisposable.", Scope = "member", Target = "~M:Codebelt.Extensions.Xunit.Test.DisposeAsync~System.Threading.Tasks.ValueTask")]

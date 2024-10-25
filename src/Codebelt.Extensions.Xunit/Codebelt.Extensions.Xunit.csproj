@@ -11,9 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    
     <PackageReference Include="xunit.assert" Version="2.9.2" />
     <PackageReference Include="xunit.abstractions" Version="2.0.3" />
+    <PackageReference Include="xunit.extensibility.core" Version="2.9.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard2'))">
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
 
 </Project>
