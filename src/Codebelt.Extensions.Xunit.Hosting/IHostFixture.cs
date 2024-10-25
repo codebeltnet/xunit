@@ -1,30 +1,45 @@
 ﻿using System;
+#if NETSTANDARD2_0_OR_GREATER
+using System.Threading.Tasks;
+#endif
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    /// <summary>
-    /// Provides a way to use Microsoft Dependency Injection in unit tests.
-    /// </summary>
-    /// <seealso cref="IDisposable" />
-    public interface IHostFixture : IServiceTest, IHostTest, IConfigurationTest, IHostingEnvironmentTest
-    {
 #if NETSTANDARD2_0_OR_GREATER
+    public partial interface IHostFixture
+    {
         /// <summary>
         /// Gets or sets the delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.
         /// </summary>
         /// <value>The delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.</value>
         Action<IConfiguration, IHostingEnvironment> ConfigureCallback { get; set; }
+
+        /// <summary>
+        /// Asynchronously releases the resources used by the <see cref="Test"/>.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous dispose operation.</returns>
+        ValueTask DisposeAsync();
+    }
 #else
+    public partial interface IHostFixture : IAsyncDisposable
+    {
         /// <summary>
         /// Gets or sets the delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.
         /// </summary>
         /// <value>The delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.</value>
         Action<IConfiguration, IHostEnvironment> ConfigureCallback { get; set; }
+    }
 #endif
 
+    /// <summary>
+    /// Provides a way to use Microsoft Dependency Injection in unit tests.
+    /// </summary>
+    /// <seealso cref="IDisposable" />
+    public partial interface IHostFixture : IServiceTest, IHostTest, IConfigurationTest, IHostingEnvironmentTest, IDisposable
+    {
         /// <summary>
         /// Gets or sets the delegate that adds services to the container.
         /// </summary>
