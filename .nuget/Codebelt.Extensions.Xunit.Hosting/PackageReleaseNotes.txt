@@ -10,6 +10,8 @@ Availability: .NET 9, .NET 8 and .NET Standard 2.0
  
 # New Features
 - EXTENDED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to enable ValidateOnBuild and ValidateScopes when TFM is .NET 9 (or greater) and started the Host for consistency with AspNetCoreHostFixture
+- EXTENDED IHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace with two new methods: Dispose and DisposeAsync
+- EXTENDED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace with three new methods: InitializeAsync, OnDisposeManagedResourcesAsync, Dispose and DisposeAsync
  
 Version 8.4.1
 Availability: .NET 8, .NET 6 and .NET Standard 2.0
