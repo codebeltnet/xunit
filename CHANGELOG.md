@@ -14,6 +14,10 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 ### Added
 
 - StringExtensions class in the Codebelt.Extensions.Xunit namespace with one extension method (TFM netstandard2.0) for the String class: ReplaceLineEndings
+- ITest interface in the Codebelt.Extensions.Xunit namespace was extended with one new method: DisposeAsync
+- Test class in the Codebelt.Extensions.Xunit namespace was extended with three new methods: InitializeAsync, OnDisposeManagedResourcesAsync and DisposeAsync
+- IHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace was extended with two new methods: Dispose and DisposeAsync
+- HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace was extended with three new methods: InitializeAsync, OnDisposeManagedResourcesAsync, Dispose and DisposeAsync
 
 ### Changed
 
