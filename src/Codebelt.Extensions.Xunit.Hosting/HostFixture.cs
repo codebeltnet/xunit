@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Xunit;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
@@ -11,7 +12,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// Provides a default implementation of the <see cref="IHostFixture"/> interface.
     /// </summary>
     /// <seealso cref="IHostFixture" />
-    public class HostFixture : IDisposable, IHostFixture
+    public class HostFixture : IHostFixture, IAsyncLifetime
     {
         private readonly object _lock = new();
 
@@ -175,6 +176,34 @@ namespace Codebelt.Extensions.Xunit.Hosting
         }
 
         /// <summary>
+        /// Called when this object is being disposed by <see cref="DisposeAsync()"/>.
+        /// </summary>
+#if NET8_0_OR_GREATER
+        protected virtual async ValueTask OnDisposeManagedResourcesAsync()
+        {
+            if (ServiceProvider is ServiceProvider sp)
+            {
+                await sp.DisposeAsync();
+            }
+
+            if (Host is IAsyncDisposable asyncDisposable)
+            {
+                await asyncDisposable.DisposeAsync();
+            }
+            else
+            {
+                Host?.Dispose();
+            }
+        }
+#else
+        protected virtual ValueTask OnDisposeManagedResourcesAsync()
+        {
+            OnDisposeManagedResources();
+            return default;
+        }
+#endif
+
+        /// <summary>
         /// Called when this object is being disposed by either <see cref="Dispose()"/> or <see cref="Dispose(bool)"/> and <see cref="Disposed"/> is <c>false</c>.
         /// </summary>
         protected virtual void OnDisposeUnmanagedResources()
@@ -207,6 +236,32 @@ namespace Codebelt.Extensions.Xunit.Hosting
                 OnDisposeUnmanagedResources();
                 Disposed = true;
             }
+        }
+
+        /// <summary>
+        /// Asynchronously releases the resources used by the <see cref="HostFixture"/>.
+        /// </summary>
+        /// <returns>A <see cref="ValueTask"/> that represents the asynchronous dispose operation.</returns>
+        /// <remarks>https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync#the-disposeasync-method</remarks>
+        public async ValueTask DisposeAsync()
+        {
+            await OnDisposeManagedResourcesAsync().ConfigureAwait(false);
+            Dispose(false);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Called immediately after the class has been created, before it is used.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+        public virtual Task InitializeAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        Task IAsyncLifetime.DisposeAsync()
+        {
+            return DisposeAsync().AsTask();
         }
     }
 }

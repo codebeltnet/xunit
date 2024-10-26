@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit
@@ -9,8 +11,10 @@ namespace Codebelt.Extensions.Xunit
     /// Represents the base class from which all implementations of unit testing should derive.
     /// </summary>
     /// <seealso cref="ITestOutputHelper"/>
-    public abstract class Test : ITest
+    public abstract class Test : ITest, IAsyncLifetime
     {
+        private readonly object _lock = new();
+
         /// <summary>
         /// Provides a way, with wildcard support, to determine if <paramref name="actual" /> matches <paramref name="expected" />.
         /// </summary>
@@ -83,6 +87,14 @@ namespace Codebelt.Extensions.Xunit
         }
 
         /// <summary>
+        /// Called when this object is being disposed by <see cref="DisposeAsync()"/>.
+        /// </summary>
+        protected virtual ValueTask OnDisposeManagedResourcesAsync()
+        {
+            return default;
+        }
+
+        /// <summary>
         /// Called when this object is being disposed by either <see cref="Dispose()"/> or <see cref="Dispose(bool)"/> and <see cref="Disposed"/> is <c>false</c>.
         /// </summary>
         protected virtual void OnDisposeUnmanagedResources()
@@ -105,12 +117,42 @@ namespace Codebelt.Extensions.Xunit
         protected void Dispose(bool disposing)
         {
             if (Disposed) { return; }
-            if (disposing)
+            lock (_lock)
             {
-                OnDisposeManagedResources();
+                if (Disposed) { return; }
+                if (disposing)
+                {
+                    OnDisposeManagedResources();
+                }
+                OnDisposeUnmanagedResources();
+                Disposed = true;
             }
-            OnDisposeUnmanagedResources();
-            Disposed = true;
+        }
+
+        /// <summary>
+        /// Asynchronously releases the resources used by the <see cref="Test"/>.
+        /// </summary>
+        /// <returns>A <see cref="ValueTask"/> that represents the asynchronous dispose operation.</returns>
+        /// <remarks>https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync#the-disposeasync-method</remarks>
+        public async ValueTask DisposeAsync()
+        {
+            await OnDisposeManagedResourcesAsync().ConfigureAwait(false);
+            Dispose(false);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Called immediately after the class has been created, before it is used.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
+        public virtual Task InitializeAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        Task IAsyncLifetime.DisposeAsync()
+        {
+            return DisposeAsync().AsTask();
         }
     }
 }

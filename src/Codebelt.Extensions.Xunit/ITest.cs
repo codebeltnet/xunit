@@ -6,7 +6,7 @@ namespace Codebelt.Extensions.Xunit
     /// Represents the members needed for vanilla testing.
     /// </summary>
     /// <seealso cref="IDisposable"/>
-    public interface ITest : IDisposable
+    public interface ITest : IDisposable, IAsyncDisposable
     {
         /// <summary>
         /// Gets the type of caller for this instance. Default is <see cref="object.GetType"/>.

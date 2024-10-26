@@ -5,6 +5,10 @@ Availability: .NET 9, .NET 8 and .NET Standard 2.0
 - CHANGED Dependencies to latest and greatest with respect to TFMs
 - REMOVED Support for TFM .NET 6 (LTS)
  
+# New Features
+- EXTENDED ITest interface in the Codebelt.Extensions.Xunit namespace with one new method: DisposeAsync
+- EXTENDED Test class in the Codebelt.Extensions.Xunit namespace with three new methods: InitializeAsync, OnDisposeManagedResourcesAsync and DisposeAsync
+ 
 Version 8.4.0
 Availability: .NET 8, .NET 6 and .NET Standard 2.0
  

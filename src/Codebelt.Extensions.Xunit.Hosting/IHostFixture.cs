@@ -5,26 +5,37 @@ using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    /// <summary>
-    /// Provides a way to use Microsoft Dependency Injection in unit tests.
-    /// </summary>
-    /// <seealso cref="IDisposable" />
-    public interface IHostFixture : IServiceTest, IHostTest, IConfigurationTest, IHostingEnvironmentTest
-    {
 #if NETSTANDARD2_0_OR_GREATER
+    public partial interface IHostFixture
+    {
         /// <summary>
         /// Gets or sets the delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.
         /// </summary>
         /// <value>The delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.</value>
         Action<IConfiguration, IHostingEnvironment> ConfigureCallback { get; set; }
+    }
 #else
+    public partial interface IHostFixture
+    {
         /// <summary>
         /// Gets or sets the delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.
         /// </summary>
         /// <value>The delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.</value>
         Action<IConfiguration, IHostEnvironment> ConfigureCallback { get; set; }
+    }
 #endif
 
+    /// <summary>
+    /// Provides a way to use Microsoft Dependency Injection in unit tests.
+    /// </summary>
+    /// <seealso cref="IServiceTest" />
+    /// <seealso cref="IHostTest" />
+    /// <seealso cref="IConfigurationTest" />
+    /// <seealso cref="IHostingEnvironmentTest" />
+    /// <seealso cref="IDisposable" />
+    /// <seealso cref="IAsyncDisposable" />
+    public partial interface IHostFixture : IServiceTest, IHostTest, IConfigurationTest, IHostingEnvironmentTest, IDisposable, IAsyncDisposable
+    {
         /// <summary>
         /// Gets or sets the delegate that adds services to the container.
         /// </summary>
