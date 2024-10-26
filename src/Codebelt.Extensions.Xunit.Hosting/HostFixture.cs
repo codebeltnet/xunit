@@ -239,7 +239,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         }
 
         /// <summary>
-        /// Asynchronously releases the resources used by the <see cref="Test"/>.
+        /// Asynchronously releases the resources used by the <see cref="HostFixture"/>.
         /// </summary>
         /// <returns>A <see cref="ValueTask"/> that represents the asynchronous dispose operation.</returns>
         /// <remarks>https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-disposeasync#the-disposeasync-method</remarks>
