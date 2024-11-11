@@ -28,7 +28,7 @@ namespace Codebelt.Extensions.Xunit.Assets
 
         public UnmanagedDisposable()
         {
-#if NET6_0_OR_GREATER
+#if NET8_0_OR_GREATER
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 if (NativeLibrary.TryLoad("kernel32.dll", GetType().Assembly, DllImportSearchPath.System32, out _libHandle))
@@ -89,7 +89,7 @@ namespace Codebelt.Extensions.Xunit.Assets
 
         protected override void OnDisposeUnmanagedResources()
         {
-#if NET6_0_OR_GREATER
+#if NET8_0_OR_GREATER
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 if (_handle != IntPtr.Zero)

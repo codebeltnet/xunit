@@ -25,7 +25,8 @@ Provides a convenient set of default API additions for unit-testing various type
 | [Codebelt.Extensions.Xunit.App](https://www.nuget.org/packages/Codebelt.Extensions.Xunit.App/) | ![vNext](https://img.shields.io/nuget/vpre/Codebelt.Extensions.Xunit.App?logo=nuget) | ![Stable](https://img.shields.io/nuget/v/Codebelt.Extensions.Xunit.App?logo=nuget) | ![Downloads](https://img.shields.io/nuget/dt/Codebelt.Extensions.Xunit.App?color=blueviolet&logo=nuget) |
 
 ### Contributing to `Extensions for xUnit API by Codebelt`
-Contributions are welcome! 
+[Contributions](.github/CONTRIBUTING.md) are welcome and appreciated.
+
 Feel free to submit issues, feature requests, or pull requests to help improve this library.
 
 ### License
