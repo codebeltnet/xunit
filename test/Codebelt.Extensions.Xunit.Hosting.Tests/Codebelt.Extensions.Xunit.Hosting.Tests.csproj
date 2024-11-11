@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cuemon.Core" Version="9.0.0-preview.12" />
-    <PackageReference Include="Xunit.Priority" Version="1.1.6" />
+    <PackageReference Include="Cuemon.Core" />
+    <PackageReference Include="Xunit.Priority" />
   </ItemGroup>
 
   <ItemGroup>
