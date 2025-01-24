@@ -97,21 +97,12 @@ namespace Codebelt.Extensions.Xunit.Hosting
             return false;
         }
 
-#if NETSTANDARD2_0_OR_GREATER
-        /// <summary>
-        /// Gets or sets the delegate that initializes the test class.
-        /// </summary>
-        /// <value>The delegate that initializes the test class.</value>
-        /// <remarks>Mimics the Startup convention.</remarks>
-        public Action<IConfiguration, IHostingEnvironment> ConfigureCallback { get; set; }
-#else
         /// <summary>
         /// Gets or sets the delegate that initializes the test class.
         /// </summary>
         /// <value>The delegate that initializes the test class.</value>
         /// <remarks>Mimics the Startup convention.</remarks>
         public Action<IConfiguration, IHostEnvironment> ConfigureCallback { get; set; }
-#endif
 
         /// <summary>
         /// Gets or sets the delegate that initializes the host builder.
@@ -143,19 +134,11 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <value>The <see cref="IConfiguration" /> initialized by this instance.</value>
         public IConfiguration Configuration { get; protected set; }
 
-#if NETSTANDARD2_0_OR_GREATER
-        /// <summary>
-        /// Gets the <see cref="IHostingEnvironment"/> initialized by this instance.
-        /// </summary>
-        /// <value>The <see cref="IHostingEnvironment"/> initialized by this instance.</value>
-        public IHostingEnvironment HostingEnvironment { get; protected set; }
-#else
         /// <summary>
         /// Gets the <see cref="IHostEnvironment"/> initialized by this instance.
         /// </summary>
         /// <value>The <see cref="IHostEnvironment"/> initialized by this instance.</value>
         public IHostEnvironment HostingEnvironment { get; protected set; }
-#endif
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="HostFixture"/> object is disposed.

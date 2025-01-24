@@ -7,13 +7,6 @@ on:
       - .docfx/**
       - .nuget/**
       - '**/*.md'
-  push:
-    branches: [main]
-    paths-ignore:
-      - .codecov/**
-      - .docfx/**
-      - .nuget/**
-      - '**/*.md'
   workflow_dispatch:
     inputs:
       configuration:

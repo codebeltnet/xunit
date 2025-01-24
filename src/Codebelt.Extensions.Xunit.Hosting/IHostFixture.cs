@@ -5,16 +5,6 @@ using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-#if NETSTANDARD2_0_OR_GREATER
-    public partial interface IHostFixture
-    {
-        /// <summary>
-        /// Gets or sets the delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.
-        /// </summary>
-        /// <value>The delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.</value>
-        Action<IConfiguration, IHostingEnvironment> ConfigureCallback { get; set; }
-    }
-#else
     public partial interface IHostFixture
     {
         /// <summary>
@@ -23,7 +13,6 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <value>The delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.</value>
         Action<IConfiguration, IHostEnvironment> ConfigureCallback { get; set; }
     }
-#endif
 
     /// <summary>
     /// Provides a way to use Microsoft Dependency Injection in unit tests.
