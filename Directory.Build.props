@@ -16,7 +16,7 @@
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'false'">
     <TargetFrameworks>net9.0;net8.0;netstandard2.0</TargetFrameworks>
-    <Copyright>Copyright © Geekle 2024. All rights reserved.</Copyright>
+    <Copyright>Copyright © Geekle 2024-2025. All rights reserved.</Copyright>
     <Authors>gimlichael</Authors>
     <Company>Geekle</Company>
     <Product>Extensions for xUnit API by Codebelt</Product>

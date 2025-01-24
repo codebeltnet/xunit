@@ -7,6 +7,26 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]  
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [9.0.1] - TBD
+
+This is a service update that primarily focuses on package dependencies and minor improvements.
+
+> [!IMPORTANT]
+> Dependencies used for targeting .NET Standard 2.0 has been updated to use .NET 8.0 (LTS) instead of .NET Core 2.1.
+
+### Dependencies
+
+- Codebelt.Extensions.Xunit updated to latest and greatest with respect to TFMs
+- Codebelt.Extensions.Xunit.Hosting updated to latest and greatest with respect to TFMs
+- Codebelt.Extensions.Xunit.Hosting.AspNetCore updated to latest and greatest with respect to TFMs
+
+### Changed
+
+- HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace no longer have a dependency to IHostingEnvironment (TFM netstandard2.0)
+- HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace no longer have a dependency to IHostingEnvironment (TFM netstandard2.0)
+- IHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace no longer have a dependency to IHostingEnvironment (TFM netstandard2.0)
+- IHostingEnvironmentTest interface in the Codebelt.Extensions.Xunit.Hosting namespace no longer have a dependency to IHostingEnvironment (TFM netstandard2.0)
+
 ## [9.0.0] - 2024-11-13
 
 This major release is first and foremost focused on ironing out any wrinkles that have been introduced with .NET 9 preview releases so the final release is production ready together with the official launch from Microsoft.
