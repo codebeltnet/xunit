@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
-    internal sealed class WebHostTest : AspNetCoreHostTest<AspNetCoreHostFixture>, IWebHostTest
+    internal sealed class WebHostTest : AspNetCoreHostTest<IAspNetCoreHostFixture>, IWebHostTest
     {
         private readonly Action<IApplicationBuilder> _pipelineConfigurator;
         private readonly Action<IServiceCollection> _serviceConfigurator;
@@ -14,30 +14,24 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         private readonly Action<IHostBuilder> _hostConfigurator;
         private HostBuilderContext _hostBuilderContext;
 
-        internal WebHostTest(Action<IServiceCollection> serviceConfigurator, Action<IApplicationBuilder> pipelineConfigurator, Action<IHostBuilder> hostConfigurator, AspNetCoreHostFixture hostFixture) : base(hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        internal WebHostTest(Action<IServiceCollection> serviceConfigurator, Action<IApplicationBuilder> pipelineConfigurator, Action<IHostBuilder> hostConfigurator, IAspNetCoreHostFixture hostFixture) : base(hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
         {
             _serviceConfigurator = serviceConfigurator;
             _pipelineConfigurator = pipelineConfigurator;
             _hostConfigurator = hostConfigurator;
-            if (!hostFixture.HasValidState())
-            {
-                hostFixture.ConfigureHostCallback = ConfigureHost;
-                hostFixture.ConfigureCallback = Configure;
-                hostFixture.ConfigureServicesCallback = ConfigureServices;
-                hostFixture.ConfigureApplicationCallback = ConfigureApplication;
-                hostFixture.ConfigureHost(this);
-            }
-            Host = hostFixture.Host;
-            ServiceProvider = hostFixture.Host.Services;
-            Application = hostFixture.Application;
-            Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
+            InitializeHostFixture(hostFixture);
         }
 
-        internal WebHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<HostBuilderContext, IApplicationBuilder> pipelineConfigurator, Action<IHostBuilder> hostConfigurator, AspNetCoreHostFixture hostFixture) : base(hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        internal WebHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<HostBuilderContext, IApplicationBuilder> pipelineConfigurator, Action<IHostBuilder> hostConfigurator, IAspNetCoreHostFixture hostFixture) : base(hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
         {
             _serviceConfiguratorWithContext = serviceConfigurator;
             _pipelineConfiguratorWithContext = pipelineConfigurator;
             _hostConfigurator = hostConfigurator;
+            InitializeHostFixture(hostFixture);
+        }
+
+        private void InitializeHostFixture(IAspNetCoreHostFixture hostFixture)
+        {
             if (!hostFixture.HasValidState())
             {
                 hostFixture.ConfigureHostCallback = ConfigureHost;
@@ -50,11 +44,6 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
             ServiceProvider = hostFixture.Host.Services;
             Application = hostFixture.Application;
             Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
-        }
-
-        protected override void InitializeHostFixture(AspNetCoreHostFixture hostFixture)
-        {
-            // intentionally left blank due to constructor initialization (need to refactor this "call from virtual method" challenge)
         }
 
         public override void ConfigureApplication(IApplicationBuilder app)
