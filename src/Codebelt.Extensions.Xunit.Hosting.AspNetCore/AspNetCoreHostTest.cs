@@ -24,26 +24,6 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         }
 
         /// <summary>
-        /// Initializes the specified host fixture.
-        /// </summary>
-        /// <param name="hostFixture">The host fixture to initialize.</param>
-        protected override void InitializeHostFixture(T hostFixture)
-        {
-            if (!hostFixture.HasValidState())
-            {
-                hostFixture.ConfigureCallback = Configure;
-                hostFixture.ConfigureHostCallback = ConfigureHost;
-                hostFixture.ConfigureServicesCallback = ConfigureServices;
-                hostFixture.ConfigureApplicationCallback = ConfigureApplication;
-                hostFixture.ConfigureHost(this);
-            }
-            Host = hostFixture.Host;
-            ServiceProvider = hostFixture.Host.Services;
-            Application = hostFixture.Application;
-            Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
-        }
-
-        /// <summary>
         /// Gets the <see cref="IApplicationBuilder"/> initialized by the <see cref="IHost"/>.
         /// </summary>
         /// <value>The <see cref="IApplicationBuilder"/> initialized by the <see cref="IHost"/>.</value>
