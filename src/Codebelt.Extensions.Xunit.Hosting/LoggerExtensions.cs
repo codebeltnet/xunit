@@ -22,7 +22,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <exception cref="ArgumentException">
         /// <paramref name="logger"/> does not contain a test store.
         /// </exception>
-        public static ITestStore<XunitTestLoggerEntry> GetTestStore<T>(this ILogger<T> logger)
+        public static ITestStore<XunitTestLoggerEntry> GetTestStore(this ILogger logger)
         {
             if (logger == null) { throw new ArgumentNullException(nameof(logger)); }
             var loggerType = logger.GetType();
@@ -39,12 +39,31 @@ namespace Codebelt.Extensions.Xunit.Hosting
                         var providerType = loggerInformationType.GetProperty("ProviderType")?.GetValue(loggerInformation) as Type;
                         if (providerType == typeof(XunitTestLoggerProvider))
                         {
-                            return loggerInformationType.GetProperty("Logger")?.GetValue(loggerInformation) as InMemoryTestStore<XunitTestLoggerEntry>;
+                            var xunitTestLogger = loggerInformationType.GetProperty("Logger")?.GetValue(loggerInformation) as XunitTestLogger;
+                            if (xunitTestLogger == null) { continue; }
+                            return xunitTestLogger.Provider;
                         }
                     }
                 }
             }
             throw new ArgumentException($"Logger does not contain a test store; did you remember to call {nameof(ServiceCollectionExtensions.AddXunitTestLogging)} before calling this method?", nameof(logger));
+        }
+
+        /// <summary>
+        /// Returns the associated <see cref="ITestStore{T}"/> that is provided when settings up services from <see cref="ServiceCollectionExtensions.AddXunitTestLogging"/>.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger{TCategoryName}"/> from which to retrieve the <see cref="ITestStore{T}"/>.</param>
+        /// <returns>Returns an implementation of <see cref="ITestStore{T}"/> with all logged entries expressed as <see cref="XunitTestLoggerEntry"/>.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="logger"/> cannot be null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="logger"/> does not contain a test store.
+        /// </exception>
+        [Obsolete($"This method will be removed in a future version. Please use non-generic equivalent {nameof(GetTestStore)}.")]
+        public static ITestStore<XunitTestLoggerEntry> GetTestStore<T>(this ILogger<T> logger)
+        {
+            return GetTestStore((ILogger)logger);
         }
     }
 }

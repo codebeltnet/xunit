@@ -4,7 +4,7 @@ using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    internal sealed class XunitTestLoggerProvider : ILoggerProvider
+    internal sealed class XunitTestLoggerProvider : InMemoryTestStore<XunitTestLoggerEntry>, ILoggerProvider
     {
         private readonly ConcurrentDictionary<string, XunitTestLogger> _loggers = new();
         private readonly ITestOutputHelperAccessor _accessor;
@@ -23,8 +23,13 @@ namespace Codebelt.Extensions.Xunit.Hosting
         public ILogger CreateLogger(string categoryName)
         {
             return _loggers.GetOrAdd(categoryName, _ => _accessor != null
-                ? new XunitTestLogger(_accessor)
-                : new XunitTestLogger(_output));
+                ? new XunitTestLogger(this, _accessor)
+                : new XunitTestLogger(this, _output));
+        }
+
+        public void WriteLoggerEntry(LogLevel logLevel, EventId eventId, string message)
+        {
+            Add(new XunitTestLoggerEntry(logLevel, eventId, message));
         }
 
         public void Dispose()

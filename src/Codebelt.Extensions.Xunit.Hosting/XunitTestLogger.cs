@@ -5,18 +5,21 @@ using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    internal sealed class XunitTestLogger : InMemoryTestStore<XunitTestLoggerEntry>, ILogger, IDisposable
+    internal sealed class XunitTestLogger : ILogger, IDisposable
     {
         private readonly ITestOutputHelperAccessor _accessor;
         private readonly ITestOutputHelper _output;
+        private readonly XunitTestLoggerProvider _provider;
 
-        public XunitTestLogger(ITestOutputHelper output)
+        public XunitTestLogger(XunitTestLoggerProvider provider, ITestOutputHelper output)
         {
+            _provider = provider;
             _output = output;
         }
 
-        public XunitTestLogger(ITestOutputHelperAccessor accessor)
+        public XunitTestLogger(XunitTestLoggerProvider provider, ITestOutputHelperAccessor accessor)
         {
+            _provider = provider;
             _accessor = accessor;
         }
 
@@ -26,6 +29,9 @@ namespace Codebelt.Extensions.Xunit.Hosting
             if (exception != null) { builder.AppendLine().Append(exception).AppendLine(); }
 
             var message = builder.ToString();
+
+            _provider.WriteLoggerEntry(logLevel, eventId, message);
+
             if (_accessor != null)
             {
                 if (_accessor.TestOutput == null) { throw new InvalidOperationException($"{nameof(ITestOutputHelperAccessor)}.{nameof(ITestOutputHelperAccessor.TestOutput)} is null."); }
@@ -35,8 +41,9 @@ namespace Codebelt.Extensions.Xunit.Hosting
             {
                 _output.WriteLine(message);
             }
-            Add(new XunitTestLoggerEntry(logLevel, eventId, message));
         }
+
+        public XunitTestLoggerProvider Provider => _provider;
 
         public bool IsEnabled(LogLevel logLevel)
         {
