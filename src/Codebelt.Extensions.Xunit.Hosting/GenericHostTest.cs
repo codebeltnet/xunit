@@ -25,7 +25,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
             InitializeHostFixture(hostFixture);
         }
 
-        private void InitializeHostFixture(IHostFixture hostFixture)
+        private new void InitializeHostFixture(IHostFixture hostFixture)
         {
             if (!hostFixture.HasValidState())
             {

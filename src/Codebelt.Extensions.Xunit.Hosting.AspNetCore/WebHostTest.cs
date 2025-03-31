@@ -30,7 +30,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
             InitializeHostFixture(hostFixture);
         }
 
-        private void InitializeHostFixture(IAspNetCoreHostFixture hostFixture)
+        private new void InitializeHostFixture(IAspNetCoreHostFixture hostFixture)
         {
             if (!hostFixture.HasValidState())
             {

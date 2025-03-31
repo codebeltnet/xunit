@@ -27,6 +27,15 @@ namespace Codebelt.Extensions.Xunit.Hosting
             if (hostFixture == null) { throw new ArgumentNullException(nameof(hostFixture)); }
         }
 
+        /// <summary> 
+        /// Initializes the specified host fixture. 
+        /// </summary> 
+        /// <param name="hostFixture">The host fixture to initialize.</param>
+        [Obsolete("This method is obsolete and will be removed in a future version. It remains only to support binary compatibility.")]
+        protected virtual void InitializeHostFixture(T hostFixture)
+        {
+        }
+
         /// <summary>
         /// Gets the <see cref="IHost"/> initialized by the <see cref="IHostFixture"/>.
         /// </summary>
