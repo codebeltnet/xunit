@@ -1,4 +1,17 @@
-﻿Version 9.0.1
+﻿Version 9.1.0
+Availability: .NET 9 and .NET 8
+ 
+# ALM
+- CHANGED Dependencies to latest and greatest with respect to TFMs
+ 
+# New Features
+- ADDED AspNetCoreHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IAspNetCoreHostFixture interface: HasValidState
+- ADDED BlockingAspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a blocking implementation of the AspNetCoreHostFixture implementation
+ 
+# Improvements
+- CHANGED WebHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to accept an optional argument taking a custom implementation of IAspNetCoreHostFixture (promote DIP)
+ 
+Version 9.0.1
 Availability: .NET 9 and .NET 8
  
 # ALM
