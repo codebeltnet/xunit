@@ -59,21 +59,30 @@ namespace Codebelt.Extensions.Xunit.Hosting
                 });
 
 #if NET9_0_OR_GREATER
-            hb.UseDefaultServiceProvider(o =>
-            {
-                o.ValidateOnBuild = true;
-                o.ValidateScopes = true;
-            });
+                hb.UseDefaultServiceProvider(o =>
+                {
+                    o.ValidateOnBuild = true;
+                    o.ValidateScopes = true;
+                });
 #endif
 
             ConfigureHostCallback(hb);
 
-            var host = hb.Build();
-            Task.Run(() => host.StartAsync().ConfigureAwait(false))
+            Host = hb.Build();
+
+            StartConfiguredHost();
+        }
+
+        /// <summary>
+        /// Starts the by <see cref="ConfigureHost"/> initialized <see cref="IHost"/>.
+        /// </summary>
+        /// <remarks><see cref="ConfigureHost"/> is responsible for configuring and setting the <see cref="Host"/> property.</remarks>
+        protected virtual void StartConfiguredHost()
+        {
+            Task.Run(() => Host.StartAsync().ConfigureAwait(false)) // this was done to reduce the risk of deadlocks (https://www.strathweb.com/2021/05/the-curious-case-of-asp-net-core-integration-test-deadlock/)
                 .ConfigureAwait(false)
                 .GetAwaiter()
                 .GetResult();
-            Host = host;
         }
 
         /// <summary>
@@ -179,11 +188,11 @@ namespace Codebelt.Extensions.Xunit.Hosting
             }
         }
 #else
-        protected virtual ValueTask OnDisposeManagedResourcesAsync()
-        {
-            OnDisposeManagedResources();
-            return default;
-        }
+            protected virtual ValueTask OnDisposeManagedResourcesAsync()
+            {
+                OnDisposeManagedResources();
+                return default;
+            }
 #endif
 
         /// <summary>

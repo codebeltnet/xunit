@@ -5,15 +5,6 @@ using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    public partial interface IHostFixture
-    {
-        /// <summary>
-        /// Gets or sets the delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.
-        /// </summary>
-        /// <value>The delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.</value>
-        Action<IConfiguration, IHostEnvironment> ConfigureCallback { get; set; }
-    }
-
     /// <summary>
     /// Provides a way to use Microsoft Dependency Injection in unit tests.
     /// </summary>
@@ -23,7 +14,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// <seealso cref="IHostingEnvironmentTest" />
     /// <seealso cref="IDisposable" />
     /// <seealso cref="IAsyncDisposable" />
-    public partial interface IHostFixture : IServiceTest, IHostTest, IConfigurationTest, IHostingEnvironmentTest, IDisposable, IAsyncDisposable
+    public interface IHostFixture : IServiceTest, IHostTest, IConfigurationTest, IHostingEnvironmentTest, IDisposable, IAsyncDisposable
     {
         /// <summary>
         /// Gets or sets the delegate that adds services to the container.
@@ -43,5 +34,11 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <param name="hostTest">The object that inherits from <see cref="HostTest{T}"/>.</param>
         /// <remarks><paramref name="hostTest"/> was added to support those cases where the caller is required in the host configuration.</remarks>
         void ConfigureHost(Test hostTest);
+
+        /// <summary>
+        /// Gets or sets the delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.
+        /// </summary>
+        /// <value>The delegate that adds configuration and environment information to a <see cref="HostTest{T}"/>.</value>
+        Action<IConfiguration, IHostEnvironment> ConfigureCallback { get; set; }
     }
 }

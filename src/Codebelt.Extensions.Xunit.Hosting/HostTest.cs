@@ -25,25 +25,15 @@ namespace Codebelt.Extensions.Xunit.Hosting
         protected HostTest(T hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(output, callerType)
         {
             if (hostFixture == null) { throw new ArgumentNullException(nameof(hostFixture)); }
-            InitializeHostFixture(hostFixture);
         }
 
-        /// <summary>
-        /// Initializes the specified host fixture.
-        /// </summary>
+        /// <summary> 
+        /// Initializes the specified host fixture. 
+        /// </summary> 
         /// <param name="hostFixture">The host fixture to initialize.</param>
+        [Obsolete("This method is obsolete and will be removed in a future version. It remains only to support binary compatibility.")]
         protected virtual void InitializeHostFixture(T hostFixture)
         {
-            if (!hostFixture.HasValidState())
-            {
-                hostFixture.ConfigureCallback = Configure;
-                hostFixture.ConfigureHostCallback = ConfigureHost;
-                hostFixture.ConfigureServicesCallback = ConfigureServices;
-                hostFixture.ConfigureHost(this);
-            }
-            Host = hostFixture.Host;
-            ServiceProvider = hostFixture.ServiceProvider;
-            Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
         }
 
         /// <summary>
@@ -83,7 +73,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// </summary>
         /// <param name="configuration">The <see cref="IConfiguration"/> initialized by the <see cref="IHost"/>.</param>
         /// <param name="environment">The <see cref="IHostEnvironment"/> initialized by the <see cref="IHost"/>.</param>
-        public virtual void Configure(IConfiguration configuration, IHostEnvironment environment)
+        public void Configure(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
             HostingEnvironment = environment;

@@ -4,33 +4,29 @@ using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    internal sealed class GenericHostTest : HostTest<HostFixture>, IGenericHostTest
+    internal sealed class GenericHostTest : HostTest<IHostFixture>, IGenericHostTest
     {
         private readonly Action<IServiceCollection> _serviceConfigurator;
         private readonly Action<HostBuilderContext, IServiceCollection> _serviceConfiguratorWithContext;
         private readonly Action<IHostBuilder> _hostConfigurator;
         private HostBuilderContext _hostBuilderContext;
 
-        internal GenericHostTest(Action<IServiceCollection> serviceConfigurator, Action<IHostBuilder> hostConfigurator, HostFixture hostFixture) : base(hostFixture, callerType: serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        internal GenericHostTest(Action<IServiceCollection> serviceConfigurator, Action<IHostBuilder> hostConfigurator, IHostFixture hostFixture) : base(hostFixture, callerType: serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
         {
             _serviceConfigurator = serviceConfigurator;
             _hostConfigurator = hostConfigurator;
-            if (!hostFixture.HasValidState())
-            {
-                hostFixture.ConfigureHostCallback = ConfigureHost;
-                hostFixture.ConfigureCallback = Configure;
-                hostFixture.ConfigureServicesCallback = ConfigureServices;
-                hostFixture.ConfigureHost(this);
-            }
-            Host = hostFixture.Host;
-            ServiceProvider = hostFixture.Host.Services;
-            Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
+            InitializeHostFixture(hostFixture);
         }
 
-        internal GenericHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<IHostBuilder> hostConfigurator, HostFixture hostFixture) : base(hostFixture, callerType: serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        internal GenericHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<IHostBuilder> hostConfigurator, IHostFixture hostFixture) : base(hostFixture, callerType: serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
         {
             _serviceConfiguratorWithContext = serviceConfigurator;
             _hostConfigurator = hostConfigurator;
+            InitializeHostFixture(hostFixture);
+        }
+
+        private new void InitializeHostFixture(IHostFixture hostFixture)
+        {
             if (!hostFixture.HasValidState())
             {
                 hostFixture.ConfigureHostCallback = ConfigureHost;
@@ -41,11 +37,6 @@ namespace Codebelt.Extensions.Xunit.Hosting
             Host = hostFixture.Host;
             ServiceProvider = hostFixture.Host.Services;
             Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
-        }
-
-        protected override void InitializeHostFixture(HostFixture hostFixture)
-        {
-            // intentionally left blank due to constructor initialization (need to refactor this "call from virtual method" challenge)
         }
 
         protected override void ConfigureHost(IHostBuilder hb)

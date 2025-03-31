@@ -90,12 +90,9 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 
             ConfigureHostCallback(hb);
 
-            var host = hb.Build();
-            Task.Run(() => host.StartAsync().ConfigureAwait(false))
-                .ConfigureAwait(false)
-                .GetAwaiter()
-                .GetResult();
-            Host = host;
+            Host = hb.Build();
+
+            StartConfiguredHost();
         }
 
         /// <summary>

@@ -7,6 +7,25 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]  
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [9.1.0] - 2025-03-31
+
+This is a service update that primarily focuses on package dependencies including DIP improvements and a new blocking implementation of the AspNetCoreHostFixture.
+
+> [!WARNING]
+> Although this release is backward compatible, do expect some design-time incompatibility due to changes in `GenericHostTestFactory` and `WebHostTestFactory`.
+
+### Added
+
+- HostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IHostFixture interface: HasValidState
+- AspNetCoreHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IAspNetCoreHostFixture interface: HasValidState
+- BlockingAspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a blocking implementation of the AspNetCoreHostFixture implementation
+
+### Changed
+
+- HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to have an additional virtual method: StartConfiguredHost, which is called from the ConfigureHost method, to allow for custom implementations of the host startup process
+- GenericHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace to accept an optional argument taking a custom implementation of IHostFixture (promote DIP)
+- WebHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to accept an optional argument taking a custom implementation of IAspNetCoreHostFixture (promote DIP)
+
 ## [9.0.1] - 2025-01-25
 
 This is a service update that primarily focuses on package dependencies and minor improvements.
