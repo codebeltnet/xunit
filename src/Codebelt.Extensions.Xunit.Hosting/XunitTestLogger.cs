@@ -5,7 +5,7 @@ using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    internal sealed class XunitTestLogger : ILogger, IDisposable
+    internal sealed class XunitTestLogger : InMemoryTestStore<XunitTestLoggerEntry>, ILogger, IDisposable
     {
         private readonly ITestOutputHelperAccessor _accessor;
         private readonly ITestOutputHelper _output;
@@ -31,6 +31,8 @@ namespace Codebelt.Extensions.Xunit.Hosting
             var message = builder.ToString();
 
             _provider.WriteLoggerEntry(logLevel, eventId, message);
+
+            Add(new XunitTestLoggerEntry(logLevel, eventId, message));
 
             if (_accessor != null)
             {

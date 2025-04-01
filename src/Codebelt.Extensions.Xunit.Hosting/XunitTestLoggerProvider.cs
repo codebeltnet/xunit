@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
@@ -6,7 +7,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
 {
     internal sealed class XunitTestLoggerProvider : InMemoryTestStore<XunitTestLoggerEntry>, ILoggerProvider
     {
-        private readonly ConcurrentDictionary<string, XunitTestLogger> _loggers = new();
+        private readonly ConcurrentDictionary<string, XunitTestLogger> _loggers = new(StringComparer.OrdinalIgnoreCase);
         private readonly ITestOutputHelperAccessor _accessor;
         private readonly ITestOutputHelper _output;
 
@@ -26,11 +27,13 @@ namespace Codebelt.Extensions.Xunit.Hosting
                 ? new XunitTestLogger(this, _accessor)
                 : new XunitTestLogger(this, _output));
         }
-
+        
         public void WriteLoggerEntry(LogLevel logLevel, EventId eventId, string message)
         {
             Add(new XunitTestLoggerEntry(logLevel, eventId, message));
         }
+
+        public ITestStore<XunitTestLoggerEntry> this[string categoryName] => _loggers[categoryName];
 
         public void Dispose()
         {
