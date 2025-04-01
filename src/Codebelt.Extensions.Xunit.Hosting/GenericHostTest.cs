@@ -11,14 +11,14 @@ namespace Codebelt.Extensions.Xunit.Hosting
         private readonly Action<IHostBuilder> _hostConfigurator;
         private HostBuilderContext _hostBuilderContext;
 
-        internal GenericHostTest(Action<IServiceCollection> serviceConfigurator, Action<IHostBuilder> hostConfigurator, IHostFixture hostFixture) : base(hostFixture, callerType: serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        internal GenericHostTest(Action<IServiceCollection> serviceConfigurator, Action<IHostBuilder> hostConfigurator, IHostFixture hostFixture) : base(true, hostFixture, callerType: serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
         {
             _serviceConfigurator = serviceConfigurator;
             _hostConfigurator = hostConfigurator;
             InitializeHostFixture(hostFixture);
         }
 
-        internal GenericHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<IHostBuilder> hostConfigurator, IHostFixture hostFixture) : base(hostFixture, callerType: serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        internal GenericHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<IHostBuilder> hostConfigurator, IHostFixture hostFixture) : base(true, hostFixture, callerType: serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
         {
             _serviceConfiguratorWithContext = serviceConfigurator;
             _hostConfigurator = hostConfigurator;

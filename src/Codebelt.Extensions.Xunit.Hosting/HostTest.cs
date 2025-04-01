@@ -22,9 +22,37 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <param name="hostFixture">An implementation of the <see cref="IHostFixture"/> interface.</param>
         /// <param name="output">An implementation of the <see cref="ITestOutputHelper"/> interface.</param>
         /// <param name="callerType">The <see cref="Type"/> of caller that ends up invoking this instance.</param>
-        protected HostTest(T hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(output, callerType)
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="hostFixture"/> is null.
+        /// </exception>
+        protected HostTest(T hostFixture, ITestOutputHelper output = null, Type callerType = null) : this(false, hostFixture, output, callerType)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HostTest{T}"/> class.
+        /// </summary>
+        /// <param name="skipHostFixtureInitialization">A value indicating whether to skip the host fixture initialization.</param>
+        /// <param name="hostFixture">An implementation of the <see cref="IHostFixture"/> interface.</param>
+        /// <param name="output">An implementation of the <see cref="ITestOutputHelper"/> interface.</param>
+        /// <param name="callerType">The <see cref="Type"/> of caller that ends up invoking this instance.</param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="hostFixture"/> is null.
+        /// </exception>
+        protected HostTest(bool skipHostFixtureInitialization, T hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(output, callerType)
         {
             if (hostFixture == null) { throw new ArgumentNullException(nameof(hostFixture)); }
+            if (skipHostFixtureInitialization) { return; }
+            if (!hostFixture.HasValidState())
+            {
+                hostFixture.ConfigureHostCallback = ConfigureHost;
+                hostFixture.ConfigureCallback = Configure;
+                hostFixture.ConfigureServicesCallback = ConfigureServices;
+                hostFixture.ConfigureHost(this);
+            }
+            Host = hostFixture.Host;
+            ServiceProvider = hostFixture.Host.Services;
+            Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
         }
 
         /// <summary> 

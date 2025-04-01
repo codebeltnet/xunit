@@ -14,7 +14,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         private readonly Action<IHostBuilder> _hostConfigurator;
         private HostBuilderContext _hostBuilderContext;
 
-        internal WebHostTest(Action<IServiceCollection> serviceConfigurator, Action<IApplicationBuilder> pipelineConfigurator, Action<IHostBuilder> hostConfigurator, IAspNetCoreHostFixture hostFixture) : base(hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        internal WebHostTest(Action<IServiceCollection> serviceConfigurator, Action<IApplicationBuilder> pipelineConfigurator, Action<IHostBuilder> hostConfigurator, IAspNetCoreHostFixture hostFixture) : base(true, hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
         {
             _serviceConfigurator = serviceConfigurator;
             _pipelineConfigurator = pipelineConfigurator;
@@ -22,7 +22,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
             InitializeHostFixture(hostFixture);
         }
 
-        internal WebHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<HostBuilderContext, IApplicationBuilder> pipelineConfigurator, Action<IHostBuilder> hostConfigurator, IAspNetCoreHostFixture hostFixture) : base(hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        internal WebHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<HostBuilderContext, IApplicationBuilder> pipelineConfigurator, Action<IHostBuilder> hostConfigurator, IAspNetCoreHostFixture hostFixture) : base(true, hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
         {
             _serviceConfiguratorWithContext = serviceConfigurator;
             _pipelineConfiguratorWithContext = pipelineConfigurator;

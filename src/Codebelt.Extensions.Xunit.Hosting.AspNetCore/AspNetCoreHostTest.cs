@@ -19,8 +19,32 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <param name="hostFixture">An implementation of the <see cref="IAspNetCoreHostFixture"/> interface.</param>
         /// <param name="output">An implementation of the <see cref="ITestOutputHelper"/> interface.</param>
         /// <param name="callerType">The <see cref="Type"/> of caller that ends up invoking this instance.</param>
-        protected AspNetCoreHostTest(T hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(hostFixture, output, callerType)
+        protected AspNetCoreHostTest(T hostFixture, ITestOutputHelper output = null, Type callerType = null) : this(false, hostFixture, output, callerType)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AspNetCoreHostTest{T}"/> class.
+        /// </summary>
+        /// <param name="skipHostFixtureInitialization">A value indicating whether to skip the host fixture initialization.</param>
+        /// <param name="hostFixture">An implementation of the <see cref="IAspNetCoreHostFixture"/> interface.</param>
+        /// <param name="output">An implementation of the <see cref="ITestOutputHelper"/> interface.</param>
+        /// <param name="callerType">The <see cref="Type"/> of caller that ends up invoking this instance.</param>
+        protected AspNetCoreHostTest(bool skipHostFixtureInitialization, T hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(skipHostFixtureInitialization, hostFixture, output, callerType)
+        {
+            if (skipHostFixtureInitialization) { return; }
+            if (!hostFixture.HasValidState())
+            {
+                hostFixture.ConfigureHostCallback = ConfigureHost;
+                hostFixture.ConfigureCallback = Configure;
+                hostFixture.ConfigureServicesCallback = ConfigureServices;
+                hostFixture.ConfigureApplicationCallback = ConfigureApplication;
+                hostFixture.ConfigureHost(this);
+            }
+            Host = hostFixture.Host;
+            ServiceProvider = hostFixture.Host.Services;
+            Application = hostFixture.Application;
+            Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
         }
 
         /// <summary>
