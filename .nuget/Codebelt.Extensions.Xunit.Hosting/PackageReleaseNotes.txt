@@ -1,4 +1,20 @@
-﻿Version 9.1.0
+﻿Version 9.1.1
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
+ 
+# ALM
+- CHANGED Dependencies to latest and greatest with respect to TFMs
+ 
+# Bug Fixes
+- FIXED HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace to have same behavior as prior to 9.1.0 release (hereby being backward compatible as originally intended)
+- FIXED LoggerExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to have same behavior as prior to 9.1.0 release (hereby being backward compatible as originally intended)
+ 
+# Improvements
+- CHANGED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace so that IHostEnvironment.ApplicationName is aligned with the equivalent logic found in AspNetCoreHostFixture class (e.g., the assembly name of the calling Test type is used as the default value for the ApplicationName property)
+ 
+# New Features
+-  EXTENDED LoggerExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace with one new extension method for the ILogger interface: An overload of GetTestStore that takes an optional string argument (categoryName)
+ 
+Version 9.1.0
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
  
 # ALM
