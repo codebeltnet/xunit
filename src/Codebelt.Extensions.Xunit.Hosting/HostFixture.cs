@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -56,14 +57,21 @@ namespace Codebelt.Extensions.Xunit.Hosting
                     Configuration = context.Configuration;
                     HostingEnvironment = context.HostingEnvironment;
                     ConfigureServicesCallback(services);
+                })
+                .ConfigureHostConfiguration(builder =>
+                {
+                    builder.AddInMemoryCollection(new Dictionary<string, string>
+                    {
+                        { HostDefaults.ApplicationKey, hostTest.CallerType.Assembly.GetName().Name }
+                    });
                 });
 
 #if NET9_0_OR_GREATER
-                hb.UseDefaultServiceProvider(o =>
-                {
-                    o.ValidateOnBuild = true;
-                    o.ValidateScopes = true;
-                });
+            hb.UseDefaultServiceProvider(o =>
+            {
+                o.ValidateOnBuild = true;
+                o.ValidateScopes = true;
+            });
 #endif
 
             ConfigureHostCallback(hb);
