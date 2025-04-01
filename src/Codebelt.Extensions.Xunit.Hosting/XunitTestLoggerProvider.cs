@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Concurrent;
-using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting
@@ -33,7 +34,17 @@ namespace Codebelt.Extensions.Xunit.Hosting
             Add(new XunitTestLoggerEntry(logLevel, eventId, message));
         }
 
-        public ITestStore<XunitTestLoggerEntry> this[string categoryName] => _loggers[categoryName];
+        public ITestStore<XunitTestLoggerEntry> this[string categoryName]
+        {
+            get
+            {
+                if (_loggers.TryGetValue(categoryName, out var logger))
+                {
+                    return logger;
+                }
+                throw new KeyNotFoundException($"Logger for category '{categoryName}' not found.");
+            }
+        }
 
         public void Dispose()
         {

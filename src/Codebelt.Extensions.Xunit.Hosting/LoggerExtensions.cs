@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,9 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// </exception>
         /// <exception cref="ArgumentException">
         /// <paramref name="logger"/> does not contain a test store.
+        /// </exception>
+        /// <exception cref="KeyNotFoundException">
+        /// <paramref name="logger"/> does not contain a test store for the specified <paramref name="categoryName"/>.
         /// </exception>
         public static ITestStore<XunitTestLoggerEntry> GetTestStore(this ILogger logger, string categoryName = null)
         {
