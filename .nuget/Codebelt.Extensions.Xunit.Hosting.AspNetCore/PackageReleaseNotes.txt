@@ -1,4 +1,13 @@
-﻿Version 9.1.0
+﻿Version 9.1.1
+Availability: .NET 9 and .NET 8
+ 
+# ALM
+- CHANGED Dependencies to latest and greatest with respect to TFMs
+ 
+# Bug Fixes
+- FIXED AspNetCoreHostTest class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to have same behavior as prior to 9.1.0 release (hereby being backward compatible as originally intended)
+ 
+Version 9.1.0
 Availability: .NET 9 and .NET 8
  
 # ALM

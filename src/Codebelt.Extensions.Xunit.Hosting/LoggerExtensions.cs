@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// Returns the associated <see cref="ITestStore{T}"/> that is provided when settings up services from <see cref="ServiceCollectionExtensions.AddXunitTestLogging"/>.
         /// </summary>
         /// <param name="logger">The <see cref="ILogger{TCategoryName}"/> from which to retrieve the <see cref="ITestStore{T}"/>.</param>
+        /// <param name="categoryName">The category name for messages produced by the <paramref name="logger"/> -or- <c>null</c> for messages produced by all loggers.</param>
         /// <returns>Returns an implementation of <see cref="ITestStore{T}"/> with all logged entries expressed as <see cref="XunitTestLoggerEntry"/>.</returns>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="logger"/> cannot be null.
@@ -22,7 +24,10 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <exception cref="ArgumentException">
         /// <paramref name="logger"/> does not contain a test store.
         /// </exception>
-        public static ITestStore<XunitTestLoggerEntry> GetTestStore(this ILogger logger)
+        /// <exception cref="KeyNotFoundException">
+        /// <paramref name="logger"/> does not contain a test store for the specified <paramref name="categoryName"/>.
+        /// </exception>
+        public static ITestStore<XunitTestLoggerEntry> GetTestStore(this ILogger logger, string categoryName = null)
         {
             if (logger == null) { throw new ArgumentNullException(nameof(logger)); }
             var loggerType = logger.GetType();
@@ -41,7 +46,9 @@ namespace Codebelt.Extensions.Xunit.Hosting
                         {
                             var xunitTestLogger = loggerInformationType.GetProperty("Logger")?.GetValue(loggerInformation) as XunitTestLogger;
                             if (xunitTestLogger == null) { continue; }
-                            return xunitTestLogger.Provider;
+                            return categoryName == null 
+                                ? xunitTestLogger.Provider
+                                : xunitTestLogger.Provider[categoryName];
                         }
                     }
                 }
@@ -60,10 +67,9 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <exception cref="ArgumentException">
         /// <paramref name="logger"/> does not contain a test store.
         /// </exception>
-        [Obsolete($"This method will be removed in a future version. Please use non-generic equivalent {nameof(GetTestStore)}.")]
         public static ITestStore<XunitTestLoggerEntry> GetTestStore<T>(this ILogger<T> logger)
         {
-            return GetTestStore((ILogger)logger);
+            return GetTestStore(logger, typeof(T).FullName);
         }
     }
 }

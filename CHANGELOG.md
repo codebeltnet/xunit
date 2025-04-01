@@ -7,6 +7,22 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]  
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [9.1.1] - 2025-04-01
+
+### Added
+
+- LoggerExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace received one new extension method for the ILogger interface: An overload of GetTestStore that takes an optional string argument (categoryName)
+
+### Changed
+
+- HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace so that IHostEnvironment.ApplicationName is aligned with the equivalent logic found in AspNetCoreHostFixture class (e.g., the assembly name of the calling Test type is used as the default value for the ApplicationName property)
+
+### Fixed
+
+- HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace to have same behavior as prior to `9.1.0` release (hereby being backward compatible as originally intended)
+- LoggerExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to have same behavior as prior to `9.1.0` release (hereby being backward compatible as originally intended)
+- AspNetCoreHostTest class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to have same behavior as prior to 9.1.0 release (hereby being backward compatible as originally intended)
+
 ## [9.1.0] - 2025-03-31
 
 This is a service update that primarily focuses on package dependencies including DIP improvements and a new blocking implementation of the AspNetCoreHostFixture.

@@ -21,19 +21,6 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 
         public AspNetCoreHostTestTest(AspNetCoreHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
         {
-            if (!hostFixture.HasValidState())
-            {
-                hostFixture.ConfigureHostCallback = ConfigureHost;
-                hostFixture.ConfigureCallback = Configure;
-                hostFixture.ConfigureServicesCallback = ConfigureServices;
-                hostFixture.ConfigureApplicationCallback = ConfigureApplication;
-                hostFixture.ConfigureHost(this);
-            }
-            Host = hostFixture.Host;
-            ServiceProvider = hostFixture.Host.Services;
-            Application = hostFixture.Application;
-            Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
-
             _pipeline = hostFixture.Application;
             _provider = hostFixture.ServiceProvider;
             _provider.GetRequiredService<ITestOutputHelperAccessor>().TestOutput = output;
