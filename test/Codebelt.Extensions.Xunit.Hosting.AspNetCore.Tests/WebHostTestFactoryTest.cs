@@ -73,7 +73,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                            });
                        }))
             {
-                var loggerStore = startup.ServiceProvider.GetRequiredService<ILogger<WebHostTestFactoryTest>>().GetTestStore();
+                var loggerStore = startup.ServiceProvider.GetRequiredService<ILogger<WebHostTestFactoryTest>>().GetTestStore(null);
                 var message = loggerStore.Query(entry => entry.Severity == LogLevel.Critical && entry.Message.Contains("SecurityException", StringComparison.OrdinalIgnoreCase)).SingleOrDefault()?.Message;
                 Assert.NotNull(message);
                 Assert.Contains("System.Security.SecurityException: Security error.", message);

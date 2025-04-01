@@ -20,20 +20,8 @@ namespace Codebelt.Extensions.Xunit.Hosting
 
         public HostTestTest(HostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
         {
-            if (!hostFixture.HasValidState())
-            {
-                hostFixture.ConfigureHostCallback = ConfigureHost;
-                hostFixture.ConfigureCallback = Configure;
-                hostFixture.ConfigureServicesCallback = ConfigureServices;
-                hostFixture.ConfigureHost(this);
-            }
-            Host = hostFixture.Host;
-            ServiceProvider = hostFixture.Host.Services;
-            Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
-
             _scope = hostFixture.ServiceProvider.CreateScope();
             _correlationsFactory = () => _scope.ServiceProvider.GetServices<ICorrelationToken>().ToList();
-
         }
 
         [Fact, Priority(1)]
