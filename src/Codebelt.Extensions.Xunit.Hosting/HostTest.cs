@@ -101,7 +101,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// </summary>
         /// <param name="configuration">The <see cref="IConfiguration"/> initialized by the <see cref="IHost"/>.</param>
         /// <param name="environment">The <see cref="IHostEnvironment"/> initialized by the <see cref="IHost"/>.</param>
-        public void Configure(IConfiguration configuration, IHostEnvironment environment)
+        public virtual void Configure(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
             HostingEnvironment = environment;
