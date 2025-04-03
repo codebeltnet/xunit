@@ -7,6 +7,17 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]  
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [9.1.3] - 2025-04-03
+
+### Fixed
+
+- IGenericHostTest interface in the Codebelt.Extensions.Xunit.Hosting namespace to include the IHostTest interface
+
+### Changed
+
+- HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace to include the IGenericHostTest interface
+- AspNetCoreHostTest class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to include the IWebHostTest interface
+
 ## [9.1.2] - 2025-04-03
 
 ### Fixed
