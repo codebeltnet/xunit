@@ -1,4 +1,13 @@
-﻿Version 9.1.2
+﻿Version 9.1.3
+Availability: .NET 9 and .NET 8
+ 
+# ALM
+- CHANGED Dependencies to latest and greatest with respect to TFMs
+ 
+# Improvements
+- CHANGED AspNetCoreHostTest class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to include the IWebHostTest interface
+ 
+Version 9.1.2
 Availability: .NET 9 and .NET 8
  
 # ALM
