@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
-    internal sealed class WebHostTest : AspNetCoreHostTest<IAspNetCoreHostFixture>, IWebHostTest
+    internal sealed class WebHostTest : AspNetCoreHostTest<IAspNetCoreHostFixture>
     {
         private readonly Action<IApplicationBuilder> _pipelineConfigurator;
         private readonly Action<IServiceCollection> _serviceConfigurator;

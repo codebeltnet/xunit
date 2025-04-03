@@ -5,8 +5,7 @@
     /// </summary>
     /// <seealso cref="IGenericHostTest"/>
     /// <seealso cref="IPipelineTest" />
-    /// <seealso cref="IHostTest" />
-    public interface IWebHostTest : IGenericHostTest, IPipelineTest, IHostTest
+    public interface IWebHostTest : IGenericHostTest, IPipelineTest
     {
     }
 }

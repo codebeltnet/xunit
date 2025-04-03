@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    internal sealed class GenericHostTest : HostTest<IHostFixture>, IGenericHostTest
+    internal sealed class GenericHostTest : HostTest<IHostFixture>
     {
         private readonly Action<IServiceCollection> _serviceConfigurator;
         private readonly Action<HostBuilderContext, IServiceCollection> _serviceConfiguratorWithContext;

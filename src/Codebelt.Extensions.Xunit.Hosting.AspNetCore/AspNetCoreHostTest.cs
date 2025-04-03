@@ -11,7 +11,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
     /// <typeparam name="T">The type of the object that implements the <see cref="IAspNetCoreHostFixture"/> interface.</typeparam>
     /// <seealso cref="Test" />
     /// <seealso cref="HostTest{T}" />
-    public abstract class AspNetCoreHostTest<T> : HostTest<T> where T : class, IAspNetCoreHostFixture
+    public abstract class AspNetCoreHostTest<T> : HostTest<T>, IWebHostTest where T : class, IAspNetCoreHostFixture
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AspNetCoreHostTest{T}"/> class.
