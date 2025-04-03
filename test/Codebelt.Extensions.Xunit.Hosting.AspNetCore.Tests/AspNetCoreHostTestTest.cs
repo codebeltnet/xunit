@@ -125,6 +125,22 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
             Assert.Equal("Information: Hello from ShouldLogToXunitTestLogging", entry.Message);
         }
 
+        [Fact]
+        public void Test_VerifyAbstractions()
+        {
+            using var hostTest = WebHostTestFactory.Create(hostFixture: null);
+            Assert.IsAssignableFrom<IWebHostTest>(hostTest);
+            Assert.IsAssignableFrom<IPipelineTest>(hostTest);
+            Assert.IsAssignableFrom<IGenericHostTest>(hostTest);
+            Assert.IsAssignableFrom<IServiceTest>(hostTest);
+            Assert.IsAssignableFrom<IConfigurationTest>(hostTest);
+            Assert.IsAssignableFrom<IHostingEnvironmentTest>(hostTest);
+            Assert.IsAssignableFrom<ITest>(hostTest);
+            Assert.IsAssignableFrom<IHostTest>(hostTest);
+            Assert.IsAssignableFrom<IDisposable>(hostTest);
+            Assert.IsAssignableFrom<IAsyncDisposable>(hostTest);
+        }
+
         public override void ConfigureApplication(IApplicationBuilder app)
         {
             app.ApplicationServices.GetRequiredService<ILogger<AspNetCoreHostTestTest>>().LogInformation(nameof(ConfigureApplication));
