@@ -7,6 +7,13 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]  
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [9.1.2] - 2025-04-03
+
+### Fixed
+
+- HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace to have same behavior as prior to `9.1.0` release (hereby being backward compatible as originally intended)
+  - Reintroduced `Configure` method to be virtual (brain fart; should have been captured with `9.1.1` release)
+
 ## [9.1.1] - 2025-04-01
 
 ### Added
