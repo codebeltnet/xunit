@@ -1,4 +1,16 @@
-﻿Version 9.1.2
+﻿Version 9.1.3
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
+ 
+# ALM
+- CHANGED Dependencies to latest and greatest with respect to TFMs
+ 
+# Bug Fixes
+- FIXED IGenericHostTest interface in the Codebelt.Extensions.Xunit.Hosting namespace to include the IHostTest interface
+ 
+# Improvements
+- CHANGED HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace to include IGenericHostTest interface
+ 
+Version 9.1.2
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
  
 # ALM

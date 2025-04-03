@@ -21,14 +21,12 @@ More documentation available at our documentation site:
 
 ### CSharp Example
 
-Source: [AspNetCoreHostTestTest.cs](https://github.com/codebeltnet/xunit/tree/main/test/Codebelt.Extensions.Xunit.Hosting.AspNetCore.Tests/AspNetCoreHostTestTest.cs)
-
 ```csharp
-public class AspNetCoreHostTestTest : AspNetCoreHostTest<AspNetCoreHostFixture>
+public class HostTestTest : HostTest<HostFixture>
 {
     private readonly IServiceProvider _provider;
 
-    public AspNetCoreHostTestTest(AspNetCoreHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+    public HostTestTest(HostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
         _provider = hostFixture.ServiceProvider;
         _provider.GetRequiredService<ITestOutputHelperAccessor>().TestOutput = output;
@@ -43,3 +41,5 @@ public class AspNetCoreHostTestTest : AspNetCoreHostTest<AspNetCoreHostFixture>
     }
 }
 ```
+
+A similar but real life example can be found here: [AspNetCoreHostTestTest.cs](https://github.com/codebeltnet/xunit/tree/main/test/Codebelt.Extensions.Xunit.Hosting.AspNetCore.Tests/AspNetCoreHostTestTest.cs)

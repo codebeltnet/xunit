@@ -9,7 +9,8 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// <seealso cref="IConfigurationTest" />
     /// <seealso cref="IHostingEnvironmentTest" />
     /// <seealso cref="ITest" />
-    public interface IGenericHostTest : IServiceTest, IConfigurationTest, IHostingEnvironmentTest, ITest
+    /// <seealso cref="IHostTest"/>
+    public interface IGenericHostTest : IServiceTest, IConfigurationTest, IHostingEnvironmentTest, ITest, IHostTest
     {
     }
 }

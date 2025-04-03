@@ -63,6 +63,20 @@ namespace Codebelt.Extensions.Xunit.Hosting
             Assert.Equal("Development", HostingEnvironment.EnvironmentName);
         }
 
+        [Fact]
+        public void Test_VerifyAbstractions()
+        {
+            using var hostTest = GenericHostTestFactory.Create(hostFixture: null);
+            Assert.IsAssignableFrom<IGenericHostTest>(hostTest);
+            Assert.IsAssignableFrom<IServiceTest>(hostTest);
+            Assert.IsAssignableFrom<IConfigurationTest>(hostTest);
+            Assert.IsAssignableFrom<IHostingEnvironmentTest>(hostTest);
+            Assert.IsAssignableFrom<ITest>(hostTest);
+            Assert.IsAssignableFrom<IHostTest>(hostTest);
+            Assert.IsAssignableFrom<IDisposable>(hostTest);
+            Assert.IsAssignableFrom<IAsyncDisposable>(hostTest);
+        }
+
         protected override void OnDisposeManagedResources()
         {
             _scope?.Dispose();

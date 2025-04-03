@@ -14,7 +14,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// <seealso cref="Test" />
     /// <seealso cref="IClassFixture{TFixture}" />
     /// <remarks>The class needed to be designed in this rather complex way, as this is the only way that xUnit supports a shared context. The need for shared context is theoretical at best, but it does opt-in for Scoped instances.</remarks>
-    public abstract class HostTest<T> : Test, IClassFixture<T> where T : class, IHostFixture
+    public abstract class HostTest<T> : Test, IGenericHostTest, IClassFixture<T> where T : class, IHostFixture
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HostTest{T}"/> class.
