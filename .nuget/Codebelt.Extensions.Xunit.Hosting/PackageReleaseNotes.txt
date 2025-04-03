@@ -1,4 +1,13 @@
-﻿Version 9.1.1
+﻿Version 9.1.2
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
+ 
+# ALM
+- CHANGED Dependencies to latest and greatest with respect to TFMs
+ 
+# Bug Fixes
+- FIXED HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace to have same behavior as prior to 9.1.0 release (hereby being backward compatible as originally intended)
+ 
+Version 9.1.1
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
  
 # ALM
