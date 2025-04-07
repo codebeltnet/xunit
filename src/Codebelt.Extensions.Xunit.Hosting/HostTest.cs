@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 namespace Codebelt.Extensions.Xunit.Hosting
 {
     /// <summary>
-    /// Represents the non-generic base class from its generic equivalent should derive.
+    /// Represents the non-generic base class from where its generic equivalent should derive.
     /// </summary>
     /// <seealso cref="Test" />
     /// <seealso cref="IConfigurationTest" />

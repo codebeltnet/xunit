@@ -16,7 +16,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <summary>
         /// Gets the <see cref="IHost"/> initialized by either the <see cref="IGenericHostFixture"/> or <see cref="IMinimalHostFixture"/>.
         /// </summary>
-        /// <value>The <see cref="IHost"/> initialized by the <see cref="IGenericHostFixture"/>.</value>
+        /// <value>The <see cref="IHost"/> initialized by the <see cref="IGenericHostFixture"/> or <see cref="IMinimalHostFixture"/>.</value>
         IHost Host { get; }
 
         /// <summary>
