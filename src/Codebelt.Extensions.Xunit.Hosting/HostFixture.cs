@@ -1,96 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Xunit;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
     /// <summary>
-    /// Provides a default implementation of the <see cref="IHostFixture"/> interface.
+    /// Represents the base class from which all implementations of xUnit fixture concept should derive.
     /// </summary>
     /// <seealso cref="IHostFixture" />
-    public class HostFixture : IHostFixture, IAsyncLifetime
+    public abstract class HostFixture : IHostFixture, IAsyncLifetime
     {
         private readonly object _lock = new();
+        private Action<IHost> _hostRunnerCallback = host =>
+        {
+            Task.Run(() => host.StartAsync().ConfigureAwait(false)) // this was done to reduce the risk of deadlocks (https://www.strathweb.com/2021/05/the-curious-case-of-asp-net-core-integration-test-deadlock/)
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+        };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HostFixture"/> class.
         /// </summary>
-        public HostFixture()
+        protected HostFixture()
         {
-        }
-
-        /// <summary>
-        /// Creates and configures the <see cref="IHost" /> of this instance.
-        /// </summary>
-        /// <param name="hostTest">The object that inherits from <see cref="HostTest{T}"/>.</param>
-        /// <remarks><paramref name="hostTest"/> was added to support those cases where the caller is required in the host configuration.</remarks>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="hostTest"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="hostTest"/> is not assignable from <see cref="HostTest{T}"/>.
-        /// </exception>
-        public virtual void ConfigureHost(Test hostTest)
-        {
-            if (hostTest == null) { throw new ArgumentNullException(nameof(hostTest)); }
-            if (!HasTypes(hostTest.GetType(), typeof(HostTest<>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(HostTest<>), $"{nameof(hostTest)} is not assignable from HostTest<T>."); }
-
-            var hb = new HostBuilder()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseEnvironment("Development")
-                .ConfigureAppConfiguration((context, config) =>
-                {
-                    config
-                        .AddJsonFile("appsettings.json", true, true)
-                        .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", true, true)
-                        .AddEnvironmentVariables();
-
-                    ConfigureCallback(config.Build(), context.HostingEnvironment);
-                })
-                .ConfigureServices((context, services) =>
-                {
-                    Configuration = context.Configuration;
-                    HostingEnvironment = context.HostingEnvironment;
-                    ConfigureServicesCallback(services);
-                })
-                .ConfigureHostConfiguration(builder =>
-                {
-                    builder.AddInMemoryCollection(new Dictionary<string, string>
-                    {
-                        { HostDefaults.ApplicationKey, hostTest.CallerType.Assembly.GetName().Name }
-                    });
-                });
-
-#if NET9_0_OR_GREATER
-            hb.UseDefaultServiceProvider(o =>
-            {
-                o.ValidateOnBuild = true;
-                o.ValidateScopes = true;
-            });
-#endif
-
-            ConfigureHostCallback(hb);
-
-            Host = hb.Build();
-
-            StartConfiguredHost();
-        }
-
-        /// <summary>
-        /// Starts the by <see cref="ConfigureHost"/> initialized <see cref="IHost"/>.
-        /// </summary>
-        /// <remarks><see cref="ConfigureHost"/> is responsible for configuring and setting the <see cref="Host"/> property.</remarks>
-        protected virtual void StartConfiguredHost()
-        {
-            Task.Run(() => Host.StartAsync().ConfigureAwait(false)) // this was done to reduce the risk of deadlocks (https://www.strathweb.com/2021/05/the-curious-case-of-asp-net-core-integration-test-deadlock/)
-                .ConfigureAwait(false)
-                .GetAwaiter()
-                .GetResult();
         }
 
         /// <summary>
@@ -115,6 +50,19 @@ namespace Codebelt.Extensions.Xunit.Hosting
         }
 
         /// <summary>
+        /// Gets or sets the delegate responsible for running the <see cref="IHost" />.
+        /// </summary>
+        /// <value>The delegate responsible for running the <see cref="IHost" />.</value>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="value"/> cannot be null.
+        /// </exception>
+        protected Action<IHost> HostRunnerCallback
+        {
+            get => _hostRunnerCallback;
+            set => _hostRunnerCallback = value ?? throw new ArgumentNullException(nameof(value), "The host runner delegate cannot be null.");
+        }
+
+        /// <summary>
         /// Gets or sets the delegate that initializes the test class.
         /// </summary>
         /// <value>The delegate that initializes the test class.</value>
@@ -122,28 +70,10 @@ namespace Codebelt.Extensions.Xunit.Hosting
         public Action<IConfiguration, IHostEnvironment> ConfigureCallback { get; set; }
 
         /// <summary>
-        /// Gets or sets the delegate that initializes the host builder.
-        /// </summary>
-        /// <value>The delegate that initializes the host builder.</value>
-        public Action<IHostBuilder> ConfigureHostCallback { get; set; }
-
-        /// <summary>
-        /// Gets or sets the delegate that adds services to the container.
-        /// </summary>
-        /// <value>The delegate that adds services to the container.</value>
-        public Action<IServiceCollection> ConfigureServicesCallback { get; set; }
-
-        /// <summary>
         /// Gets or sets the <see cref="IHost" /> initialized by this instance.
         /// </summary>
         /// <value>The <see cref="IHost" /> initialized by this instance.</value>
         public IHost Host { get; protected set; }
-
-        /// <summary>
-        /// Gets the <see cref="IServiceProvider" /> initialized by this instance.
-        /// </summary>
-        /// <value>The <see cref="IServiceProvider" /> initialized by this instance.</value>
-        public IServiceProvider ServiceProvider => Host?.Services;
 
         /// <summary>
         /// Gets the <see cref="IConfiguration" /> initialized by this instance.
@@ -155,7 +85,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// Gets the <see cref="IHostEnvironment"/> initialized by this instance.
         /// </summary>
         /// <value>The <see cref="IHostEnvironment"/> initialized by this instance.</value>
-        public IHostEnvironment HostingEnvironment { get; protected set; }
+        public IHostEnvironment Environment { get; protected set; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="HostFixture"/> object is disposed.
@@ -168,10 +98,6 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// </summary>
         protected virtual void OnDisposeManagedResources()
         {
-            if (ServiceProvider is ServiceProvider sp)
-            {
-                sp.Dispose();
-            }
             Host?.Dispose();
         }
 
@@ -181,11 +107,6 @@ namespace Codebelt.Extensions.Xunit.Hosting
 #if NET8_0_OR_GREATER
         protected virtual async ValueTask OnDisposeManagedResourcesAsync()
         {
-            if (ServiceProvider is ServiceProvider sp)
-            {
-                await sp.DisposeAsync();
-            }
-
             if (Host is IAsyncDisposable asyncDisposable)
             {
                 await asyncDisposable.DisposeAsync();
