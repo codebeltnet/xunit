@@ -7,6 +7,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// Provides a default implementation of the <see cref="IMinimalHostFixture"/> interface.
     /// </summary>
     /// <seealso cref="IMinimalHostFixture" />
+    /// <seealso cref="HostFixture"/>
     /// <remarks>This is the "modern" minimal style implementation of <see cref="GenericHostFixture"/>.</remarks>
     public class MinimalHostFixture : HostFixture, IMinimalHostFixture
     {
