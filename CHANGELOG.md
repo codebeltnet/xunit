@@ -7,6 +7,49 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]  
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [10.0.0] - TBD
+
+This major release introduces support for unit testing Minimal APIs and includes numerous breaking changes with valuable learnings from previous 9.0.x releases. These changes aim to ensure greater consistency across the `Codebelt.Extensions.Xunit.Hosting` and `Codebelt.Extensions.Xunit.Hosting.AspNetCore` namespaces.
+
+### Added
+
+- HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalHostTest{T}, HostTest{T}, etc.)
+- IGenericHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host
+- GenericHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IGenericHostFixture interface
+- GenericHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IGenericHostFixture interface: HasValidState
+- IMinimalHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host (minimal style)
+- MinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IMinimalHostFixture interface
+- MinimalHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IMinimalHostFixture interface: HasValidState
+- MinimalHostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalWebHostTest, {T}, MinimalHostTest{T}, etc.)
+- MinimalHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of static methods for IHost unit testing (minimal style)
+- HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalHostTest{T}, HostTest{T}, etc.)
+- IGenericHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host
+- GenericHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IGenericHostFixture interface
+- GenericHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IGenericHostFixture interface: HasValidState
+- IMinimalHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host (minimal style)
+- MinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IMinimalHostFixture interface
+- MinimalHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IMinimalHostFixture interface: HasValidState
+- MinimalHostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalWebHostTest, {T}, MinimalHostTest{T}, etc.)
+- MinimalHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of static methods for IHost unit testing (minimal style)
+
+### Changed
+
+- IHostingEnvironmentTest in the Codebelt.Extensions.Xunit.Hosting namespace was renamed to IEnvironmentTest (breaking change)
+- GenericHostTestFactory in the Codebelt.Extensions.Xunit.Hosting namespace was renamed to HostTestFactory (breaking change)
+- IGenericHostTest in the Codebelt.Extensions.Xunit.Hosting namespace was renamed to IHostTest (breaking change)
+- HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace was changed to an abstract class from which all other host fixture classes derive from (e.g., WebHostFixture, GenericHostFixture, etc.)
+- IHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace was changed to be more confined in scope (e.g., less interface inheritance and ultimately fewer members)
+- AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace was renamed to WebHostFixture (breaking change)
+- AspNetCoreHostTest class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace was renamed to WebHostTest (breaking change)
+- BlockingAspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace was renamed to BlockingWebHostFixture (breaking change)
+- IAspNetCoreHostFixture interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace was renamed to IWebHostFixture (breaking change)
+
+### Removed
+
+- IServiceTest interface in the Codebelt.Extensions.Xunit.Hosting namespace due to redundancies with the IHost interface (Services property) (breaking change)
+- HostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace (breaking change)
+- AspNetCoreHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace (breaking change)
+
 ## [9.1.3] - 2025-04-03
 
 ### Fixed
