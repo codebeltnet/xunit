@@ -3,14 +3,17 @@
 namespace Codebelt.Extensions.Xunit.Hosting
 {
     /// <summary>
-    /// Represents the members needed for DI host testing.
+    /// Represents the members needed for bare-bone DI testing with support for <see cref="IHost" />.
     /// </summary>
-    public interface IHostTest
+    /// <seealso cref="IConfigurationTest" />
+    /// <seealso cref="IEnvironmentTest" />
+    /// <seealso cref="ITest" />
+    public interface IHostTest : IConfigurationTest, IEnvironmentTest, ITest
     {
         /// <summary>
-        /// Gets the <see cref="IHost"/> initialized by the <see cref="IHostFixture"/>.
+        /// Gets the <see cref="IHost"/> initialized by the <see cref="IGenericHostFixture"/>.
         /// </summary>
-        /// <value>The <see cref="IHost"/> initialized by the <see cref="IHostFixture"/>.</value>
+        /// <value>The <see cref="IHost"/> initialized by the <see cref="IGenericHostFixture"/>.</value>
         IHost Host { get; }
     }
 }
