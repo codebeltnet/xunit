@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Assets
 {
-    public class ValidHostTest : AspNetCoreHostTest<AspNetCoreHostFixture>
+    public class ValidHostTest : WebHostTest<WebHostFixture>
     {
-        public ValidHostTest(AspNetCoreHostFixture hostFixture) : base(hostFixture)
+        public ValidHostTest(WebHostFixture hostFixture) : base(hostFixture)
         {
         }
 

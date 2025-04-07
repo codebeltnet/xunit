@@ -6,13 +6,13 @@ using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    public class HostFixtureTest : Test
+    public class MinimalHostFixtureTest : Test
     {
-        private readonly HostFixture _hostFixture;
+        private readonly MinimalHostFixture _hostFixture;
 
-        public HostFixtureTest(ITestOutputHelper output) : base(output)
+        public MinimalHostFixtureTest(ITestOutputHelper output) : base(output)
         {
-            _hostFixture = new HostFixture();
+            _hostFixture = new MinimalHostFixture();
         }
 
         [Fact]
@@ -24,21 +24,21 @@ namespace Codebelt.Extensions.Xunit.Hosting
         [Fact]
         public void ConfigureHost_ShouldThrowArgumentOutOfRangeException_WhenHostTestIsNotAssignableFromHostTest()
         {
-            var invalidHostTest = new InvalidHostTest<HostFixture>(new HostFixture());
+            var invalidHostTest = new InvalidHostTest<GenericHostFixture>(new GenericHostFixture());
             Assert.Throws<ArgumentOutOfRangeException>(() => _hostFixture.ConfigureHost(invalidHostTest));
         }
 
         [Fact]
         public void ConfigureHost_ShouldConfigureHostSuccessfully()
         {
-            var validHostTest = new ValidHostTest(_hostFixture);
+            var validHostTest = new MinimalValidHostTest(_hostFixture);
 
             _hostFixture.ConfigureHost(validHostTest);
 
             Assert.NotNull(_hostFixture.Host);
-            Assert.NotNull(_hostFixture.ServiceProvider);
+            Assert.NotNull(_hostFixture.Host.Services);
             Assert.NotNull(_hostFixture.Configuration);
-            Assert.NotNull(_hostFixture.HostingEnvironment);
+            Assert.NotNull(_hostFixture.Environment);
         }
 
         [Fact]

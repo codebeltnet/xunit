@@ -10,23 +10,21 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
-    public class WebHostTestFactoryTest : Test
+    public class MinimalWebHostTestFactoryTest : Test
     {
-        public WebHostTestFactoryTest(ITestOutputHelper output) : base(output)
+        public MinimalWebHostTestFactoryTest(ITestOutputHelper output) : base(output)
         {
         }
 
         [Fact]
         public void Create_ShouldThrowSecurityException_DueToBlockingAspNetCoreHostFixture()
         {
-            Assert.Throws<SecurityException>(() => WebHostTestFactory.Create(
+            Assert.Throws<SecurityException>(() => MinimalWebHostTestFactory.Create(
                 services =>
                 {
                     services.AddXunitTestLogging(TestOutput);
@@ -38,46 +36,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                 app =>
                 {
                     var policy = app.ApplicationServices.GetRequiredService<IAuthorizationPolicyProvider>();
-                },
-                host =>
-                {
-                    host.UseDefaultServiceProvider(o =>
-                    {
-                        o.ValidateOnBuild = false;
-                        o.ValidateScopes = false;
-                    });
-                },
-                new BlockingWebHostFixture()));
-        }
-
-        [Fact]
-        public void Create_ShouldCaptureSecurityException_DueToNonBlockingAspNetCoreHostFixture()
-        {
-            using (var startup = WebHostTestFactory.Create(
-                       services =>
-                       {
-                           services.AddXunitTestLogging(TestOutput);
-
-                           services.AddAuthorization(o => { o.AddPolicy("Test", _ => throw new SecurityException()); });
-                       },
-                       app =>
-                       {
-                           var policy = app.ApplicationServices.GetRequiredService<IAuthorizationPolicyProvider>();
-                       },
-                       host =>
-                       {
-                           host.UseDefaultServiceProvider(o =>
-                           {
-                               o.ValidateOnBuild = false;
-                               o.ValidateScopes = false;
-                           });
-                       }))
-            {
-                var loggerStore = startup.Host.Services.GetRequiredService<ILogger<WebHostTestFactoryTest>>().GetTestStore(null);
-                var message = loggerStore.Query(entry => entry.Severity == LogLevel.Critical && entry.Message.Contains("SecurityException", StringComparison.OrdinalIgnoreCase)).SingleOrDefault()?.Message;
-                Assert.NotNull(message);
-                Assert.Contains("System.Security.SecurityException: Security error.", message);
-            }
+                }));
         }
 
         [Fact]
@@ -85,9 +44,10 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         {
             Type sut1 = GetType();
             string sut2 = null;
-            var middleware = WebHostTestFactory.Create(Assert.NotNull, Assert.NotNull, host =>
+            var middleware = MinimalWebHostTestFactory.Create(Assert.NotNull, Assert.NotNull, host =>
               {
-                  host.ConfigureAppConfiguration((context, _) =>
+                  var hb = host.ToHostBuilder();
+                  hb.ConfigureAppConfiguration((context, _) =>
                   {
                       sut2 = context.HostingEnvironment.ApplicationName;
                   });
@@ -100,9 +60,10 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         [Fact]
         public Task RunAsync_ShouldHaveApplicationNameEqualToThisAssembly()
         {
-            return WebHostTestFactory.RunAsync(Assert.NotNull, Assert.NotNull, host =>
+            return MinimalWebHostTestFactory.RunAsync(Assert.NotNull, Assert.NotNull, host =>
               {
-                  host.ConfigureAppConfiguration((context, _) =>
+                  var hb = host.ToHostBuilder();
+                  hb.ConfigureAppConfiguration((context, _) =>
                   {
                       TestOutput.WriteLine(context.HostingEnvironment.ApplicationName);
                       Assert.Equal(GetType().Assembly.GetName().Name, context.HostingEnvironment.ApplicationName);
@@ -113,7 +74,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         [Fact]
         public Task RunWithHostBuilderContextAsync_ShouldHaveApplicationNameEqualToThisAssembly_WithHostBuilderContext()
         {
-            return WebHostTestFactory.RunWithHostBuilderContextAsync((context, app) =>
+            return MinimalWebHostTestFactory.RunWithHostBuilderContextAsync((context, app) =>
                 {
                     Assert.NotNull(context);
                     Assert.NotNull(context.HostingEnvironment);
@@ -131,7 +92,8 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                 },
                 host =>
                 {
-                    host.ConfigureAppConfiguration((context, configuration) =>
+                    var hb = host.ToHostBuilder();
+                    hb.ConfigureAppConfiguration((context, configuration) =>
                     {
                         TestOutput.WriteLine(context.HostingEnvironment.ApplicationName);
                         Assert.Equal(GetType().Assembly.GetName().Name, context.HostingEnvironment.ApplicationName);
@@ -142,7 +104,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         [Fact]
         public async Task RunAsync_ShouldWorkWithXunitTestLogging()
         {
-            using var response = await WebHostTestFactory.RunAsync(
+            using var response = await MinimalWebHostTestFactory.RunAsync(
                 services =>
                 {
                     services.AddXunitTestLogging(TestOutput);
