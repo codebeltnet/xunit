@@ -1,37 +1,39 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
-    internal sealed class WebHostTest : AspNetCoreHostTest<IAspNetCoreHostFixture>
+    /// <summary>
+    /// Represents a base class from which all implementations of unit testing, that uses Microsoft Dependency Injection and depends on ASP.NET Core, should derive.
+    /// </summary>
+    /// <typeparam name="T">The type of the object that implements the <see cref="IWebHostFixture"/> interface.</typeparam>
+    /// <seealso cref="Test" />
+    /// <seealso cref="HostTest{T}" />
+    public abstract class WebHostTest<T> : HostTest<T>, IWebHostTest where T : class, IWebHostFixture
     {
-        private readonly Action<IApplicationBuilder> _pipelineConfigurator;
-        private readonly Action<IServiceCollection> _serviceConfigurator;
-        private readonly Action<HostBuilderContext, IApplicationBuilder> _pipelineConfiguratorWithContext;
-        private readonly Action<HostBuilderContext, IServiceCollection> _serviceConfiguratorWithContext;
-        private readonly Action<IHostBuilder> _hostConfigurator;
-        private HostBuilderContext _hostBuilderContext;
-
-        internal WebHostTest(Action<IServiceCollection> serviceConfigurator, Action<IApplicationBuilder> pipelineConfigurator, Action<IHostBuilder> hostConfigurator, IAspNetCoreHostFixture hostFixture) : base(true, hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebHostTest{T}"/> class.
+        /// </summary>
+        /// <param name="hostFixture">An implementation of the <see cref="IWebHostFixture"/> interface.</param>
+        /// <param name="output">An implementation of the <see cref="ITestOutputHelper"/> interface.</param>
+        /// <param name="callerType">The <see cref="Type"/> of caller that ends up invoking this instance.</param>
+        protected WebHostTest(T hostFixture, ITestOutputHelper output = null, Type callerType = null) : this(false, hostFixture, output, callerType)
         {
-            _serviceConfigurator = serviceConfigurator;
-            _pipelineConfigurator = pipelineConfigurator;
-            _hostConfigurator = hostConfigurator;
-            InitializeHostFixture(hostFixture);
         }
 
-        internal WebHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<HostBuilderContext, IApplicationBuilder> pipelineConfigurator, Action<IHostBuilder> hostConfigurator, IAspNetCoreHostFixture hostFixture) : base(true, hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebHostTest{T}"/> class.
+        /// </summary>
+        /// <param name="skipHostFixtureInitialization">A value indicating whether to skip the host fixture initialization.</param>
+        /// <param name="hostFixture">An implementation of the <see cref="IWebHostFixture"/> interface.</param>
+        /// <param name="output">An implementation of the <see cref="ITestOutputHelper"/> interface.</param>
+        /// <param name="callerType">The <see cref="Type"/> of caller that ends up invoking this instance.</param>
+        protected WebHostTest(bool skipHostFixtureInitialization, T hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(skipHostFixtureInitialization, hostFixture, output, callerType)
         {
-            _serviceConfiguratorWithContext = serviceConfigurator;
-            _pipelineConfiguratorWithContext = pipelineConfigurator;
-            _hostConfigurator = hostConfigurator;
-            InitializeHostFixture(hostFixture);
-        }
-
-        private new void InitializeHostFixture(IAspNetCoreHostFixture hostFixture)
-        {
+            if (hostFixture == null) { throw new ArgumentNullException(nameof(hostFixture)); }
+            if (skipHostFixtureInitialization) { return; }
             if (!hostFixture.HasValidState())
             {
                 hostFixture.ConfigureHostCallback = ConfigureHost;
@@ -41,38 +43,20 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                 hostFixture.ConfigureHost(this);
             }
             Host = hostFixture.Host;
-            ServiceProvider = hostFixture.Host.Services;
             Application = hostFixture.Application;
-            Configure(hostFixture.Configuration, hostFixture.HostingEnvironment);
+            Configure(hostFixture.Configuration, hostFixture.Environment);
         }
 
-        public override void ConfigureApplication(IApplicationBuilder app)
-        {
-            _pipelineConfigurator?.Invoke(app);
-            _pipelineConfiguratorWithContext?.Invoke(Tweaker.Adjust(_hostBuilderContext, hbc =>
-            {
-                hbc.Configuration = Configuration;
-                hbc.HostingEnvironment = HostingEnvironment;
-                return hbc;
-            }), app);
-        }
+        /// <summary>
+        /// Gets the <see cref="IApplicationBuilder"/> initialized by the <see cref="IHost"/>.
+        /// </summary>
+        /// <value>The <see cref="IApplicationBuilder"/> initialized by the <see cref="IHost"/>.</value>
+        public IApplicationBuilder Application { get; protected set; }
 
-        protected override void ConfigureHost(IHostBuilder hb)
-        {
-            _hostBuilderContext = new HostBuilderContext(hb.Properties);
-            _hostConfigurator?.Invoke(hb);
-        }
-
-        public override void ConfigureServices(IServiceCollection services)
-        {
-            _serviceConfigurator?.Invoke(services);
-            _serviceConfiguratorWithContext?.Invoke(Tweaker.Adjust(_hostBuilderContext, hbc =>
-            {
-                hbc.Configuration = Configuration;
-                hbc.HostingEnvironment = HostingEnvironment;
-                return hbc;
-            }), services);
-            services.AddFakeHttpContextAccessor();
-        }
+        /// <summary>
+        /// Configures the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app">The type that provides the mechanisms to configure the HTTP request pipeline.</param>
+        public abstract void ConfigureApplication(IApplicationBuilder app);
     }
 }
