@@ -3,9 +3,9 @@
     /// <summary>
     /// Represents the members needed for ASP.NET Core (including but not limited to MVC, Razor and related) testing.
     /// </summary>
-    /// <seealso cref="IGenericHostTest"/>
+    /// <seealso cref="IHostTest"/>
     /// <seealso cref="IPipelineTest" />
-    public interface IWebHostTest : IGenericHostTest, IPipelineTest
+    public interface IWebHostTest : IHostTest, IPipelineTest
     {
     }
 }

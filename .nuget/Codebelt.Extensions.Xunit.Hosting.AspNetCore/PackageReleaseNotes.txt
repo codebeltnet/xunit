@@ -1,4 +1,26 @@
-﻿Version 9.1.3
+﻿Version 10.0.0
+Availability: .NET 9 and .NET 8
+ 
+# ALM
+- CHANGED Dependencies to latest and greatest with respect to TFMs
+ 
+# Breaking Changes
+- RENAMED AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to WebHostFixture
+- REMOVED AspNetCoreHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace
+- RENAMED AspNetCoreHostTest class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to WebHostTest
+- RENAMED BlockingAspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to BlockingWebHostFixture
+- RENAMED IAspNetCoreHostFixture interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to IWebHostFixture
+ 
+# New Features
+- ADDED WebHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IWebHostFixture interface: HasValidState
+- ADDED HostBuilderApplicationExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IHostApplicationBuilder interface: ToHostBuilder
+- ADDED IMinimalWebHostFixture interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a way to use Microsoft Dependency Injection in unit tests (minimal style)
+- ADDED MinimalWebHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a default implementation of the IMinimalWebHostFixture interface
+- ADDED MinimalWebHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IMinimalWebHostFixture interface: HasValidState
+- ADDED MinimalWebHostTest{T} class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that represents a base class from which all implementations of unit testing, that uses Microsoft Dependency Injection and depends on ASP.NET Core (minimal style), should derive
+- ADDED MinimalWebHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a set of static methods for ASP.NET Core (minimal style) unit testing
+ 
+Version 9.1.3
 Availability: .NET 9 and .NET 8
  
 # ALM

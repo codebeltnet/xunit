@@ -4,9 +4,9 @@ using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    public class GenericHostTestFactoryTest : Test
+    public class MinimalHostTestFactoryTest : Test
     {
-        public GenericHostTestFactoryTest(ITestOutputHelper output) : base(output)
+        public MinimalHostTestFactoryTest(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -15,12 +15,9 @@ namespace Codebelt.Extensions.Xunit.Hosting
         {
             Type sut1 = GetType();
             string sut2 = null;
-            var middleware = GenericHostTestFactory.Create(Assert.NotNull, host =>
+            var middleware = MinimalHostTestFactory.Create(Assert.NotNull, host =>
               {
-                  host.ConfigureAppConfiguration((context, _) =>
-                  {
-                      sut2 = context.HostingEnvironment.ApplicationName;
-                  });
+                  sut2 = host.Environment.ApplicationName;
               });
 
             Assert.True(sut1 == middleware.CallerType.DeclaringType);
@@ -31,7 +28,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         [Fact]
         public void CreateWithHostBuilderContext_ShouldHaveApplicationNameEqualToThisAssembly_WithHostBuilderContext()
         {
-            GenericHostTestFactory.CreateWithHostBuilderContext((context, services) =>
+            MinimalHostTestFactory.CreateWithHostBuilderContext((context, services) =>
                 {
                     Assert.NotNull(context);
                     Assert.NotNull(context.HostingEnvironment);
@@ -41,13 +38,9 @@ namespace Codebelt.Extensions.Xunit.Hosting
                 },
                 host =>
                 {
-                    host.ConfigureAppConfiguration((context, configuration) =>
-                    {
-                        TestOutput.WriteLine(context.HostingEnvironment.ApplicationName);
-                        Assert.Equal(GetType().Assembly.GetName().Name, context.HostingEnvironment.ApplicationName);
-                    });
-                },
-                hostFixture: null);
+                    TestOutput.WriteLine(host.Environment.ApplicationName);
+                    Assert.Equal(GetType().Assembly.GetName().Name, host.Environment.ApplicationName);
+                });
         }
     }
 }

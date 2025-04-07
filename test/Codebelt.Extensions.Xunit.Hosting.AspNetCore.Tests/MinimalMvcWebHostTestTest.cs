@@ -5,19 +5,20 @@ using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Assets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
-    public class MvcAspNetCoreHostTestTest : AspNetCoreHostTest<AspNetCoreHostFixture>
+    public class MinimalMvcWebHostTestTest : MinimalWebHostTest<MinimalWebHostFixture>
     {
-        private readonly AspNetCoreHostFixture _hostFixture;
+        private readonly MinimalWebHostFixture _hostFixture;
         private readonly HttpClient _client;
 
-        public MvcAspNetCoreHostTestTest(AspNetCoreHostFixture hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(hostFixture, output, callerType)
+        public MinimalMvcWebHostTestTest(MinimalWebHostFixture hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(hostFixture, output, callerType)
         {
-            hostFixture.ServiceProvider.GetRequiredService<ITestOutputHelperAccessor>().TestOutput = output;
+            hostFixture.Host.Services.GetRequiredService<ITestOutputHelperAccessor>().TestOutput = output;
             _hostFixture = hostFixture;
             _client = hostFixture.Host.GetTestClient();
         }
@@ -40,13 +41,13 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
             Assert.Equal("Unit Test", body);
         }
 
-        public override void ConfigureServices(IServiceCollection services)
+        protected override void ConfigureHost(IHostApplicationBuilder hb)
         {
-            services.AddControllers()
+            hb.Services.AddControllers()
                 .AddApplicationPart(typeof(FakeController).Assembly);
 
-            services.AddXunitTestLoggingOutputHelperAccessor();
-            services.AddXunitTestLogging(TestOutput);
+            hb.Services.AddXunitTestLoggingOutputHelperAccessor();
+            hb.Services.AddXunitTestLogging(TestOutput);
         }
 
         public override void ConfigureApplication(IApplicationBuilder app)

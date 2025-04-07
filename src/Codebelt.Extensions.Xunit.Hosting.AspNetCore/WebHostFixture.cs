@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
@@ -12,34 +11,34 @@ using Microsoft.Extensions.Logging;
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
     /// <summary>
-    /// Provides a default implementation of the <see cref="IAspNetCoreHostFixture"/> interface.
+    /// Provides a default implementation of the <see cref="IWebHostFixture"/> interface.
     /// </summary>
-    /// <seealso cref="HostFixture" />
-    /// <seealso cref="IAspNetCoreHostFixture" />
-    public class AspNetCoreHostFixture : HostFixture, IAspNetCoreHostFixture
+    /// <seealso cref="GenericHostFixture" />
+    /// <seealso cref="IWebHostFixture" />
+    public class WebHostFixture : GenericHostFixture, IWebHostFixture
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AspNetCoreHostFixture"/> class.
+        /// Initializes a new instance of the <see cref="WebHostFixture"/> class.
         /// </summary>
-        public AspNetCoreHostFixture()
+        public WebHostFixture()
         {
         }
 
         /// <summary>
         /// Creates and configures the <see cref="IWebHost" /> of this instance.
         /// </summary>
-        /// <param name="hostTest">The object that inherits from <see cref="AspNetCoreHostTest{T}" />.</param>
+        /// <param name="hostTest">The object that inherits from <see cref="WebHostTest{T}" />.</param>
         /// <remarks><paramref name="hostTest" /> was added to support those cases where the caller is required in the host configuration.</remarks>
         /// <exception cref="ArgumentNullException">
         /// <paramref name="hostTest"/> is null.
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <paramref name="hostTest"/> is not assignable from <see cref="AspNetCoreHostTest{T}"/>.
+        /// <paramref name="hostTest"/> is not assignable from <see cref="WebHostTest{T}"/>.
         /// </exception>
         public override void ConfigureHost(Test hostTest)
         {
             if (hostTest == null) { throw new ArgumentNullException(nameof(hostTest)); }
-            if (!HasTypes(hostTest.GetType(), typeof(HostTest<>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(HostTest<>), $"{nameof(hostTest)} is not assignable from AspNetCoreHostTest<T>."); }
+            if (!HasTypes(hostTest.GetType(), typeof(WebHostTest<>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(WebHostTest<>), $"{nameof(hostTest)} is not assignable from WebHostTest<T>."); }
 
             var hb = new HostBuilder()
                 .ConfigureWebHost(webBuilder =>
@@ -68,7 +67,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                         .ConfigureServices((context, services) =>
                         {
                             Configuration = context.Configuration;
-                            HostingEnvironment = context.HostingEnvironment;
+                            Environment = context.HostingEnvironment;
                             ConfigureServicesCallback(services);
                         })
                         .Configure(app =>
@@ -92,7 +91,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 
             Host = hb.Build();
 
-            StartConfiguredHost();
+            HostRunnerCallback(Host);
         }
 
         /// <summary>

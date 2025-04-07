@@ -6,9 +6,9 @@ using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
-    public class AspNetCoreHostFixtureTest : Test
+    public class WebHostFixtureTest : Test
     {
-        public AspNetCoreHostFixtureTest(ITestOutputHelper output) : base(output)
+        public WebHostFixtureTest(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -16,7 +16,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         public void ConfigureHost_NullHostTest_ThrowsArgumentNullException()
         {
             // Arrange
-            var fixture = new AspNetCoreHostFixture();
+            var fixture = new WebHostFixture();
 
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => fixture.ConfigureHost(null));
@@ -26,8 +26,8 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         public void ConfigureHost_InvalidHostTestType_ThrowsArgumentOutOfRangeException()
         {
             // Arrange
-            var fixture = new AspNetCoreHostFixture();
-            var invalidHostTest = new InvalidHostTest<AspNetCoreHostFixture>(fixture);
+            var fixture = new WebHostFixture();
+            var invalidHostTest = new InvalidHostTest<WebHostFixture>(fixture);
 
             // Act & Assert
             Assert.Throws<ArgumentOutOfRangeException>(() => fixture.ConfigureHost(invalidHostTest));
@@ -37,7 +37,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         public void ConfigureApplicationCallback_SetAndGet_ReturnsCorrectValue()
         {
             // Arrange
-            var fixture = new AspNetCoreHostFixture();
+            var fixture = new WebHostFixture();
             Action<IApplicationBuilder> callback = app => { };
 
             // Act
@@ -51,7 +51,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         public void ConfigureHost_ValidHostTest_ConfiguresHostCorrectly()
         {
             // Arrange
-            var fixture = new AspNetCoreHostFixture();
+            var fixture = new WebHostFixture();
             var hostTest = new ValidHostTest(fixture);
 
             // Act

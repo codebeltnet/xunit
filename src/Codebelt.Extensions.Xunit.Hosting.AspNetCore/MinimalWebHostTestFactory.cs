@@ -10,10 +10,10 @@ using Microsoft.Extensions.Hosting;
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
     /// <summary>
-    /// Provides a set of static methods for ASP.NET Core (including, but not limited to MVC, Razor and related) unit testing.
+    /// Provides a set of static methods for ASP.NET Core (including, but not limited to MVC, Razor and related) unit testing (minimal style).
     /// </summary>
     /// <seealso cref="IHostTest"/>.
-    public static class WebHostTestFactory
+    public static class MinimalWebHostTestFactory
     {
         /// <summary>
         /// Creates and returns an <see cref="IWebHostTest"/> implementation.
@@ -23,9 +23,9 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <param name="hostSetup">The <see cref="IHostBuilder"/> which may be configured.</param>
         /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="WebHostFixture"/> instance.</param>
         /// <returns>An instance of an <see cref="IWebHostTest"/> implementation.</returns>
-        public static IWebHostTest Create(Action<IServiceCollection> serviceSetup = null, Action<IApplicationBuilder> pipelineSetup = null, Action<IHostBuilder> hostSetup = null, IWebHostFixture hostFixture = null)
+        public static IWebHostTest Create(Action<IServiceCollection> serviceSetup = null, Action<IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, IMinimalWebHostFixture hostFixture = null)
         {
-            return new WebHostTest(serviceSetup, pipelineSetup, hostSetup, hostFixture ?? new WebHostFixture());
+            return new MinimalWebHostTest(serviceSetup, pipelineSetup, hostSetup, hostFixture ?? new MinimalWebHostFixture());
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <param name="hostSetup">The <see cref="IHostBuilder"/> which may be configured.</param>
         /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="WebHostFixture"/> instance.</param>
         /// <returns>An instance of an <see cref="IWebHostTest"/> implementation.</returns>
-        public static IWebHostTest CreateWithHostBuilderContext(Action<HostBuilderContext, IServiceCollection> serviceSetup = null, Action<HostBuilderContext, IApplicationBuilder> pipelineSetup = null, Action<IHostBuilder> hostSetup = null, IWebHostFixture hostFixture = null)
+        public static IWebHostTest CreateWithHostBuilderContext(Action<HostBuilderContext, IServiceCollection> serviceSetup = null, Action<HostBuilderContext, IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, IMinimalWebHostFixture hostFixture = null)
         {
-            return new WebHostTest(serviceSetup, pipelineSetup, hostSetup, hostFixture ?? new WebHostFixture());
+            return new MinimalWebHostTest(serviceSetup, pipelineSetup, hostSetup, hostFixture ?? new MinimalWebHostFixture());
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <param name="responseFactory">The function delegate that creates a <see cref="HttpResponseMessage"/> from the <see cref="HttpClient"/>. Default is a GET request to the root URL ("/").</param>
         /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="WebHostFixture"/> instance.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The task result contains the <see cref="HttpResponseMessage"/> for the test server.</returns>
-        public static async Task<HttpResponseMessage> RunAsync(Action<IServiceCollection> serviceSetup = null, Action<IApplicationBuilder> pipelineSetup = null, Action<IHostBuilder> hostSetup = null, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null, IWebHostFixture hostFixture = null)
+        public static async Task<HttpResponseMessage> RunAsync(Action<IServiceCollection> serviceSetup = null, Action<IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null, IMinimalWebHostFixture hostFixture = null)
         {
             using var client = Create(serviceSetup, pipelineSetup, hostSetup, hostFixture).Host.GetTestClient();
             return await client.ToHttpResponseMessageAsync(responseFactory).ConfigureAwait(false);
@@ -65,7 +65,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <param name="responseFactory">The function delegate that creates a <see cref="HttpResponseMessage"/> from the <see cref="HttpClient"/>. Default is a GET request to the root URL ("/").</param>
         /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="WebHostFixture"/> instance.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The task result contains the <see cref="HttpResponseMessage"/> for the test server.</returns>
-        public static async Task<HttpResponseMessage> RunWithHostBuilderContextAsync(Action<HostBuilderContext, IServiceCollection> serviceSetup = null, Action<HostBuilderContext, IApplicationBuilder> pipelineSetup = null, Action<IHostBuilder> hostSetup = null, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null, IWebHostFixture hostFixture = null)
+        public static async Task<HttpResponseMessage> RunWithHostBuilderContextAsync(Action<HostBuilderContext, IServiceCollection> serviceSetup = null, Action<HostBuilderContext, IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null, IMinimalWebHostFixture hostFixture = null)
         {
             using var client = CreateWithHostBuilderContext(serviceSetup, pipelineSetup, hostSetup, hostFixture).Host.GetTestClient();
             return await client.ToHttpResponseMessageAsync(responseFactory).ConfigureAwait(false);

@@ -5,9 +5,9 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Codebelt.Extensions.Xunit.Hosting.Assets
 {
-    public class ValidHostTest : HostTest<HostFixture>
+    public class ValidHostTest : HostTest<GenericHostFixture>
     {
-        public ValidHostTest(HostFixture hostFixture) : base(hostFixture)
+        public ValidHostTest(GenericHostFixture hostFixture) : base(hostFixture)
         {
         }
 

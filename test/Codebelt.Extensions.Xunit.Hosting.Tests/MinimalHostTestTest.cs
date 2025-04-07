@@ -13,14 +13,14 @@ using Xunit.Priority;
 namespace Codebelt.Extensions.Xunit.Hosting
 {
     [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-    public class HostTestTest : HostTest<GenericHostFixture>
+    public class MinimalHostTestTest : MinimalHostTest<MinimalHostFixture>
     {
         private bool _isHostRunning = false;
         private readonly IServiceScope _scope;
         private readonly Func<IList<ICorrelationToken>> _correlationsFactory;
         private static readonly ConcurrentBag<ICorrelationToken> ScopedCorrelations = new();
 
-        public HostTestTest(GenericHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+        public MinimalHostTestTest(MinimalHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
         {
             _scope = hostFixture.Host.Services.CreateScope();
             _correlationsFactory = () => _scope.ServiceProvider.GetServices<ICorrelationToken>().ToList();
@@ -90,11 +90,11 @@ namespace Codebelt.Extensions.Xunit.Hosting
             _scope?.Dispose();
         }
 
-        public override void ConfigureServices(IServiceCollection services)
+        protected override void ConfigureHost(IHostApplicationBuilder hb)
         {
-            services.AddSingleton<ICorrelationToken, SingletonCorrelation>();
-            services.AddTransient<ICorrelationToken, TransientCorrelation>();
-            services.AddScoped<ICorrelationToken, ScopedCorrelation>();
+            hb.Services.AddSingleton<ICorrelationToken, SingletonCorrelation>();
+            hb.Services.AddTransient<ICorrelationToken, TransientCorrelation>();
+            hb.Services.AddScoped<ICorrelationToken, ScopedCorrelation>();
         }
     }
 }
