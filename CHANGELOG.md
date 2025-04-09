@@ -9,13 +9,13 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 
 ## [10.0.0] - TBD
 
-This major release introduces support for unit testing Minimal APIs and includes numerous breaking changes with valuable learnings from previous 9.0.x releases. These changes aim to ensure greater consistency across the `Codebelt.Extensions.Xunit.Hosting` and `Codebelt.Extensions.Xunit.Hosting.AspNetCore` namespaces.
+This major release introduces support for unit testing Minimal APIs and includes numerous breaking changes with valuable learnings from previous 9.1.x releases. These changes aim to ensure greater consistency across the `Codebelt.Extensions.Xunit.Hosting` and `Codebelt.Extensions.Xunit.Hosting.AspNetCore` namespaces.
 
 ### Added
 
 - HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalHostTest{T}, HostTest{T}, etc.)
 - IGenericHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host
-- GenericHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IGenericHostFixture interface
+- GenericHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IGenericHostFixture interface (replaces the legacy HostFixture class)
 - GenericHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IGenericHostFixture interface: HasValidState
 - IMinimalHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host (minimal style)
 - MinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IMinimalHostFixture interface
@@ -31,6 +31,8 @@ This major release introduces support for unit testing Minimal APIs and includes
 - MinimalHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IMinimalHostFixture interface: HasValidState
 - MinimalHostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalWebHostTest, {T}, MinimalHostTest{T}, etc.)
 - MinimalHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of static methods for IHost unit testing (minimal style)
+- ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace received one new extension method for the IServiceCollection interface: An overload of AddXunitTestLogging that does not rely on the ITestOutputHelper interface
+  - This was done to help mitigate those scenarios where the [current design of xUnit v2 and ITestOutputHelper can cause deadlocks](https://github.com/xunit/xunit/discussions/2994), e.g. you can access the xUnit logger but nothing is logged to the test output
 
 ### Changed
 

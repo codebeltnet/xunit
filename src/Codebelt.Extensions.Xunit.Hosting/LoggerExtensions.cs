@@ -13,7 +13,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
     public static class LoggerExtensions
     {
         /// <summary>
-        /// Returns the associated <see cref="ITestStore{T}"/> that is provided when settings up services from <see cref="ServiceCollectionExtensions.AddXunitTestLogging"/>.
+        /// Returns the associated <see cref="ITestStore{T}"/> that is provided when settings up services from <see cref="ServiceCollectionExtensions.AddXunitTestLogging(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Logging.LogLevel)"/> or related.
         /// </summary>
         /// <param name="logger">The <see cref="ILogger{TCategoryName}"/> from which to retrieve the <see cref="ITestStore{T}"/>.</param>
         /// <param name="categoryName">The category name for messages produced by the <paramref name="logger"/> -or- <c>null</c> for messages produced by all loggers.</param>
@@ -57,7 +57,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         }
 
         /// <summary>
-        /// Returns the associated <see cref="ITestStore{T}"/> that is provided when settings up services from <see cref="ServiceCollectionExtensions.AddXunitTestLogging"/>.
+        /// Returns the associated <see cref="ITestStore{T}"/> that is provided when settings up services from <see cref="ServiceCollectionExtensions.AddXunitTestLogging(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Logging.LogLevel)"/> or related.
         /// </summary>
         /// <param name="logger">The <see cref="ILogger{TCategoryName}"/> from which to retrieve the <see cref="ITestStore{T}"/>.</param>
         /// <returns>Returns an implementation of <see cref="ITestStore{T}"/> with all logged entries expressed as <see cref="XunitTestLoggerEntry"/>.</returns>

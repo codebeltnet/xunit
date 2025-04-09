@@ -41,7 +41,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
             }
             else
             {
-                _output.WriteLine(message);
+                _output?.WriteLine(message);
             }
         }
 

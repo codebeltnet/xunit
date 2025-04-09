@@ -12,6 +12,10 @@ namespace Codebelt.Extensions.Xunit.Hosting
         private readonly ITestOutputHelperAccessor _accessor;
         private readonly ITestOutputHelper _output;
 
+        public XunitTestLoggerProvider()
+        {
+        }
+
         public XunitTestLoggerProvider(ITestOutputHelper output)
         {
             _output = output;

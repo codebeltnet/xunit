@@ -12,6 +12,27 @@ namespace Codebelt.Extensions.Xunit.Hosting
     public static class ServiceCollectionExtensions
     {
         /// <summary> 
+        /// Adds a unit test optimized implementation of logging to the <paramref name="services"/> collection.
+        /// </summary> 
+        /// <param name="services">The <see cref="IServiceCollection"/> to extend.</param> 
+        /// <param name="minimumLevel">The <see cref="LogLevel"/> that specifies the minimum level to include for the logging.</param> 
+        /// <returns>A reference to <paramref name="services" /> so that additional configuration calls can be chained.</returns> 
+        /// <exception cref="ArgumentNullException"> 
+        /// <paramref name="services"/> cannot be null.
+        /// </exception> 
+        public static IServiceCollection AddXunitTestLogging(this IServiceCollection services, LogLevel minimumLevel = LogLevel.Trace)
+        {
+            if (services == null) { throw new ArgumentNullException(nameof(services)); }
+            services.AddLogging(builder =>
+            {
+                builder.SetMinimumLevel(minimumLevel);
+                builder.AddProvider(new XunitTestLoggerProvider());
+            });
+
+            return services;
+        }
+
+        /// <summary> 
         /// Adds a unit test optimized implementation of output logging to the <paramref name="services"/> collection. 
         /// </summary> 
         /// <param name="services">The <see cref="IServiceCollection"/> to extend.</param> 
@@ -22,14 +43,14 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <paramref name="services"/> cannot be null -or- 
         /// <paramref name="output"/> cannot be null. 
         /// </exception> 
-        public static IServiceCollection AddXunitTestLogging(this IServiceCollection services, ITestOutputHelper output, LogLevel minimumLevel = LogLevel.Trace) 
-        { 
+        public static IServiceCollection AddXunitTestLogging(this IServiceCollection services, ITestOutputHelper output, LogLevel minimumLevel = LogLevel.Trace)
+        {
             if (services == null) { throw new ArgumentNullException(nameof(services)); }
             if (output == null) { throw new ArgumentNullException(nameof(output)); }
             if (services.Any(sd => sd.ServiceType == typeof(ITestOutputHelperAccessor)))
             {
-                services.AddLogging(builder => 
-                { 
+                services.AddLogging(builder =>
+                {
                     builder.SetMinimumLevel(minimumLevel);
                     builder.Services.AddSingleton<ILoggerProvider>(provider =>
                     {
@@ -37,19 +58,19 @@ namespace Codebelt.Extensions.Xunit.Hosting
                         accessor.TestOutput = output;
                         return new XunitTestLoggerProvider(accessor);
                     });
-                }); 
+                });
             }
             else
             {
-                services.AddLogging(builder => 
-                { 
-                    builder.SetMinimumLevel(minimumLevel); 
-                    builder.AddProvider(new XunitTestLoggerProvider(output)); 
-                }); 
+                services.AddLogging(builder =>
+                {
+                    builder.SetMinimumLevel(minimumLevel);
+                    builder.AddProvider(new XunitTestLoggerProvider(output));
+                });
             }
-            return services; 
-        } 
-        
+            return services;
+        }
+
         /// <summary>
         /// Adds a default implementation of <see cref="ITestOutputHelperAccessor"/> to the <paramref name="services"/> collection.
         /// </summary>
