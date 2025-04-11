@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
@@ -13,14 +14,14 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
     /// <summary>
     /// Provides a default implementation of the <see cref="IWebHostFixture"/> interface.
     /// </summary>
-    /// <seealso cref="GenericHostFixture" />
+    /// <seealso cref="ManagedHostFixture" />
     /// <seealso cref="IWebHostFixture" />
-    public class WebHostFixture : GenericHostFixture, IWebHostFixture
+    public class ManagedWebHostFixture : ManagedHostFixture, IWebHostFixture
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebHostFixture"/> class.
+        /// Initializes a new instance of the <see cref="ManagedWebHostFixture"/> class.
         /// </summary>
-        public WebHostFixture()
+        public ManagedWebHostFixture()
         {
         }
 
@@ -91,7 +92,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 
             Host = hb.Build();
 
-            HostRunnerCallback(Host);
+            AsyncHostRunnerCallback(Host, CancellationToken.None);
         }
 
         /// <summary>

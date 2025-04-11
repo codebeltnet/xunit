@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
@@ -6,17 +7,17 @@ using Microsoft.Extensions.Hosting;
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
     /// <summary>
-    /// Provides a default implementation of the <see cref="IMinimalWebHostFixture"/> interface.
+    /// Provides a default implementation of the <see cref="IWebMinimalHostFixture"/> interface.
     /// </summary>
-    /// <seealso cref="MinimalHostFixture"/>
-    /// <seealso cref="IMinimalWebHostFixture" />
-    /// <remarks>This is the "modern" minimal style implementation of <see cref="WebHostFixture"/>.</remarks>
-    public class MinimalWebHostFixture : MinimalHostFixture, IMinimalWebHostFixture
+    /// <seealso cref="ManagedMinimalHostFixture"/>
+    /// <seealso cref="IWebMinimalHostFixture" />
+    /// <remarks>This is the "modern" minimal style implementation of <see cref="ManagedWebHostFixture"/>.</remarks>
+    public class ManagedWebMinimalHostFixture : ManagedMinimalHostFixture, IWebMinimalHostFixture
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MinimalWebHostFixture"/> class.
+        /// Initializes a new instance of the <see cref="ManagedWebMinimalHostFixture"/> class.
         /// </summary>
-        public MinimalWebHostFixture()
+        public ManagedWebMinimalHostFixture()
         {
         }
 
@@ -58,7 +59,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
             
             Host = webApplication;
 
-            HostRunnerCallback(Host);
+            AsyncHostRunnerCallback(Host, CancellationToken.None);
         }
 
         /// <summary>

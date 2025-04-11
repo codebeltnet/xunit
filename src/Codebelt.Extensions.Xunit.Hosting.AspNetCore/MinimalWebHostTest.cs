@@ -9,17 +9,17 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
     /// <summary>
     /// Represents a base class from which all implementations of unit testing, that uses Microsoft Dependency Injection and depends on ASP.NET Core (minimal style), should derive.
     /// </summary>
-    /// <typeparam name="T">The type of the object that implements the <see cref="IMinimalWebHostFixture"/> interface.</typeparam>
+    /// <typeparam name="T">The type of the object that implements the <see cref="IWebMinimalHostFixture"/> interface.</typeparam>
     /// <seealso cref="MinimalHostTest" />
     /// <seealso cref="IWebHostTest"/>
     /// <seealso cref="IClassFixture{TFixture}" />
     /// <remarks>The class needed to be designed in this rather complex way, as this is the only way that xUnit supports a shared context. The need for shared context is theoretical at best, but it does opt-in for Scoped instances.</remarks>
-    public abstract class MinimalWebHostTest<T> : MinimalHostTest, IWebHostTest, IClassFixture<T> where T : class, IMinimalWebHostFixture
+    public abstract class MinimalWebHostTest<T> : MinimalHostTest, IWebHostTest, IClassFixture<T> where T : class, IWebMinimalHostFixture
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MinimalWebHostTest{T}"/> class.
         /// </summary>
-        /// <param name="hostFixture">An implementation of the <see cref="IMinimalWebHostFixture"/> interface.</param>
+        /// <param name="hostFixture">An implementation of the <see cref="IWebMinimalHostFixture"/> interface.</param>
         /// <param name="output">An implementation of the <see cref="ITestOutputHelper"/> interface.</param>
         /// <param name="callerType">The <see cref="Type"/> of caller that ends up invoking this instance.</param>
         protected MinimalWebHostTest(T hostFixture, ITestOutputHelper output = null, Type callerType = null) : this(false, hostFixture, output, callerType)
@@ -30,7 +30,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// Initializes a new instance of the <see cref="MinimalWebHostTest{T}"/> class.
         /// </summary>
         /// <param name="skipHostFixtureInitialization">A value indicating whether to skip the host fixture initialization.</param>
-        /// <param name="hostFixture">An implementation of the <see cref="IMinimalWebHostFixture"/> interface.</param>
+        /// <param name="hostFixture">An implementation of the <see cref="IWebMinimalHostFixture"/> interface.</param>
         /// <param name="output">An implementation of the <see cref="ITestOutputHelper"/> interface.</param>
         /// <param name="callerType">The <see cref="Type"/> of caller that ends up invoking this instance.</param>
         /// <exception cref="ArgumentNullException">

@@ -47,7 +47,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                         o.ValidateScopes = false;
                     });
                 },
-                new BlockingWebHostFixture()));
+                new BlockingManagedWebHostFixture()));
         }
 
         [Fact]

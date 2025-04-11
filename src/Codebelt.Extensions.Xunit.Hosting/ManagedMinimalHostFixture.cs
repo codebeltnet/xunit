@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting
@@ -8,13 +9,13 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// </summary>
     /// <seealso cref="IMinimalHostFixture" />
     /// <seealso cref="HostFixture"/>
-    /// <remarks>This is the "modern" minimal style implementation of <see cref="GenericHostFixture"/>.</remarks>
-    public class MinimalHostFixture : HostFixture, IMinimalHostFixture
+    /// <remarks>This is the "modern" minimal style implementation of <see cref="ManagedHostFixture"/>.</remarks>
+    public class ManagedMinimalHostFixture : HostFixture, IMinimalHostFixture
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MinimalHostFixture"/> class.
+        /// Initializes a new instance of the <see cref="ManagedMinimalHostFixture"/> class.
         /// </summary>
-        public MinimalHostFixture()
+        public ManagedMinimalHostFixture()
         {
         }
 
@@ -49,7 +50,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
 
             Host = hb.Build();
 
-            HostRunnerCallback(Host);
+            AsyncHostRunnerCallback(Host, CancellationToken.None);
         }
 
         /// <summary>

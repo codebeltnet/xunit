@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,12 +13,12 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// </summary>
     /// <seealso cref="HostFixture"/>
     /// <seealso cref="IGenericHostFixture" />
-    public class GenericHostFixture : HostFixture, IGenericHostFixture
+    public class ManagedHostFixture : HostFixture, IGenericHostFixture
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GenericHostFixture"/> class.
+        /// Initializes a new instance of the <see cref="ManagedHostFixture"/> class.
         /// </summary>
-        public GenericHostFixture()
+        public ManagedHostFixture()
         {
         }
 
@@ -75,7 +76,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
 
             Host = hb.Build();
 
-            HostRunnerCallback(Host);
+            AsyncHostRunnerCallback(Host, CancellationToken.None);
         }
 
         /// <summary>
