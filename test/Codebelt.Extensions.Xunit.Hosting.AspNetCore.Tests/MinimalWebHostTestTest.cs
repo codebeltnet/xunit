@@ -15,12 +15,12 @@ using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
-    public class MinimalWebHostTestTest : MinimalWebHostTest<MinimalWebHostFixture>
+    public class MinimalWebHostTestTest : MinimalWebHostTest<ManagedWebMinimalHostFixture>
     {
         private readonly IServiceProvider _provider;
         private readonly IApplicationBuilder _pipeline;
 
-        public MinimalWebHostTestTest(MinimalWebHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+        public MinimalWebHostTestTest(ManagedWebMinimalHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
         {
             _pipeline = hostFixture.Application;
             _provider = hostFixture.Host.Services;

@@ -14,12 +14,12 @@ using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {
-    public class WebHostTestTest : WebHostTest<WebHostFixture>
+    public class WebHostTestTest : WebHostTest<ManagedWebHostFixture>
     {
         private readonly IServiceProvider _provider;
         private readonly IApplicationBuilder _pipeline;
 
-        public WebHostTestTest(WebHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+        public WebHostTestTest(ManagedWebHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
         {
             _pipeline = hostFixture.Application;
             _provider = hostFixture.Host.Services;

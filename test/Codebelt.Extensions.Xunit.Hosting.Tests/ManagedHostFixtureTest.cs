@@ -1,18 +1,21 @@
 using System;
 using System.Threading.Tasks;
 using Codebelt.Extensions.Xunit.Hosting.Assets;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
-    public class GenericHostFixtureTest : Test
+    public class ManagedHostFixtureTest : Test
     {
-        private readonly GenericHostFixture _hostFixture;
+        private readonly ManagedHostFixture _hostFixture;
 
-        public GenericHostFixtureTest(ITestOutputHelper output) : base(output)
+        public ManagedHostFixtureTest(ITestOutputHelper output) : base(output)
         {
-            _hostFixture = new GenericHostFixture();
+            _hostFixture = new ManagedHostFixture();
         }
 
         [Fact]
@@ -24,7 +27,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         [Fact]
         public void ConfigureHost_ShouldThrowArgumentOutOfRangeException_WhenHostTestIsNotAssignableFromHostTest()
         {
-            var invalidHostTest = new InvalidHostTest<GenericHostFixture>(new GenericHostFixture());
+            var invalidHostTest = new InvalidHostTest<ManagedHostFixture>(new ManagedHostFixture());
             Assert.Throws<ArgumentOutOfRangeException>(() => _hostFixture.ConfigureHost(invalidHostTest));
         }
 
