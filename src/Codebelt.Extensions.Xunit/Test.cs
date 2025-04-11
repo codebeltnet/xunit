@@ -53,6 +53,14 @@ namespace Codebelt.Extensions.Xunit
         {
             TestOutput = output;
             CallerType = callerType ?? GetType();
+
+            if (output == null) { return; }
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                var exception = e.ExceptionObject as Exception;
+                output.WriteLine($"Unhandled exception captured: {exception?.Message}");
+            };
         }
 
         /// <summary>
