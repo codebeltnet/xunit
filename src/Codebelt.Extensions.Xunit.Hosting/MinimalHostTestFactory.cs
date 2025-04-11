@@ -14,11 +14,11 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// </summary>
         /// <param name="serviceSetup">The <see cref="IServiceCollection" /> which may be configured.</param>
         /// <param name="hostSetup">The <see cref="IHostBuilder"/> which may be configured.</param>
-        /// <param name="hostFixture">An optional <see cref="IMinimalHostFixture"/> implementation to use instead of the default <see cref="MinimalHostFixture"/> instance.</param>
+        /// <param name="hostFixture">An optional <see cref="IMinimalHostFixture"/> implementation to use instead of the default <see cref="ManagedMinimalHostFixture"/> instance.</param>
         /// <returns>An instance of an <see cref="IHostTest" /> implementation.</returns>
         public static IHostTest Create(Action<IServiceCollection> serviceSetup = null, Action<IHostApplicationBuilder> hostSetup = null, IMinimalHostFixture hostFixture = null)
         {
-            return new Internal.MinimalHostTest(serviceSetup, hostSetup, hostFixture ?? new MinimalHostFixture());
+            return new Internal.MinimalHostTest(serviceSetup, hostSetup, hostFixture ?? new ManagedMinimalHostFixture());
         }
 
         /// <summary>
@@ -26,11 +26,11 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// </summary>
         /// <param name="serviceSetup">The <see cref="IServiceCollection" /> which may be configured.</param>
         /// <param name="hostSetup">The <see cref="IHostBuilder"/> which may be configured.</param>
-        /// <param name="hostFixture">An optional <see cref="IMinimalHostFixture"/> implementation to use instead of the default <see cref="MinimalHostFixture"/> instance.</param>
+        /// <param name="hostFixture">An optional <see cref="IMinimalHostFixture"/> implementation to use instead of the default <see cref="ManagedMinimalHostFixture"/> instance.</param>
         /// <returns>An instance of an <see cref="IHostTest" /> implementation.</returns>
         public static IHostTest CreateWithHostBuilderContext(Action<HostBuilderContext, IServiceCollection> serviceSetup = null, Action<IHostApplicationBuilder> hostSetup = null, IMinimalHostFixture hostFixture = null)
         {
-            return new Internal.MinimalHostTest(serviceSetup, hostSetup, hostFixture ?? new MinimalHostFixture());
+            return new Internal.MinimalHostTest(serviceSetup, hostSetup, hostFixture ?? new ManagedMinimalHostFixture());
         }
     }
 }
