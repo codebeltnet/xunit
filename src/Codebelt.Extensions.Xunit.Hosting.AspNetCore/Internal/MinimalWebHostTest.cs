@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Internal
 {
-    internal sealed class MinimalWebHostTest : MinimalWebHostTest<IMinimalWebHostFixture>
+    internal sealed class MinimalWebHostTest : MinimalWebHostTest<IWebMinimalHostFixture>
     {
         private readonly Action<IApplicationBuilder> _pipelineConfigurator;
         private readonly Action<IServiceCollection> _serviceConfigurator;
@@ -14,7 +14,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Internal
         private readonly Action<IHostApplicationBuilder> _hostConfigurator;
         private HostBuilderContext _hostBuilderContext;
 
-        internal MinimalWebHostTest(Action<IServiceCollection> serviceConfigurator, Action<IApplicationBuilder> pipelineConfigurator, Action<IHostApplicationBuilder> hostConfigurator, IMinimalWebHostFixture hostFixture) : base(true, hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        internal MinimalWebHostTest(Action<IServiceCollection> serviceConfigurator, Action<IApplicationBuilder> pipelineConfigurator, Action<IHostApplicationBuilder> hostConfigurator, IWebMinimalHostFixture hostFixture) : base(true, hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
         {
             _serviceConfigurator = serviceConfigurator;
             _pipelineConfigurator = pipelineConfigurator;
@@ -22,7 +22,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Internal
             InitializeHostFixture(hostFixture);
         }
 
-        internal MinimalWebHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<HostBuilderContext, IApplicationBuilder> pipelineConfigurator, Action<IHostApplicationBuilder> hostConfigurator, IMinimalWebHostFixture hostFixture) : base(true, hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
+        internal MinimalWebHostTest(Action<HostBuilderContext, IServiceCollection> serviceConfigurator, Action<HostBuilderContext, IApplicationBuilder> pipelineConfigurator, Action<IHostApplicationBuilder> hostConfigurator, IWebMinimalHostFixture hostFixture) : base(true, hostFixture, callerType: pipelineConfigurator?.Target?.GetType() ?? serviceConfigurator?.Target?.GetType() ?? hostConfigurator?.Target?.GetType())
         {
             _serviceConfiguratorWithContext = serviceConfigurator;
             _pipelineConfiguratorWithContext = pipelineConfigurator;
@@ -30,7 +30,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Internal
             InitializeHostFixture(hostFixture);
         }
 
-        private void InitializeHostFixture(IMinimalWebHostFixture hostFixture)
+        private void InitializeHostFixture(IWebMinimalHostFixture hostFixture)
         {
             if (!hostFixture.HasValidState())
             {

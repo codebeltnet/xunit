@@ -8,7 +8,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
     /// </summary>
     /// <seealso cref="IMinimalHostFixture" />
     /// <seealso cref="IPipelineTest" />
-    public interface IMinimalWebHostFixture : IMinimalHostFixture, IPipelineTest
+    public interface IWebMinimalHostFixture : IMinimalHostFixture, IPipelineTest
     {
         /// <summary>
         /// Gets or sets the delegate that configures the HTTP request pipeline.
