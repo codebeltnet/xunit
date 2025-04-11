@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -13,12 +14,21 @@ namespace Codebelt.Extensions.Xunit.Hosting
     public abstract class HostFixture : IHostFixture, IAsyncLifetime
     {
         private readonly object _lock = new();
-        private Action<IHost> _hostRunnerCallback = host =>
+        private Func<IHost, CancellationToken, Task> _asyncHostRunnerCallback = async (host, cancellationToken) => 
         {
-            Task.Run(() => host.StartAsync().ConfigureAwait(false)) // this was done to reduce the risk of deadlocks (https://www.strathweb.com/2021/05/the-curious-case-of-asp-net-core-integration-test-deadlock/)
-                .ConfigureAwait(false)
-                .GetAwaiter()
-                .GetResult();
+            if (SynchronizationContext.Current == null)
+            {
+                await host.StartAsync(cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                Task.Run(async () =>
+                {
+                    await host.StartAsync(cancellationToken).ConfigureAwait(false);
+                }).GetAwaiter().GetResult();
+            }
+
+            // this was done to reduce the risk of deadlocks (https://stackoverflow.com/questions/50918647/why-does-this-xunit-test-deadlock-on-a-single-cpu-vm/50953607#50953607)
         };
 
         /// <summary>
@@ -56,10 +66,10 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// <exception cref="ArgumentNullException">
         /// <paramref name="value"/> cannot be null.
         /// </exception>
-        protected Action<IHost> HostRunnerCallback
+        protected Func<IHost, CancellationToken, Task> AsyncHostRunnerCallback
         {
-            get => _hostRunnerCallback;
-            set => _hostRunnerCallback = value ?? throw new ArgumentNullException(nameof(value), "The host runner delegate cannot be null.");
+            get => _asyncHostRunnerCallback;
+            set => _asyncHostRunnerCallback = value ?? throw new ArgumentNullException(nameof(value), "The host runner delegate cannot be null.");
         }
 
         /// <summary>
