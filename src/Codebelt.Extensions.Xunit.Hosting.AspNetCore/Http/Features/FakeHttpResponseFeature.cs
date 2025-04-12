@@ -23,7 +23,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features
         }
 
         /// <summary>
-        /// Registers a callback to be invoked just before the response starts. This is the last chance to modify the <see cref="P:Microsoft.AspNetCore.Http.Features.IHttpResponseFeature.Headers" />, <see cref="P:Microsoft.AspNetCore.Http.Features.IHttpResponseFeature.StatusCode" />, or <see cref="P:Microsoft.AspNetCore.Http.Features.IHttpResponseFeature.ReasonPhrase" />.
+        /// Registers a callback to be invoked just before the response starts. This is the last chance to modify the <see cref="IHttpResponseFeature.Headers" />, <see cref="IHttpResponseFeature.StatusCode" />, or <see cref="IHttpResponseFeature.ReasonPhrase" />.
         /// </summary>
         /// <param name="callback">The callback to invoke when starting the response.</param>
         /// <param name="state">The state to pass into the callback.</param>
@@ -35,8 +35,8 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features
         }
 
         /// <summary>
-        /// Indicates if the response has started. If true, the <see cref="P:Microsoft.AspNetCore.Http.Features.IHttpResponseFeature.StatusCode" />,
-        /// <see cref="P:Microsoft.AspNetCore.Http.Features.IHttpResponseFeature.ReasonPhrase" />, and <see cref="P:Microsoft.AspNetCore.Http.Features.IHttpResponseFeature.Headers" /> are now immutable, and
+        /// Indicates if the response has started. If true, the <see cref="IHttpResponseFeature.StatusCode" />,
+        /// <see cref="IHttpResponseFeature.ReasonPhrase" />, and <see cref="IHttpResponseFeature.Headers" /> are now immutable, and
         /// OnStarting should no longer be called.
         /// </summary>
         /// <value><c>true</c> if this instance has started; otherwise, <c>false</c>.</value>
