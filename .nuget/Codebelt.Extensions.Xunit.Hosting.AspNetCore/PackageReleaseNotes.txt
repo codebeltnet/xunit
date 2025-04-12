@@ -5,20 +5,22 @@ Availability: .NET 9 and .NET 8
 - CHANGED Dependencies to latest and greatest with respect to TFMs
  
 # Breaking Changes
-- RENAMED AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to WebHostFixture
+- RENAMED AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to ManagedWebHostFixture
 - REMOVED AspNetCoreHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace
 - RENAMED AspNetCoreHostTest class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to WebHostTest
-- RENAMED BlockingAspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to BlockingWebHostFixture
+- RENAMED BlockingAspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to BlockingManagedWebHostFixture
 - RENAMED IAspNetCoreHostFixture interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to IWebHostFixture
  
 # New Features
 - ADDED WebHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IWebHostFixture interface: HasValidState
 - ADDED HostBuilderApplicationExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IHostApplicationBuilder interface: ToHostBuilder
-- ADDED IMinimalWebHostFixture interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a way to use Microsoft Dependency Injection in unit tests (minimal style)
-- ADDED MinimalWebHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a default implementation of the IMinimalWebHostFixture interface
-- ADDED MinimalWebHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IMinimalWebHostFixture interface: HasValidState
+- ADDED IWebMinimalHostFixture interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a way to use Microsoft Dependency Injection in unit tests (minimal style)
+- ADDED ManagedWebMinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a default implementation of the IWebMinimalHostFixture interface
+- ADDED WebMinimalHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IWebMinimalHostFixture interface: HasValidState
 - ADDED MinimalWebHostTest{T} class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that represents a base class from which all implementations of unit testing, that uses Microsoft Dependency Injection and depends on ASP.NET Core (minimal style), should derive
 - ADDED MinimalWebHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a set of static methods for ASP.NET Core (minimal style) unit testing
+- ADDED SelfManagedWebHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a self-managed implementation of the ManagedWebHostFixture class (i.e., the host is not started automatically)
+- ADDED SelfManagedWebMinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a self-managed implementation of the ManagedWebMinimalHostFixture class (i.e., the host is not started automatically)
  
 Version 9.1.3
 Availability: .NET 9 and .NET 8

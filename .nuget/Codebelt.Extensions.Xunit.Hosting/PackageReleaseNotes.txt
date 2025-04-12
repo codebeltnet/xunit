@@ -9,21 +9,23 @@ Availability: .NET 9, .NET 8 and .NET Standard 2.0
 - RENAMED GenericHostTestFactory in the Codebelt.Extensions.Xunit.Hosting namespace to HostTestFactory
 - RENAMED IGenericHostTest in the Codebelt.Extensions.Xunit.Hosting namespace to IHostTest
 - REMOVED IServiceTest interface in the Codebelt.Extensions.Xunit.Hosting namespace due to redundancies with the IHost interface (Services property)
-- CHANGED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to an abstract class from which all other host fixture classes derive from (e.g., WebHostFixture, GenericHostFixture, etc.)
+- CHANGED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to an abstract class from which all other host fixture classes derive from (e.g., ManagedWebHostFixture, ManagedHostFixture, etc.)
 - REMOVED HostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace
 - CHANGED IHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace to be more confined in scope (e.g., less interface inheritance and ultimately fewer members)
  
 # New Features
 - ADDED HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalHostTest{T}, HostTest{T}, etc.)
 - ADDED IGenericHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host
-- ADDED GenericHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IGenericHostFixture interface (replaces the legacy HostFixture class)
+- ADDED ManagedHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IGenericHostFixture interface (replaces the legacy HostFixture class)
 - ADDED GenericHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IGenericHostFixture interface: HasValidState
 - ADDED IMinimalHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host (minimal style)
-- ADDED MinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IMinimalHostFixture interface
+- ADDED ManagedMinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IMinimalHostFixture interface
 - ADDED MinimalHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IMinimalHostFixture interface: HasValidState
 - ADDED MinimalHostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalWebHostTest, {T}, MinimalHostTest{T}, etc.)
 - ADDED MinimalHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of static methods for IHost unit testing (minimal style)
 - EXTENDED ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace with one new extension method for the IServiceCollection interface: An overload of AddXunitTestLogging that does not rely on the ITestOutputHelper interface
+- ADDED SelfManagedHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that represents a self-managed implementation of the ManagedHostFixture class (i.e., the host is not started automatically)
+- ADDED SelfManagedMinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that represents a self-managed implementation of the ManagedMinimalHostFixture class (i.e., the host is not started automatically)
  
 Version 9.1.3
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
