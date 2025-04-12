@@ -4,9 +4,9 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Cuemon.Core" Version="9.0.3" />
-    <PackageVersion Include="Cuemon.Extensions.AspNetCore" Version="9.0.3" />
-    <PackageVersion Include="Cuemon.Extensions.IO" Version="9.0.3" />
+    <PackageVersion Include="Cuemon.Core" Version="9.0.4" />
+    <PackageVersion Include="Cuemon.Extensions.AspNetCore" Version="9.0.4" />
+    <PackageVersion Include="Cuemon.Extensions.IO" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageVersion Include="MinVer" Version="6.0.0" />

@@ -8,11 +8,11 @@ namespace Codebelt.Extensions.Xunit.Hosting
 {
     public class MinimalHostFixtureTest : Test
     {
-        private readonly MinimalHostFixture _hostFixture;
+        private readonly ManagedMinimalHostFixture _hostFixture;
 
         public MinimalHostFixtureTest(ITestOutputHelper output) : base(output)
         {
-            _hostFixture = new MinimalHostFixture();
+            _hostFixture = new ManagedMinimalHostFixture();
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         [Fact]
         public void ConfigureHost_ShouldThrowArgumentOutOfRangeException_WhenHostTestIsNotAssignableFromHostTest()
         {
-            var invalidHostTest = new InvalidHostTest<GenericHostFixture>(new GenericHostFixture());
+            var invalidHostTest = new InvalidHostTest<ManagedHostFixture>(new ManagedHostFixture());
             Assert.Throws<ArgumentOutOfRangeException>(() => _hostFixture.ConfigureHost(invalidHostTest));
         }
 

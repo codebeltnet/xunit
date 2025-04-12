@@ -21,11 +21,11 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <param name="serviceSetup">The <see cref="IServiceCollection"/> which may be configured.</param>
         /// <param name="pipelineSetup">The <see cref="IApplicationBuilder"/> which may be configured.</param>
         /// <param name="hostSetup">The <see cref="IHostBuilder"/> which may be configured.</param>
-        /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="WebHostFixture"/> instance.</param>
+        /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="ManagedWebHostFixture"/> instance.</param>
         /// <returns>An instance of an <see cref="IWebHostTest"/> implementation.</returns>
-        public static IWebHostTest Create(Action<IServiceCollection> serviceSetup = null, Action<IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, IMinimalWebHostFixture hostFixture = null)
+        public static IWebHostTest Create(Action<IServiceCollection> serviceSetup = null, Action<IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, IWebMinimalHostFixture hostFixture = null)
         {
-            return new MinimalWebHostTest(serviceSetup, pipelineSetup, hostSetup, hostFixture ?? new MinimalWebHostFixture());
+            return new MinimalWebHostTest(serviceSetup, pipelineSetup, hostSetup, hostFixture ?? new ManagedWebMinimalHostFixture());
         }
 
         /// <summary>
@@ -34,11 +34,11 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <param name="serviceSetup">The <see cref="IServiceCollection"/> which may be configured.</param>
         /// <param name="pipelineSetup">The <see cref="IApplicationBuilder"/> which may be configured.</param>
         /// <param name="hostSetup">The <see cref="IHostBuilder"/> which may be configured.</param>
-        /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="WebHostFixture"/> instance.</param>
+        /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="ManagedWebHostFixture"/> instance.</param>
         /// <returns>An instance of an <see cref="IWebHostTest"/> implementation.</returns>
-        public static IWebHostTest CreateWithHostBuilderContext(Action<HostBuilderContext, IServiceCollection> serviceSetup = null, Action<HostBuilderContext, IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, IMinimalWebHostFixture hostFixture = null)
+        public static IWebHostTest CreateWithHostBuilderContext(Action<HostBuilderContext, IServiceCollection> serviceSetup = null, Action<HostBuilderContext, IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, IWebMinimalHostFixture hostFixture = null)
         {
-            return new MinimalWebHostTest(serviceSetup, pipelineSetup, hostSetup, hostFixture ?? new MinimalWebHostFixture());
+            return new MinimalWebHostTest(serviceSetup, pipelineSetup, hostSetup, hostFixture ?? new ManagedWebMinimalHostFixture());
         }
 
         /// <summary>
@@ -48,9 +48,9 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <param name="pipelineSetup">The <see cref="IApplicationBuilder"/> which may be configured.</param>
         /// <param name="hostSetup">The <see cref="IHostBuilder"/> which may be configured.</param>
         /// <param name="responseFactory">The function delegate that creates a <see cref="HttpResponseMessage"/> from the <see cref="HttpClient"/>. Default is a GET request to the root URL ("/").</param>
-        /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="WebHostFixture"/> instance.</param>
+        /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="ManagedWebHostFixture"/> instance.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The task result contains the <see cref="HttpResponseMessage"/> for the test server.</returns>
-        public static async Task<HttpResponseMessage> RunAsync(Action<IServiceCollection> serviceSetup = null, Action<IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null, IMinimalWebHostFixture hostFixture = null)
+        public static async Task<HttpResponseMessage> RunAsync(Action<IServiceCollection> serviceSetup = null, Action<IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null, IWebMinimalHostFixture hostFixture = null)
         {
             using var client = Create(serviceSetup, pipelineSetup, hostSetup, hostFixture).Host.GetTestClient();
             return await client.ToHttpResponseMessageAsync(responseFactory).ConfigureAwait(false);
@@ -63,9 +63,9 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <param name="pipelineSetup">The <see cref="IApplicationBuilder" /> which may be configured.</param>
         /// <param name="hostSetup">The <see cref="IHostBuilder" /> which may be configured.</param>
         /// <param name="responseFactory">The function delegate that creates a <see cref="HttpResponseMessage"/> from the <see cref="HttpClient"/>. Default is a GET request to the root URL ("/").</param>
-        /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="WebHostFixture"/> instance.</param>
+        /// <param name="hostFixture">An optional <see cref="IWebHostFixture"/> implementation to use instead of the default <see cref="ManagedWebHostFixture"/> instance.</param>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The task result contains the <see cref="HttpResponseMessage"/> for the test server.</returns>
-        public static async Task<HttpResponseMessage> RunWithHostBuilderContextAsync(Action<HostBuilderContext, IServiceCollection> serviceSetup = null, Action<HostBuilderContext, IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null, IMinimalWebHostFixture hostFixture = null)
+        public static async Task<HttpResponseMessage> RunWithHostBuilderContextAsync(Action<HostBuilderContext, IServiceCollection> serviceSetup = null, Action<HostBuilderContext, IApplicationBuilder> pipelineSetup = null, Action<IHostApplicationBuilder> hostSetup = null, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null, IWebMinimalHostFixture hostFixture = null)
         {
             using var client = CreateWithHostBuilderContext(serviceSetup, pipelineSetup, hostSetup, hostFixture).Host.GetTestClient();
             return await client.ToHttpResponseMessageAsync(responseFactory).ConfigureAwait(false);

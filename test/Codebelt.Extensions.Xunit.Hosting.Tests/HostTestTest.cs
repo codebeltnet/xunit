@@ -13,14 +13,14 @@ using Xunit.Priority;
 namespace Codebelt.Extensions.Xunit.Hosting
 {
     [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-    public class HostTestTest : HostTest<GenericHostFixture>
+    public class HostTestTest : HostTest<ManagedHostFixture>
     {
         private bool _isHostRunning = false;
         private readonly IServiceScope _scope;
         private readonly Func<IList<ICorrelationToken>> _correlationsFactory;
         private static readonly ConcurrentBag<ICorrelationToken> ScopedCorrelations = new();
 
-        public HostTestTest(GenericHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+        public HostTestTest(ManagedHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
         {
             _scope = hostFixture.Host.Services.CreateScope();
             _correlationsFactory = () => _scope.ServiceProvider.GetServices<ICorrelationToken>().ToList();

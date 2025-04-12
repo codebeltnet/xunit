@@ -15,35 +15,38 @@ This major release introduces support for unit testing Minimal APIs and includes
 
 - HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalHostTest{T}, HostTest{T}, etc.)
 - IGenericHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host
-- GenericHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IGenericHostFixture interface (replaces the legacy HostFixture class)
+- ManagedHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IGenericHostFixture interface (replaces the legacy HostFixture class)
 - GenericHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IGenericHostFixture interface: HasValidState
 - IMinimalHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host (minimal style)
-- MinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IMinimalHostFixture interface
-- MinimalHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IMinimalHostFixture interface: HasValidState
-- MinimalHostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalWebHostTest, {T}, MinimalHostTest{T}, etc.)
-- MinimalHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of static methods for IHost unit testing (minimal style)
-- HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalHostTest{T}, HostTest{T}, etc.)
-- IGenericHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host
-- GenericHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IGenericHostFixture interface
-- GenericHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IGenericHostFixture interface: HasValidState
-- IMinimalHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host (minimal style)
-- MinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IMinimalHostFixture interface
+- ManagedMinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a default implementation of the IMinimalHostFixture interface
 - MinimalHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IMinimalHostFixture interface: HasValidState
 - MinimalHostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalWebHostTest, {T}, MinimalHostTest{T}, etc.)
 - MinimalHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of static methods for IHost unit testing (minimal style)
 - ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace received one new extension method for the IServiceCollection interface: An overload of AddXunitTestLogging that does not rely on the ITestOutputHelper interface
   - This was done to help mitigate those scenarios where the [current design of xUnit v2 and ITestOutputHelper can cause deadlocks](https://github.com/xunit/xunit/discussions/2994), e.g. you can access the xUnit logger but nothing is logged to the test output
+- WebHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IWebHostFixture interface: HasValidState
+- HostBuilderApplicationExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IHostApplicationBuilder interface: ToHostBuilder
+- IWebMinimalHostFixture interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a way to use Microsoft Dependency Injection in unit tests (minimal style)
+- ManagedWebMinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a default implementation of the IWebMinimalHostFixture interface
+- WebMinimalHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that consist of one extension method for the IWebMinimalHostFixture interface: HasValidState
+- MinimalWebHostTest{T} class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that represents a base class from which all implementations of unit testing, that uses Microsoft Dependency Injection and depends on ASP.NET Core (minimal style), should derive
+- MinimalWebHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a set of static methods for ASP.NET Core (minimal style) unit testing
+- SelfManagedHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that represents a self-managed implementation of the ManagedHostFixture class (i.e., the host is not started automatically)
+- SelfManagedMinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that represents a self-managed implementation of the ManagedMinimalHostFixture class (i.e., the host is not started automatically)
+- SelfManagedWebHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a self-managed implementation of the ManagedWebHostFixture class (i.e., the host is not started automatically)
+- SelfManagedWebMinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace that provides a self-managed implementation of the ManagedWebMinimalHostFixture class (i.e., the host is not started automatically)
 
 ### Changed
 
+- Test class in the Codebelt.Extensions.Xunit namespace to report unhandled exceptions in the test output using the injected ITestOutputHelper interface
 - IHostingEnvironmentTest in the Codebelt.Extensions.Xunit.Hosting namespace was renamed to IEnvironmentTest (breaking change)
 - GenericHostTestFactory in the Codebelt.Extensions.Xunit.Hosting namespace was renamed to HostTestFactory (breaking change)
 - IGenericHostTest in the Codebelt.Extensions.Xunit.Hosting namespace was renamed to IHostTest (breaking change)
-- HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace was changed to an abstract class from which all other host fixture classes derive from (e.g., WebHostFixture, GenericHostFixture, etc.)
+- HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace was changed to an abstract class from which all other host fixture classes derive from (e.g., ManagedWebHostFixture, ManagedHostFixture, etc.)
 - IHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace was changed to be more confined in scope (e.g., less interface inheritance and ultimately fewer members)
-- AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace was renamed to WebHostFixture (breaking change)
+- AspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace was renamed to ManagedWebHostFixture (breaking change)
 - AspNetCoreHostTest class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace was renamed to WebHostTest (breaking change)
-- BlockingAspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace was renamed to BlockingWebHostFixture (breaking change)
+- BlockingAspNetCoreHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace was renamed to BlockingManagedWebHostFixture (breaking change)
 - IAspNetCoreHostFixture interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace was renamed to IWebHostFixture (breaking change)
 
 ### Removed
