@@ -149,6 +149,8 @@ jobs:
     name: call-codeql
     needs: [build,test]
     uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v1
+    permissions:
+      security-events: write
 
   deploy:
     if: github.event_name != 'pull_request'
