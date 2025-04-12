@@ -2,7 +2,7 @@
 
 namespace Codebelt.Extensions.Xunit
 {
-    internal class DelimitedStringOptions<T>
+    internal sealed class DelimitedStringOptions<T>
     {
         internal DelimitedStringOptions()
         {
