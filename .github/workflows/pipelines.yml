@@ -18,6 +18,9 @@ on:
           - Debug
           - Release
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: 🛠️ Build
@@ -146,6 +149,8 @@ jobs:
     name: call-codeql
     needs: [build,test]
     uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v1
+    permissions:
+      security-events: write
 
   deploy:
     if: github.event_name != 'pull_request'
@@ -154,6 +159,9 @@ jobs:
     timeout-minutes: 15
     needs: [build, pack, test, sonarcloud, codecov, codeql]
     environment: Production
+    permissions:
+      contents: write
+      packages: write
     steps:
       - uses: codebeltnet/nuget-push@v1
         with:

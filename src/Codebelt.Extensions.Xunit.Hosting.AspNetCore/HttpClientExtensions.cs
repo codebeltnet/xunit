@@ -21,7 +21,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <remarks>Designed to be used in conjunction with <see cref="WebHostTestFactory.RunAsync(System.Action{Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Action{Microsoft.AspNetCore.Builder.IApplicationBuilder},System.Action{Microsoft.Extensions.Hosting.IHostBuilder},System.Func{System.Net.Http.HttpClient,System.Threading.Tasks.Task{System.Net.Http.HttpResponseMessage}},IWebHostFixture)"/> and <see cref="WebHostTestFactory.RunWithHostBuilderContextAsync(System.Action{Microsoft.Extensions.Hosting.HostBuilderContext,Microsoft.Extensions.DependencyInjection.IServiceCollection},System.Action{Microsoft.Extensions.Hosting.HostBuilderContext,Microsoft.AspNetCore.Builder.IApplicationBuilder},System.Action{Microsoft.Extensions.Hosting.IHostBuilder},System.Func{System.Net.Http.HttpClient,System.Threading.Tasks.Task{System.Net.Http.HttpResponseMessage}},IWebHostFixture)"/>.</remarks>
         public static async Task<HttpResponseMessage> ToHttpResponseMessageAsync(this HttpClient client, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null)
         {
-            if (client == null) { throw new ArgumentNullException(nameof(client)); }
+            ArgumentNullException.ThrowIfNull(client);
             responseFactory ??= c => c.GetAsync("/");
             return await responseFactory(client).ConfigureAwait(false);
         }
