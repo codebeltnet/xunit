@@ -18,6 +18,9 @@ on:
           - Debug
           - Release
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: 🛠️ Build
@@ -154,6 +157,9 @@ jobs:
     timeout-minutes: 15
     needs: [build, pack, test, sonarcloud, codecov, codeql]
     environment: Production
+    permissions:
+      contents: write
+      packages: write
     steps:
       - uses: codebeltnet/nuget-push@v1
         with:
