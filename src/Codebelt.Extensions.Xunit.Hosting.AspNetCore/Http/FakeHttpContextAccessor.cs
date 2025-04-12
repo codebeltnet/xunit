@@ -31,7 +31,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http
             HttpContext = context;
         }
 
-        private Stream MakeGreeting(string greeting)
+        private static Stream MakeGreeting(string greeting)
         {
             Stream interim = null;
             Stream result = null;
