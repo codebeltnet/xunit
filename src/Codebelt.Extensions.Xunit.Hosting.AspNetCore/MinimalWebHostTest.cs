@@ -38,7 +38,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// </exception>
         protected MinimalWebHostTest(bool skipHostFixtureInitialization, T hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(output, callerType)
         {
-            if (hostFixture == null) { throw new ArgumentNullException(nameof(hostFixture)); }
+            ArgumentNullException.ThrowIfNull(hostFixture);
             if (skipHostFixtureInitialization) { return; }
             if (!hostFixture.HasValidState())
             {

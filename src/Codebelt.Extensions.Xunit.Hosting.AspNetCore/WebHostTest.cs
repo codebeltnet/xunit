@@ -32,7 +32,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// <param name="callerType">The <see cref="Type"/> of caller that ends up invoking this instance.</param>
         protected WebHostTest(bool skipHostFixtureInitialization, T hostFixture, ITestOutputHelper output = null, Type callerType = null) : base(skipHostFixtureInitialization, hostFixture, output, callerType)
         {
-            if (hostFixture == null) { throw new ArgumentNullException(nameof(hostFixture)); }
+            ArgumentNullException.ThrowIfNull(hostFixture);
             if (skipHostFixtureInitialization) { return; }
             if (!hostFixture.HasValidState())
             {

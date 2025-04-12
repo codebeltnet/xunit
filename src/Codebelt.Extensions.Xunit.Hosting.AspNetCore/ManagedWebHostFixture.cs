@@ -38,7 +38,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         /// </exception>
         public override void ConfigureHost(Test hostTest)
         {
-            if (hostTest == null) { throw new ArgumentNullException(nameof(hostTest)); }
+            ArgumentNullException.ThrowIfNull(hostTest);
             if (!HasTypes(hostTest.GetType(), typeof(WebHostTest<>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(WebHostTest<>), $"{nameof(hostTest)} is not assignable from WebHostTest<T>."); }
 
             var hb = new HostBuilder()
