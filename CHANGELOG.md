@@ -7,7 +7,7 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]  
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
-## [10.0.0] - TBD
+## [10.0.0] - 2025-04-12
 
 This major release introduces support for unit testing Minimal APIs and includes numerous breaking changes with valuable learnings from previous 9.1.x releases. These changes aim to ensure greater consistency across the `Codebelt.Extensions.Xunit.Hosting` and `Codebelt.Extensions.Xunit.Hosting.AspNetCore` namespaces.
 
