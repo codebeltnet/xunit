@@ -58,6 +58,7 @@ jobs:
     uses: codebeltnet/jobs-dotnet-test/.github/workflows/default.yml@v1
     with:
       configuration: ${{ matrix.configuration }}
+      runs-on: ${{ matrix.os }}
 
   sonarcloud:
     name: call-sonarcloud
