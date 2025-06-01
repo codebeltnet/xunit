@@ -1,4 +1,17 @@
-﻿Version 10.0.1
+﻿Version 10.0.2
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
+ 
+# ALM
+- CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
+ 
+# Bug Fixes
+- FIXED ManagedHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to exit ConfigureHost method if the fixture is not in a valid state (e.g., configuration delegate properties are null)
+ 
+# Improvements
+- CHANGED HasValidState method on the GenericHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to exclude check of Host property
+- CHANGED AddXunitTestLogging method on the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to be forgiving when no active test is present (relates to https://github.com/xunit/xunit/issues/2377)
+ 
+Version 10.0.1
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
  
 # ALM
