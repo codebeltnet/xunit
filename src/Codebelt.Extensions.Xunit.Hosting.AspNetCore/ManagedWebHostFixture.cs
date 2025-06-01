@@ -40,6 +40,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
         {
             ArgumentNullException.ThrowIfNull(hostTest);
             if (!HasTypes(hostTest.GetType(), typeof(WebHostTest<>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(WebHostTest<>), $"{nameof(hostTest)} is not assignable from WebHostTest<T>."); }
+            if (!this.HasValidState()) { return; } // had to include this due to dual-call this method (one uncontrolled from xUnit library reflection magic; second controlled from this library)
 
             var hb = new HostBuilder()
                 .ConfigureWebHost(webBuilder =>
@@ -73,7 +74,7 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
                         })
                         .Configure(app =>
                             {
-                                ConfigureApplicationCallback(app);
+                                ConfigureApplicationCallback.Invoke(app);
                                 Application = app;
                             }
                         )

@@ -37,6 +37,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
         {
             if (hostTest == null) { throw new ArgumentNullException(nameof(hostTest)); }
             if (!HasTypes(hostTest.GetType(), typeof(HostTest<>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(HostTest<>), $"{nameof(hostTest)} is not assignable from HostTest<T>."); }
+            if (!this.HasValidState()) { return; } // had to include this due to dual-call this method (one uncontrolled from xUnit library reflection magic; second controlled from this library)
 
             var hb = new HostBuilder()
                 .UseContentRoot(Directory.GetCurrentDirectory())
