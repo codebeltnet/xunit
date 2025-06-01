@@ -7,6 +7,21 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]  
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [10.0.2] - 2025-06-01
+
+This is a minor update that addresses some non-critical issues and improves the overall developer experience of the package.
+
+### Changed
+
+- HasValidState method on the GenericHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to exclude check of Host property
+- AddXunitTestLogging method on the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to be forgiving when no active test is present (relates to https://github.com/xunit/xunit/issues/2377)
+  - You should use the ITestOutputHelperAccessor capability provided by AddXunitTestLoggingOutputHelperAccessor instead to set the ITestOutputHelper instance in your tests (e.g., in your constructor call `fixture.Host.Services.GetRequiredService<ITestOutputHelperAccessor>().TestOutput = output;`)
+
+### Fixed
+
+- ManagedHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to exit ConfigureHost method if the fixture is not in a valid state (e.g., configuration delegate properties are null)
+- ManagedWebHostFixture class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to exit ConfigureHost method if the fixture is not in a valid state (e.g., configuration delegate properties are null)
+
 ## [10.0.1] - 2025-05-24
 
 This is a service update that focuses on package dependencies.

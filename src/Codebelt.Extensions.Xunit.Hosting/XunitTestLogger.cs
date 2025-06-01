@@ -41,7 +41,14 @@ namespace Codebelt.Extensions.Xunit.Hosting
             }
             else
             {
-                _output?.WriteLine(message);
+                try
+                {
+                    _output?.WriteLine(message);
+                }
+                catch (InvalidOperationException)
+                {
+                    // can happen when there is no currently active test (e.g., you should use the ITestOutputHelperAccessor capability)
+                }
             }
         }
 

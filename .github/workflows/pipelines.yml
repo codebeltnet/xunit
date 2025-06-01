@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-    uses: codebeltnet/jobs-dotnet-build/.github/workflows/default.yml@v1
+    uses: codebeltnet/jobs-dotnet-build/.github/workflows/default.yml@v2
     with:
       configuration: ${{ matrix.configuration }}
       strong-name-key-filename: xunit.snk
@@ -41,10 +41,9 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-    uses: codebeltnet/jobs-dotnet-pack/.github/workflows/default.yml@v1
+    uses: codebeltnet/jobs-dotnet-pack/.github/workflows/default.yml@v2
     with:
       configuration: ${{ matrix.configuration }}
-      upload-packed-artifact: true
       version: ${{ needs.build.outputs.version }}
 
   test:
@@ -55,7 +54,7 @@ jobs:
       matrix:
         os: [ubuntu-24.04, windows-2022]
         configuration: [Debug, Release]
-    uses: codebeltnet/jobs-dotnet-test/.github/workflows/default.yml@v1
+    uses: codebeltnet/jobs-dotnet-test/.github/workflows/default.yml@v2
     with:
       configuration: ${{ matrix.configuration }}
       runs-on: ${{ matrix.os }}
@@ -90,7 +89,7 @@ jobs:
     if: github.event_name != 'pull_request'
     name: call-nuget
     needs: [build, pack, test, sonarcloud, codecov, codeql]
-    uses: codebeltnet/jobs-nuget-push/.github/workflows/default.yml@v1
+    uses: codebeltnet/jobs-nuget-push/.github/workflows/default.yml@v2
     with:
       version: ${{ needs.build.outputs.version }}
       environment: Production
