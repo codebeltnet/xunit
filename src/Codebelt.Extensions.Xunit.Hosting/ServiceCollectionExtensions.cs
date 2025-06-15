@@ -70,18 +70,15 @@ namespace Codebelt.Extensions.Xunit.Hosting
 
         private static void AddTestOutputHelperAccessor(IServiceCollection services, LogLevel minimumLevel)
         {
-            if (services.Any(sd => sd.ServiceType == typeof(ITestOutputHelperAccessor)))
+            services.AddLogging(builder =>
             {
-                services.AddLogging(builder =>
+                builder.SetMinimumLevel(minimumLevel);
+                builder.Services.AddSingleton<ILoggerProvider>(provider =>
                 {
-                    builder.SetMinimumLevel(minimumLevel);
-                    builder.Services.AddSingleton<ILoggerProvider>(provider =>
-                    {
-                        var accessor = provider.GetRequiredService<ITestOutputHelperAccessor>();
-                        return new XunitTestLoggerProvider(accessor);
-                    });
+                    var accessor = provider.GetRequiredService<ITestOutputHelperAccessor>();
+                    return new XunitTestLoggerProvider(accessor);
                 });
-            }
+            });
         }
 
         /// <summary>
