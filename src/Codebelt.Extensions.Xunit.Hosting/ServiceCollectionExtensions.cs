@@ -25,15 +25,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
             if (services == null) { throw new ArgumentNullException(nameof(services)); }
             if (services.Any(sd => sd.ServiceType == typeof(ITestOutputHelperAccessor)))
             {
-                services.AddLogging(builder =>
-                {
-                    builder.SetMinimumLevel(minimumLevel);
-                    builder.Services.AddSingleton<ILoggerProvider>(provider =>
-                    {
-                        var accessor = provider.GetRequiredService<ITestOutputHelperAccessor>();
-                        return new XunitTestLoggerProvider(accessor);
-                    });
-                });
+                AddTestOutputHelperAccessor(services, minimumLevel);
             }
             else
             {
@@ -63,16 +55,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
             if (output == null) { throw new ArgumentNullException(nameof(output)); }
             if (services.Any(sd => sd.ServiceType == typeof(ITestOutputHelperAccessor)))
             {
-                services.AddLogging(builder =>
-                {
-                    builder.SetMinimumLevel(minimumLevel);
-                    builder.Services.AddSingleton<ILoggerProvider>(provider =>
-                    {
-                        var accessor = provider.GetRequiredService<ITestOutputHelperAccessor>();
-                        accessor.TestOutput = output;
-                        return new XunitTestLoggerProvider(accessor);
-                    });
-                });
+                AddTestOutputHelperAccessor(services, minimumLevel);
             }
             else
             {
@@ -83,6 +66,22 @@ namespace Codebelt.Extensions.Xunit.Hosting
                 });
             }
             return services;
+        }
+
+        private static void AddTestOutputHelperAccessor(IServiceCollection services, LogLevel minimumLevel)
+        {
+            if (services.Any(sd => sd.ServiceType == typeof(ITestOutputHelperAccessor)))
+            {
+                services.AddLogging(builder =>
+                {
+                    builder.SetMinimumLevel(minimumLevel);
+                    builder.Services.AddSingleton<ILoggerProvider>(provider =>
+                    {
+                        var accessor = provider.GetRequiredService<ITestOutputHelperAccessor>();
+                        return new XunitTestLoggerProvider(accessor);
+                    });
+                });
+            }
         }
 
         /// <summary>
