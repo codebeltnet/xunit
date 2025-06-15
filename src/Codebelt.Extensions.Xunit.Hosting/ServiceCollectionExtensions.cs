@@ -23,12 +23,26 @@ namespace Codebelt.Extensions.Xunit.Hosting
         public static IServiceCollection AddXunitTestLogging(this IServiceCollection services, LogLevel minimumLevel = LogLevel.Trace)
         {
             if (services == null) { throw new ArgumentNullException(nameof(services)); }
-            services.AddLogging(builder =>
+            if (services.Any(sd => sd.ServiceType == typeof(ITestOutputHelperAccessor)))
             {
-                builder.SetMinimumLevel(minimumLevel);
-                builder.AddProvider(new XunitTestLoggerProvider());
-            });
-
+                services.AddLogging(builder =>
+                {
+                    builder.SetMinimumLevel(minimumLevel);
+                    builder.Services.AddSingleton<ILoggerProvider>(provider =>
+                    {
+                        var accessor = provider.GetRequiredService<ITestOutputHelperAccessor>();
+                        return new XunitTestLoggerProvider(accessor);
+                    });
+                });
+            }
+            else
+            {
+                services.AddLogging(builder =>
+                {
+                    builder.SetMinimumLevel(minimumLevel);
+                    builder.AddProvider(new XunitTestLoggerProvider());
+                });
+            }
             return services;
         }
 
