@@ -1,4 +1,13 @@
-﻿Version 10.0.2
+﻿Version 10.0.3
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
+ 
+# ALM
+- CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
+ 
+# Improvements
+- CHANGED AddXunitTestLogging method on the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to use same logic as the overload equivalent and be forgiving when ITestOutputHelper is null (before an InvalidOperationException was thrown)
+ 
+Version 10.0.2
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
  
 # ALM
