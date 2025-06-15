@@ -59,6 +59,7 @@ jobs:
       configuration: ${{ matrix.configuration }}
       runs-on: ${{ matrix.os }}
       build-switches: -p:SkipSignAssembly=true
+      restore: true # we need to restore the packages for the test project
 
   sonarcloud:
     name: call-sonarcloud
