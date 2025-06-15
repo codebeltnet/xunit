@@ -36,8 +36,14 @@ namespace Codebelt.Extensions.Xunit.Hosting
 
             if (_accessor != null)
             {
-                if (_accessor.TestOutput == null) { throw new InvalidOperationException($"{nameof(ITestOutputHelperAccessor)}.{nameof(ITestOutputHelperAccessor.TestOutput)} is null."); }
-                _accessor.TestOutput.WriteLine(message);
+                try
+                {
+                    _accessor.TestOutput?.WriteLine(message);
+                }
+                catch (InvalidOperationException)
+                {
+                    // can happen when there is no currently active test
+                }
             }
             else
             {

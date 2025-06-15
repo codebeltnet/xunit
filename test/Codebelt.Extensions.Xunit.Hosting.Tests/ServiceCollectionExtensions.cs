@@ -123,5 +123,40 @@ namespace Codebelt.Extensions.Xunit.Hosting
                 entry => Assert.Equal("Warning: SUT", entry.ToString()),
                 entry => Assert.Equal("Information: Unique message for logger2.", entry.ToString()));
         }
+
+        [Fact]
+        public void AddXunitTestLogging_ShouldAddXunitTestLogging_UsingHostTest()
+        {
+            using var test = HostTestFactory.Create(services =>
+            {
+                services.AddXunitTestLogging();
+            });
+
+            var logger = test.Host.Services.GetRequiredService<ILogger<ServiceCollectionExtensions>>();
+            logger.LogInformation("Test");
+
+            var store = logger.GetTestStore();
+
+            Assert.Equal("Information: Test", store.Query().First().Message);
+        }
+        
+        [Fact]
+        public void AddXunitTestLogging_ShouldAddXunitTestLogging_UsingHostTest_WithOutputToRunner()
+        {
+            using var test = HostTestFactory.Create(services =>
+            {
+                services.AddXunitTestLoggingOutputHelperAccessor();
+                services.AddXunitTestLogging();
+            });
+
+            test.Host.Services.GetRequiredService<ITestOutputHelperAccessor>().TestOutput = TestOutput;
+            
+            var logger = test.Host.Services.GetRequiredService<ILogger<ServiceCollectionExtensions>>();
+            logger.LogInformation("Test");
+
+            var store = logger.GetTestStore();
+
+            Assert.Equal("Information: Test", store.Query().First().Message);
+        }
     }
 }

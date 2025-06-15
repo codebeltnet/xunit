@@ -23,12 +23,18 @@ namespace Codebelt.Extensions.Xunit.Hosting
         public static IServiceCollection AddXunitTestLogging(this IServiceCollection services, LogLevel minimumLevel = LogLevel.Trace)
         {
             if (services == null) { throw new ArgumentNullException(nameof(services)); }
-            services.AddLogging(builder =>
+            if (services.Any(sd => sd.ServiceType == typeof(ITestOutputHelperAccessor)))
             {
-                builder.SetMinimumLevel(minimumLevel);
-                builder.AddProvider(new XunitTestLoggerProvider());
-            });
-
+                AddTestOutputHelperAccessor(services, minimumLevel);
+            }
+            else
+            {
+                services.AddLogging(builder =>
+                {
+                    builder.SetMinimumLevel(minimumLevel);
+                    builder.AddProvider(new XunitTestLoggerProvider());
+                });
+            }
             return services;
         }
 
@@ -49,16 +55,7 @@ namespace Codebelt.Extensions.Xunit.Hosting
             if (output == null) { throw new ArgumentNullException(nameof(output)); }
             if (services.Any(sd => sd.ServiceType == typeof(ITestOutputHelperAccessor)))
             {
-                services.AddLogging(builder =>
-                {
-                    builder.SetMinimumLevel(minimumLevel);
-                    builder.Services.AddSingleton<ILoggerProvider>(provider =>
-                    {
-                        var accessor = provider.GetRequiredService<ITestOutputHelperAccessor>();
-                        accessor.TestOutput = output;
-                        return new XunitTestLoggerProvider(accessor);
-                    });
-                });
+                AddTestOutputHelperAccessor(services, minimumLevel);
             }
             else
             {
@@ -69,6 +66,19 @@ namespace Codebelt.Extensions.Xunit.Hosting
                 });
             }
             return services;
+        }
+
+        private static void AddTestOutputHelperAccessor(IServiceCollection services, LogLevel minimumLevel)
+        {
+            services.AddLogging(builder =>
+            {
+                builder.SetMinimumLevel(minimumLevel);
+                builder.Services.AddSingleton<ILoggerProvider>(provider =>
+                {
+                    var accessor = provider.GetRequiredService<ITestOutputHelperAccessor>();
+                    return new XunitTestLoggerProvider(accessor);
+                });
+            });
         }
 
         /// <summary>
