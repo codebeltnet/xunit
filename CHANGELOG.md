@@ -4,16 +4,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 For more details, please refer to `PackageReleaseNotes.txt` on a per assembly basis in the `.nuget` folder.
 
-## [10.0.4] - 2025-07-20
-
-This is a service update that focuses on package dependencies.
-
-### Changed
-
-- Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
-
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
+
+## [10.0.4] - 2025-07-10
+
+This is a service update that focuses on package dependencies.
 
 ## [10.0.3] - 2025-06-15
 
