@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Codebelt.Extensions.Xunit.Assets;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit
 {

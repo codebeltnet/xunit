@@ -2,7 +2,6 @@ using System;
 using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Assets;
 using Microsoft.AspNetCore.Builder;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {

@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit.Abstractions;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Codebelt.Extensions.Xunit.Hosting.Assets

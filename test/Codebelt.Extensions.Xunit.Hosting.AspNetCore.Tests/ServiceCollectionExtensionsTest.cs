@@ -3,7 +3,6 @@ using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {

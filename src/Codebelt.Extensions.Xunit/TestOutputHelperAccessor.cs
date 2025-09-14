@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace Codebelt.Extensions.Xunit
 {
