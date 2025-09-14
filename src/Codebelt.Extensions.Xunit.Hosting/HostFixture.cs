@@ -185,14 +185,9 @@ namespace Codebelt.Extensions.Xunit.Hosting
         /// Called immediately after the class has been created, before it is used.
         /// </summary>
         /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-        public virtual Task InitializeAsync()
+        public virtual ValueTask InitializeAsync()
         {
-            return Task.CompletedTask;
-        }
-
-        Task IAsyncLifetime.DisposeAsync()
-        {
-            return DisposeAsync().AsTask();
+            return default;
         }
     }
 }
