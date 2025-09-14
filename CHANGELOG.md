@@ -7,6 +7,28 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [11.0.0] - TBD
+
+This is a major release that focuses on adapting to the latest .NET 10 (LTS) release, while also removing support for .NET 8 (LTS).
+
+At the same time we also adapted xUnit v3 as this is the one in active development whereas xUnit v2 is in maintenance mode only.
+
+> [!NOTE]
+> xUnit has always been my preferred test framework for .NET, and I have been using it since late 2017. However, some of the design choices made in xUnit v3 are a bit puzzling to me, especially around something as important as versioning.
+> 
+> All good practices has been put aside, and for the majority of new packages, major version is baked into the package name itself (e.g., `xunit.v3` instead of just `xunit`).
+> 
+> Semantic Versioning is all about conveying meaning and intent through version numbers, and this approach introduces unnecessary redundancy and makes long-term maintenance less smooth. Its a mess that could lead others down a slippery slope of wrongdoings due to the popularity of the framework.
+>
+> That written, updating to v11.0.0 of this library should not provide major issues for you as a consumer, but I do recommend familiarizing yourself with the [Migrating Unit Tests from xUnit v2 to v3](https://xunit.net/docs/getting-started/v3/migration) guide.
+>
+> It's also worth reading the [What's New in xUnit v3](https://xunit.net/docs/getting-started/v3/whats-new) document to get a better understanding of the changes and improvements introduced.
+
+### Changed
+
+- Test class in the Codebelt.Extensions.Xunit namespace to use ValueTask for InitializeAsync instead of Task (xUnit v3 consequence change)
+- HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to use ValueTask for InitializeAsync instead of Task (xUnit v3 consequence change)
+
 ## [10.0.6] - 2025-09-14
 
 This is a service update that focuses on package dependencies.
