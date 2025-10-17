@@ -63,6 +63,7 @@ jobs:
       build-switches: -p:SkipSignAssembly=true
       restore: true # we need to restore the packages for the test project
       build: true # we need to build for .net48 tests
+      include-preview: true
 
   sonarcloud:
     name: call-sonarcloud
