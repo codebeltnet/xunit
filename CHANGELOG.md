@@ -33,6 +33,10 @@ At the same time we also adapted xUnit v3 as this is the one in active developme
 - Test class in the Codebelt.Extensions.Xunit namespace to use ValueTask for InitializeAsync instead of Task (xUnit v3 consequence change)
 - HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to use ValueTask for InitializeAsync instead of Task (xUnit v3 consequence change)
 
+## [10.0.7] - 2025-10-17
+
+This is a service update that focuses on package dependencies.
+
 ## [10.0.6] - 2025-09-14
 
 This is a service update that focuses on package dependencies.

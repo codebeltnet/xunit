@@ -62,7 +62,7 @@ jobs:
       runs-on: ${{ matrix.os }}
       build-switches: -p:SkipSignAssembly=true
       restore: true # we need to restore the packages for the test project
-      include-preview: true
+      build: true # we need to build for .net48 tests
 
   sonarcloud:
     name: call-sonarcloud
