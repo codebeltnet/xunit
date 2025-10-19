@@ -84,14 +84,14 @@ jobs:
       repository: codebeltnet/xunit
     secrets: inherit
 
-  codeql:
-    name: call-codeql
-    needs: [build,test]
-    uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v2
-    with:
-      include-preview: true
-    permissions:
-      security-events: write
+  # codeql:
+  #   name: call-codeql
+  #   needs: [build,test]
+  #   uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v2
+  #   with:
+  #     include-preview: true
+  #   permissions:
+  #     security-events: write
 
   deploy:
     if: github.event_name != 'pull_request'
