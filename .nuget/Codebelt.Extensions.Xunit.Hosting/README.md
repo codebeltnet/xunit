@@ -2,6 +2,11 @@
 
 An open-source project (MIT license) that targets and complements the [xUnit.net](https://xunit.net/) test platform. It provides a uniform and convenient way of doing unit test for all project types in .NET.
 
+Your versatile xUnit companion for:
+- Modern development with `.NET 9` and  `.NET 10`,
+- Cross-platform libraries with `.NET Standard 2` (where applicable),
+- Legacy applications on `.NET Framework 4.6.2` and newer.
+
 It is, by heart, free, flexible and built to extend and boost your agile codebelt.
 
 ## **Codebelt.Extensions.Xunit.Hosting** for .NET
