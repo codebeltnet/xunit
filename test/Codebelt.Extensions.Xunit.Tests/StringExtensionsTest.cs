@@ -1,6 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit
 {

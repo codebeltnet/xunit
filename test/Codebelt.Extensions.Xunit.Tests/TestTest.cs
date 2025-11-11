@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Abstractions;
-using Xunit.Sdk;
+using Xunit.v3;
 
 namespace Codebelt.Extensions.Xunit
 {
@@ -16,10 +15,10 @@ namespace Codebelt.Extensions.Xunit
         {
         }
 
-        public override Task InitializeAsync()
+        public override ValueTask InitializeAsync()
         {
             _initializeAsyncCalled = true;
-            return Task.CompletedTask;
+            return default;
         }
 
         protected override ValueTask OnDisposeManagedResourcesAsync()

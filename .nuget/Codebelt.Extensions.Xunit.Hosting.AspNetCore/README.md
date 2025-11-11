@@ -2,13 +2,18 @@
 
 An open-source project (MIT license) that targets and complements the [xUnit.net](https://xunit.net/) test platform. It provides a uniform and convenient way of doing unit test for all project types in .NET.
 
-Perhaps even more convenient than what [WebApplicationFactory](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.testing.webapplicationfactory-1) has to offer?
+Your versatile xUnit companion for:
+- Modern development with `.NET 9` and `.NET 10`,
+- Cross-platform libraries with `.NET Standard 2` (where applicable),
+- Legacy applications on `.NET Framework 4.6.2` and newer.
 
 It is, by heart, free, flexible and built to extend and boost your agile codebelt.
 
 ## **Codebelt.Extensions.Xunit.Hosting.AspNetCore** for .NET
 
 The `Codebelt.Extensions.Xunit.Hosting.AspNetCore` namespace contains types that provides a uniform way of doing unit testing that depends on ASP.NET Core and used in conjunction with Microsoft Dependency Injection. The namespace relates to the `Microsoft.AspNetCore.TestHost` namespace.
+
+Perhaps even more convenient than what [WebApplicationFactory](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.testing.webapplicationfactory-1) has to offer?
 
 More documentation available at our documentation site:
 

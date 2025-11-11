@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
 {

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Codebelt.Extensions.Xunit
 {
@@ -152,15 +151,10 @@ namespace Codebelt.Extensions.Xunit
         /// <summary>
         /// Called immediately after the class has been created, before it is used.
         /// </summary>
-        /// <returns>A <see cref="Task"/> that represents the asynchronous operation.</returns>
-        public virtual Task InitializeAsync()
+        /// <returns>A <see cref="ValueTask"/> that represents the asynchronous operation.</returns>
+        public virtual ValueTask InitializeAsync()
         {
-            return Task.CompletedTask;
-        }
-
-        Task IAsyncLifetime.DisposeAsync()
-        {
-            return DisposeAsync().AsTask();
+            return default;
         }
     }
 }

@@ -7,6 +7,32 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [11.0.0] - 2025-11-11
+
+This is a major release that focuses on adapting to the latest .NET 10 (LTS) release, while also removing support for .NET 8 (LTS).
+
+At the same time we also adapted xUnit v3 as this is the one in active development whereas xUnit v2 is in maintenance mode only.
+
+> [!WARNING]
+> Design choices made in xUnit v3 are a bit puzzling to me, especially around something as important as versioning and requirement for executable projects.
+> 
+> All good practices has been put aside, and for the majority of new packages, major version is baked into the package name itself (e.g., `xunit.v3` instead of just `xunit`).
+> 
+> Semantic Versioning is all about conveying meaning and intent through version numbers, and this approach introduces unnecessary redundancy and makes long-term maintenance less smooth. Its a mess that could lead others down a slippery slope of wrongdoings due to the popularity of the framework.
+>
+> Another unfortunate design choice is the requirement of executable projects (i.e., output type `exe` instead of `library`). This has implications when you have optimized your CI to not waste CPU cycles on restoring/building test projects (build once strategy).
+>
+> Updating to v11.0.0 of this library should not provide issues for you as a consumer, but you should expect consequence changes related to xUnit v3. Because of this, I do recommend familiarizing yourself with the [Migrating Unit Tests from xUnit v2 to v3](https://xunit.net/docs/getting-started/v3/migration) guide.
+>
+> It's also worth reading the [What's New in xUnit v3](https://xunit.net/docs/getting-started/v3/whats-new) document to get a better understanding of the changes and improvements introduced.
+>
+> That written, xUnit will continue to remain my preferred test framework for .NET, I just needed to vent my frustration and warn you about the pitfalls of xUnit v3.
+
+### Changed
+
+- Test class in the Codebelt.Extensions.Xunit namespace to use ValueTask for InitializeAsync instead of Task (xUnit v3 consequence change)
+- HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to use ValueTask for InitializeAsync instead of Task (xUnit v3 consequence change)
+
 ## [10.0.7] - 2025-10-17
 
 This is a service update that focuses on package dependencies.

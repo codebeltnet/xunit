@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace Codebelt.Extensions.Xunit.Hosting
 {
