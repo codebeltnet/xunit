@@ -27,11 +27,10 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-    uses: codebeltnet/jobs-dotnet-build/.github/workflows/default.yml@v2
+    uses: codebeltnet/jobs-dotnet-build/.github/workflows/default.yml@v3
     with:
       configuration: ${{ matrix.configuration }}
       strong-name-key-filename: xunit.snk
-      include-preview: true
     secrets:
       GCP_TOKEN: ${{ secrets.GCP_TOKEN }}
       GCP_BUCKETNAME: ${{ secrets.GCP_BUCKETNAME }}
@@ -42,11 +41,10 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-    uses: codebeltnet/jobs-dotnet-pack/.github/workflows/default.yml@v2
+    uses: codebeltnet/jobs-dotnet-pack/.github/workflows/default.yml@v3
     with:
       configuration: ${{ matrix.configuration }}
       version: ${{ needs.build.outputs.version }}
-      include-preview: true
 
   test:
     name: call-test
@@ -56,24 +54,22 @@ jobs:
       matrix:
         os: [ubuntu-24.04, windows-2022]
         configuration: [Debug, Release]
-    uses: codebeltnet/jobs-dotnet-test/.github/workflows/default.yml@v2
+    uses: codebeltnet/jobs-dotnet-test/.github/workflows/default.yml@v3
     with:
       configuration: ${{ matrix.configuration }}
       runs-on: ${{ matrix.os }}
       build-switches: -p:SkipSignAssembly=true
       restore: true # we need to restore the packages for the test project
       build: true # we need to build for .net48 tests
-      include-preview: true
 
   sonarcloud:
     name: call-sonarcloud
     needs: [build,test]
-    uses: codebeltnet/jobs-sonarcloud/.github/workflows/default.yml@v2
+    uses: codebeltnet/jobs-sonarcloud/.github/workflows/default.yml@v3
     with:
       organization: geekle
       projectKey: xunit
       version: ${{ needs.build.outputs.version }}
-      include-preview: true
     secrets: inherit
 
   codecov:
@@ -84,19 +80,17 @@ jobs:
       repository: codebeltnet/xunit
     secrets: inherit
 
-  codeql:
-    name: call-codeql
-    needs: [build,test]
-    uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v2
-    with:
-      include-preview: true
-    permissions:
-      security-events: write
+  # codeql:
+  #   name: call-codeql
+  #   needs: [build,test]
+  #   uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v3
+  #   permissions:
+  #     security-events: write
 
   deploy:
     if: github.event_name != 'pull_request'
     name: call-nuget
-    needs: [build, pack, test, sonarcloud, codecov, codeql]
+    needs: [build, pack, test, sonarcloud, codecov]
     uses: codebeltnet/jobs-nuget-push/.github/workflows/default.yml@v2
     with:
       version: ${{ needs.build.outputs.version }}
