@@ -2,11 +2,6 @@ name: xUnit Ext. CI/CD Pipeline
 on:
   pull_request:
     branches: [main]
-    paths-ignore:
-      - .codecov/**
-      - .docfx/**
-      - .nuget/**
-      - '**/*.md'
   workflow_dispatch:
     inputs:
       configuration:
@@ -80,12 +75,12 @@ jobs:
       repository: codebeltnet/xunit
     secrets: inherit
 
-  # codeql:
-  #   name: call-codeql
-  #   needs: [build,test]
-  #   uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v3
-  #   permissions:
-  #     security-events: write
+  codeql:
+    name: call-codeql
+    needs: [build,test]
+    uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v3
+    permissions:
+      security-events: write
 
   deploy:
     if: github.event_name != 'pull_request'
