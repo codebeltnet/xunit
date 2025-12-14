@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,7 +13,12 @@ namespace Codebelt.Extensions.Xunit
     /// <seealso cref="ITestOutputHelper"/>
     public abstract class Test : ITest, IAsyncLifetime
     {
+#if NET9_0_OR_GREATER
+        private readonly Lock _lock = new();
+#else
         private readonly object _lock = new();
+#endif
+
 
         /// <summary>
         /// Provides a way, with wildcard support, to determine if <paramref name="actual" /> matches <paramref name="expected" />.
@@ -55,7 +61,7 @@ namespace Codebelt.Extensions.Xunit
 
             if (output == null) { return; }
 
-            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             {
                 var exception = e.ExceptionObject as Exception;
                 output.WriteLine($"Unhandled exception captured: {exception?.Message}");
