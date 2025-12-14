@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,7 +13,11 @@ namespace Codebelt.Extensions.Xunit
     /// <seealso cref="ITestOutputHelper"/>
     public abstract class Test : ITest, IAsyncLifetime
     {
+#if NET9_0_OR_GREATER
+        private readonly Lock _lock = new();
+#else
         private readonly object _lock = new();
+#endif
 
         /// <summary>
         /// Provides a way, with wildcard support, to determine if <paramref name="actual" /> matches <paramref name="expected" />.
@@ -25,21 +30,59 @@ namespace Codebelt.Extensions.Xunit
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="expected"/> cannot be matched with <paramref name="actual"/>. Includes the non-matched string(s) in <see cref="ArgumentOutOfRangeException.ActualValue"/>.
         /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="expected"/> is <c>null</c> -or-
+        /// <paramref name="actual"/> is <c>null</c>.
+        /// </exception>
         public static bool Match(string expected, string actual, Action<WildcardOptions> setup = null)
         {
+            if (expected == null) { throw new ArgumentNullException(nameof(expected)); }
+            if (actual == null) { throw new ArgumentNullException(nameof(actual)); }
+
             var options = new WildcardOptions();
             setup?.Invoke(options);
 
-            var pattern = $"^{Regex.Escape(expected).Replace(options.SingleCharacter, ".").Replace(options.GroupOfCharacters, ".*")}$";
+            var escapedExpected = Regex.Escape(expected);
 
-            if (Regex.IsMatch(actual, pattern, RegexOptions.None, TimeSpan.FromSeconds(2))) { return true; }
+            var hasWildcards = escapedExpected.IndexOf(options.SingleCharacter, StringComparison.Ordinal) >= 0 || escapedExpected.IndexOf(options.GroupOfCharacters, StringComparison.Ordinal) >= 0;
 
-            var e = expected.Split(Environment.NewLine.ToCharArray());
-            var a = actual.Split(Environment.NewLine.ToCharArray());
-            var d = e.Except(a).Where(s => s.IndexOf(options.GroupOfCharacters, StringComparison.InvariantCulture) < 0 && s.IndexOf(options.SingleCharacter, StringComparison.InvariantCulture) < 0);
+            if (!hasWildcards)
+            {
+                if (string.Equals(expected, actual, StringComparison.Ordinal))
+                {
+                    return true;
+                }
 
-            if (options.ThrowOnNoMatch) { throw new ArgumentOutOfRangeException(nameof(expected), $"'{string.Join(Environment.NewLine, d)}'", "The expected value does not match the actual value."); }
+                if (options.ThrowOnNoMatch)
+                {
+                    var diff = ComputeNonMatchingLines(expected, actual, options);
+                    throw new ArgumentOutOfRangeException(nameof(expected), $"'{diff}'", "The expected value does not match the actual value.");
+                }
+                return false;
+            }
+
+            var pattern = $"^{escapedExpected.Replace(options.SingleCharacter, ".").Replace(options.GroupOfCharacters, ".*")}$";
+
+            if (Regex.IsMatch(actual, pattern, RegexOptions.None, TimeSpan.FromSeconds(2)))
+            {
+                return true;
+            }
+
+            if (options.ThrowOnNoMatch)
+            {
+                var diff = ComputeNonMatchingLines(expected, actual, options);
+                throw new ArgumentOutOfRangeException(nameof(expected), $"'{diff}'", "The expected value does not match the actual value.");
+            }
+
             return false;
+
+            static string ComputeNonMatchingLines(string expectedText, string actualText, WildcardOptions o)
+            {
+                var e = expectedText.Split(Environment.NewLine.ToCharArray());
+                var a = actualText.Split(Environment.NewLine.ToCharArray());
+                var d = e.Except(a).Where(s => s.IndexOf(o.GroupOfCharacters, StringComparison.InvariantCulture) < 0 && s.IndexOf(o.SingleCharacter, StringComparison.InvariantCulture) < 0);
+                return string.Join(Environment.NewLine, d);
+            }
         }
 
         /// <summary>
@@ -55,7 +98,7 @@ namespace Codebelt.Extensions.Xunit
 
             if (output == null) { return; }
 
-            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            AppDomain.CurrentDomain.UnhandledException += (_, e) =>
             {
                 var exception = e.ExceptionObject as Exception;
                 output.WriteLine($"Unhandled exception captured: {exception?.Message}");

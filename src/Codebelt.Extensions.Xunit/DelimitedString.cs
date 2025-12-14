@@ -6,22 +6,20 @@ namespace Codebelt.Extensions.Xunit
 {
     internal static class DelimitedString
     {
-        internal static string Create<T>(IEnumerable<T> source, Action<DelimitedStringOptions<T>> setup = null)
+        internal static string Create<T>(IEnumerable<T> source, string delimiter)
         {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (delimiter == null) { throw new ArgumentNullException(nameof(delimiter)); }
 
-            var options = new DelimitedStringOptions<T>();
-            setup?.Invoke(options);
-
-            var delimitedValues = new StringBuilder();
-            using (var enumerator = source.GetEnumerator())
+            var sb = new StringBuilder();
+            var first = true;
+            foreach (var item in source)
             {
-                while (enumerator.MoveNext())
-                {
-                    delimitedValues.Append(FormattableString.Invariant($"{options.StringConverter(enumerator.Current)}{options.Delimiter}"));
-                }
+                if (!first) { sb.Append(delimiter); }
+                first = false;
+                sb.Append(item);
             }
-            return delimitedValues.Length > 0 ? delimitedValues.ToString(0, delimitedValues.Length - options.Delimiter.Length) : delimitedValues.ToString();
+            return sb.ToString();
         }
     }
 }

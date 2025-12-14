@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace Codebelt.Extensions.Xunit
@@ -21,7 +20,7 @@ namespace Codebelt.Extensions.Xunit
         public static void WriteLines(this ITestOutputHelper helper, params object[] values)
         {
             if (helper == null) { throw new ArgumentNullException(nameof(helper)); }
-            helper.WriteLine(DelimitedString.Create(values, o => o.Delimiter = Environment.NewLine));
+            helper.WriteLine(DelimitedString.Create(values, Environment.NewLine));
         }
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace Codebelt.Extensions.Xunit
         /// </exception>
         public static void WriteLines<T>(this ITestOutputHelper helper, T[] values)
         {
-            WriteLines(helper, values.AsEnumerable());
+            WriteLines(helper, (IEnumerable<T>)values);
         }
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace Codebelt.Extensions.Xunit
         public static void WriteLines<T>(this ITestOutputHelper helper, IEnumerable<T> values)
         {
             if (helper == null) { throw new ArgumentNullException(nameof(helper)); }
-            helper.WriteLine(DelimitedString.Create(values, o => o.Delimiter = Environment.NewLine));
+            helper.WriteLine(DelimitedString.Create(values, Environment.NewLine));
         }
     }
 }
