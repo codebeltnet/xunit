@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Codebelt.Extensions.Xunit</RootNamespace>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Codebelt.Extensions.Xunit\Codebelt.Extensions.Xunit.csproj" />
+  </ItemGroup>
+
+</Project>
