@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Codebelt.Extensions.Xunit.App/Codebelt.Extensions.Xunit.App.csproj" />
+    <Project Path="src/Codebelt.Extensions.Xunit.Hosting.AspNetCore/Codebelt.Extensions.Xunit.Hosting.AspNetCore.csproj" />
+    <Project Path="src/Codebelt.Extensions.Xunit.Hosting/Codebelt.Extensions.Xunit.Hosting.csproj" />
+    <Project Path="src/Codebelt.Extensions.Xunit/Codebelt.Extensions.Xunit.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/Codebelt.Extensions.Xunit.Hosting.AspNetCore.Tests/Codebelt.Extensions.Xunit.Hosting.AspNetCore.Tests.csproj" />
+    <Project Path="test/Codebelt.Extensions.Xunit.Hosting.Tests/Codebelt.Extensions.Xunit.Hosting.Tests.csproj" />
+    <Project Path="test/Codebelt.Extensions.Xunit.Tests/Codebelt.Extensions.Xunit.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tooling/">
+    <Project Path="tooling/benchmark-runner/benchmark-runner.csproj" />
+  </Folder>
+  <Folder Name="/tuning/">
+    <Project Path="tuning/Codebelt.Extensions.Xunit.Benchmarks/Codebelt.Extensions.Xunit.Benchmarks.csproj" />
+  </Folder>
+</Solution>
