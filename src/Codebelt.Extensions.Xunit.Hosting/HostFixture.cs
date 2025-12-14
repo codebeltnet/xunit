@@ -13,7 +13,12 @@ namespace Codebelt.Extensions.Xunit.Hosting
     /// <seealso cref="IHostFixture" />
     public abstract class HostFixture : IHostFixture, IAsyncLifetime
     {
+#if NET9_0_OR_GREATER
+        private readonly Lock _lock = new();
+#else
         private readonly object _lock = new();
+#endif
+
         private Func<IHost, CancellationToken, Task> _asyncHostRunnerCallback = async (host, cancellationToken) => 
         {
             if (SynchronizationContext.Current == null)
