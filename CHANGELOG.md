@@ -7,7 +7,7 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
-## [11.0.4] - 2025-01-20
+## [11.0.4] - 2026-01-20
 
 This is a service update that focuses on package dependencies.
 
@@ -339,3 +339,4 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 ### Fixed
 
 - Added null conditional operator to the ServiceProvider property on the HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace
+
