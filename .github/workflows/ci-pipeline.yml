@@ -1,4 +1,4 @@
-name: xUnit Ext. CI/CD Pipeline
+name: xUnit Ext. CI Pipeline
 on:
   pull_request:
     branches: [main]
@@ -85,7 +85,7 @@ jobs:
   deploy:
     if: github.event_name != 'pull_request'
     name: call-nuget
-    needs: [build, pack, test, sonarcloud, codecov]
+    needs: [build, pack, test, sonarcloud, codecov, codeql]
     uses: codebeltnet/jobs-nuget-push/.github/workflows/default.yml@v2
     with:
       version: ${{ needs.build.outputs.version }}
