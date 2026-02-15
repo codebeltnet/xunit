@@ -45,13 +45,12 @@ jobs:
       version: ${{ needs.build.outputs.version }}
       download-build-artifact-pattern: build-${{ matrix.configuration }}-X64
 
-  test:
+  test_linux:
     name: call-test
     needs: [build]
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, windows-2025, ubuntu-24.04-arm, windows-11-arm]
         configuration: [Debug, Release]
         arch: [X64, ARM64]
     uses: codebeltnet/jobs-dotnet-test/.github/workflows/default.yml@v3
@@ -63,9 +62,26 @@ jobs:
       build: true # we need to build for .net48 tests
       download-pattern: build-${{ matrix.configuration }}-${{ matrix.arch }}
 
+  test_windows:
+    name: call-test
+    needs: [build]
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Debug, Release]
+        arch: [X64, ARM64]
+    uses: codebeltnet/jobs-dotnet-test/.github/workflows/default.yml@v3
+    with:
+      runs-on: ${{ matrix.arch == 'ARM64' && 'windows-11-arm' || 'windows-2025' }}
+      configuration: ${{ matrix.configuration }}
+      build-switches: -p:SkipSignAssembly=true
+      restore: true # we need to restore the packages for the test project
+      build: true # we need to build for .net48 tests
+      download-pattern: build-${{ matrix.configuration }}-${{ matrix.arch }}
+
   sonarcloud:
     name: call-sonarcloud
-    needs: [build,test]
+    needs: [build,test_linux,test_windows]
     uses: codebeltnet/jobs-sonarcloud/.github/workflows/default.yml@v3
     with:
       organization: geekle
@@ -75,7 +91,7 @@ jobs:
 
   codecov:
     name: call-codecov
-    needs: [build,test]
+    needs: [build,test_linux,test_windows]
     uses: codebeltnet/jobs-codecov/.github/workflows/default.yml@v1
     with:
       repository: codebeltnet/xunit
@@ -83,7 +99,7 @@ jobs:
 
   codeql:
     name: call-codeql
-    needs: [build,test]
+    needs: [build,test_linux,test_windows]
     uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v3
     permissions:
       security-events: write
@@ -91,7 +107,7 @@ jobs:
   deploy:
     if: github.event_name != 'pull_request'
     name: call-nuget
-    needs: [build, pack, test, sonarcloud, codecov, codeql]
+    needs: [build, pack, test_linux, test_windows, sonarcloud, codecov, codeql]
     uses: codebeltnet/jobs-nuget-push/.github/workflows/default.yml@v2
     with:
       version: ${{ needs.build.outputs.version }}
