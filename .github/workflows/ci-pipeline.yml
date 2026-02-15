@@ -46,7 +46,7 @@ jobs:
       download-build-artifact-pattern: build-${{ matrix.configuration }}-X64
 
   test_linux:
-    name: call-test
+    name: call-test-linux
     needs: [build]
     strategy:
       fail-fast: false
@@ -63,7 +63,7 @@ jobs:
       download-pattern: build-${{ matrix.configuration }}-${{ matrix.arch }}
 
   test_windows:
-    name: call-test
+    name: call-test-windows
     needs: [build]
     strategy:
       fail-fast: false
