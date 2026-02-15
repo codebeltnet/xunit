@@ -28,6 +28,7 @@ jobs:
       configuration: ${{ matrix.configuration }}
       strong-name-key-filename: xunit.snk
       runs-on: ${{ matrix.arch == 'ARM64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
+      upload-build-artifact-name: build-${{ matrix.configuration }}-${{ matrix.arch }}
     secrets:
       GCP_TOKEN: ${{ secrets.GCP_TOKEN }}
       GCP_BUCKETNAME: ${{ secrets.GCP_BUCKETNAME }}
