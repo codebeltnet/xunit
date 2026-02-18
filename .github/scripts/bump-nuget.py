@@ -7,13 +7,14 @@ Bumps PackageVersion entries in Directory.Packages.props.
 """
 
 import re, os, urllib.request, json, sys
+from typing import Dict, List
 
 TRIGGER_SOURCE = os.environ.get("TRIGGER_SOURCE", "")
 TRIGGER_VERSION = os.environ.get("TRIGGER_VERSION", "")
 
 # Maps source repo name → NuGet package ID prefixes published by that repo.
 # Keep this aligned with what each repo actually publishes.
-SOURCE_PACKAGE_MAP: dict[str, list[str]] = {
+SOURCE_PACKAGE_MAP: Dict[str, List[str]] = {
     "cuemon": [
         "Cuemon.",
     ],
