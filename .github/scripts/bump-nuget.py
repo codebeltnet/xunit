@@ -96,7 +96,13 @@ def replace_version(m: re.Match) -> str:
     return m.group(0).replace(f'Version="{current}"', f'Version="{new_ver}"')
 
 
-pattern = re.compile(r'<PackageVersion\s+Include="([^"]+)"\s+Version="([^"]+)"')
+pattern = re.compile(
+    r'<PackageVersion\b'
+    r'(?=[^>]*\bInclude="([^"]+)")'
+    r'(?=[^>]*\bVersion="([^"]+)")'
+    r'[^>]*>',
+    re.DOTALL,
+)
 new_content = pattern.sub(replace_version, content)
 
 if changes:
