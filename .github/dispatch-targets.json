@@ -1,0 +1,7 @@
+[
+    "benchmarkdotnet",
+    "newtonsoft-json",
+    "aws-signature-v4",
+    "unitify",
+    "yamldotnet"
+]
