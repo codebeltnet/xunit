@@ -184,11 +184,8 @@ namespace Codebelt.Extensions.Xunit  // Same as SUT
 ## Benchmark Guidelines
 
 - Place in `tuning/` folder or `*.Benchmarks` projects
-- Use `[MemoryDiagnoser]` and `[GroupBenchmarksBy]` attributes
-- Use `[Params]` for input variations
-- Use `[GlobalSetup]` for initialization
 - Namespaces follow same rule as tests (no `.Benchmarks` suffix)
-- Use `[MemoryDiagnoser]`, `[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]`.
+- Use `[MemoryDiagnoser]` and `[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]` attributes.
 - Use `[GlobalSetup]` for expensive prep; keep measured methods focused.
 - Use `[Params]` for multiple input sizes; use deterministic data; avoid external systems.
 - Mark one method `Baseline = true`; use descriptive `Description` values.
