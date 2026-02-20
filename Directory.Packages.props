@@ -6,7 +6,7 @@
   <ItemGroup>
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageVersion Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.15.8" />
-    <PackageVersion Include="Codebelt.Extensions.BenchmarkDotNet.Console" Version="1.2.1" />
+    <PackageVersion Include="Codebelt.Extensions.BenchmarkDotNet.Console" Version="1.2.2" />
     <PackageVersion Include="Cuemon.Core" Version="10.3.0" />
     <PackageVersion Include="Cuemon.Extensions.AspNetCore" Version="10.3.0" />
     <PackageVersion Include="Cuemon.Extensions.IO" Version="10.3.0" />
