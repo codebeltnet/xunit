@@ -35,21 +35,24 @@ SOURCE_PACKAGE_MAP: Dict[str, List[str]] = {
     "xunit": ["Codebelt.Extensions.Xunit"],
     "benchmarkdotnet": ["Codebelt.Extensions.BenchmarkDotNet"],
     "bootstrapper": ["Codebelt.Bootstrapper"],
+    "carter": ["Codebelt.Extensions.Carter"],
     "newtonsoft-json": [
         "Codebelt.Extensions.Newtonsoft.Json",
+        "Codebelt.Extensions.AspNetCore.Newtonsoft.Json",
         "Codebelt.Extensions.AspNetCore.Mvc.Formatters.Newtonsoft",
     ],
     "aws-signature-v4": ["Codebelt.Extensions.AspNetCore.Authentication.AwsSignature"],
     "unitify": ["Codebelt.Unitify"],
     "yamldotnet": [
         "Codebelt.Extensions.YamlDotNet",
+        "Codebelt.Extensions.AspNetCore.Text.Yaml",
         "Codebelt.Extensions.AspNetCore.Mvc.Formatters.Text.Yaml",
     ],
     "globalization": ["Codebelt.Extensions.Globalization"],
     "asp-versioning": ["Codebelt.Extensions.Asp.Versioning"],
     "swashbuckle-aspnetcore": ["Codebelt.Extensions.Swashbuckle"],
     "savvyio": ["Savvyio."],
-    "shared-kernel": [],
+    "shared-kernel": ["Codebelt.SharedKernel"],
 }
 
 
