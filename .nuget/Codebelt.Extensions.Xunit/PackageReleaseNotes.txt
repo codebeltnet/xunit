@@ -3,6 +3,8 @@ Availability: .NET 10 and .NET 9
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
+- CHANGED Release notes generation workflow to improve consistency and formatting of package documentation
+- CHANGED PackageReleaseNotes retrieval in Directory.Build.targets to use simplified System.IO.File.ReadAllText approach
 
 Version: 11.0.7
 Availability: .NET 10 and .NET 9
