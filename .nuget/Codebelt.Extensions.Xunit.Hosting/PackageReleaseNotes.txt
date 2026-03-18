@@ -1,112 +1,120 @@
-Version 11.0.7
+Version: 11.0.8
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 11.0.6
+- CHANGED Release notes generation workflow to improve consistency and formatting of package documentation
+- CHANGED PackageReleaseNotes retrieval in Directory.Build.targets to use simplified System.IO.File.ReadAllText approach
+
+Version: 11.0.7
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 11.0.5
+
+Version: 11.0.6
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 11.0.4
+
+Version: 11.0.5
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 11.0.3
+
+Version: 11.0.4
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 11.0.2
+
+Version: 11.0.3
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 11.0.1
+
+Version: 11.0.2
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 11.0.0
+
+Version: 11.0.1
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
+
+Version: 11.0.0
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
+
+# ALM
+- CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
+
 # Breaking Changes
 - CHANGED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to use ValueTask for InitializeAsync instead of Task (xUnit v3 consequence change)
- 
-Version 10.0.7
+
+Version: 10.0.7
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 10.0.6
+
+Version: 10.0.6
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 10.0.5
+
+Version: 10.0.5
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 10.0.4
+
+Version: 10.0.4
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 10.0.3
+
+Version: 10.0.3
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
+
 # Improvements
 - CHANGED AddXunitTestLogging method on the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to use same logic as the overload equivalent and be forgiving when ITestOutputHelper is null (before an InvalidOperationException was thrown)
- 
-Version 10.0.2
+
+Version: 10.0.2
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
+
 # Bug Fixes
 - FIXED ManagedHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to exit ConfigureHost method if the fixture is not in a valid state (e.g., configuration delegate properties are null)
- 
+
 # Improvements
 - CHANGED HasValidState method on the GenericHostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to exclude check of Host property
 - CHANGED AddXunitTestLogging method on the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to be forgiving when no active test is present (relates to https://github.com/xunit/xunit/issues/2377)
- 
-Version 10.0.1
+
+Version: 10.0.1
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
- 
-Version 10.0.0
+
+Version: 10.0.0
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 # Breaking Changes
 - RENAMED IHostingEnvironmentTest in the Codebelt.Extensions.Xunit.Hosting namespace to IEnvironmentTest
 - RENAMED GenericHostTestFactory in the Codebelt.Extensions.Xunit.Hosting namespace to HostTestFactory
@@ -115,7 +123,7 @@ Availability: .NET 9, .NET 8 and .NET Standard 2.0
 - CHANGED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to an abstract class from which all other host fixture classes derive from (e.g., ManagedWebHostFixture, ManagedHostFixture, etc.)
 - REMOVED HostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace
 - CHANGED IHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace to be more confined in scope (e.g., less interface inheritance and ultimately fewer members)
- 
+
 # New Features
 - ADDED HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace that represents the non-generic base class from where its generic equivalent should derive (e.g., MinimalHostTest{T}, HostTest{T}, etc.)
 - ADDED IGenericHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace that provides a set of members for configuring the host
@@ -129,151 +137,150 @@ Availability: .NET 9, .NET 8 and .NET Standard 2.0
 - EXTENDED ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace with one new extension method for the IServiceCollection interface: An overload of AddXunitTestLogging that does not rely on the ITestOutputHelper interface
 - ADDED SelfManagedHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that represents a self-managed implementation of the ManagedHostFixture class (i.e., the host is not started automatically)
 - ADDED SelfManagedMinimalHostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace that represents a self-managed implementation of the ManagedMinimalHostFixture class (i.e., the host is not started automatically)
- 
-Version 9.1.3
+
+Version: 9.1.3
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 # Bug Fixes
 - FIXED IGenericHostTest interface in the Codebelt.Extensions.Xunit.Hosting namespace to include the IHostTest interface
- 
+
 # Improvements
 - CHANGED HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace to include IGenericHostTest interface
- 
-Version 9.1.2
+
+Version: 9.1.2
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 # Bug Fixes
 - FIXED HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace to have same behavior as prior to 9.1.0 release (hereby being backward compatible as originally intended)
- 
-Version 9.1.1
+
+Version: 9.1.1
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 # Bug Fixes
 - FIXED HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace to have same behavior as prior to 9.1.0 release (hereby being backward compatible as originally intended)
 - FIXED LoggerExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to have same behavior as prior to 9.1.0 release (hereby being backward compatible as originally intended)
- 
+
 # Improvements
 - CHANGED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace so that IHostEnvironment.ApplicationName is aligned with the equivalent logic found in AspNetCoreHostFixture class (e.g., the assembly name of the calling Test type is used as the default value for the ApplicationName property)
- 
+
 # New Features
 - EXTENDED LoggerExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace with one new extension method for the ILogger interface: An overload of GetTestStore that takes an optional string argument (categoryName)
- 
-Version 9.1.0
+
+Version: 9.1.0
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 # New Features
 - ADDED HostFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IHostFixture interface: HasValidState
- 
+
 # Improvements
 - CHANGED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to have an additional virtual method: StartConfiguredHost, which is called from the ConfigureHost method, to allow for custom implementations of the host startup process
 - CHANGED GenericHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace to accept an optional argument taking a custom implementation of IHostFixture (promote DIP)
- 
-Version 9.0.1
+
+Version: 9.0.1
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 # Improvements
 - CHANGED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace no longer have a dependency to IHostingEnvironment (TFM netstandard2.0)
 - CHANGED HostTest class in the Codebelt.Extensions.Xunit.Hosting namespace no longer have a dependency to IHostingEnvironment (TFM netstandard2.0)
 - CHANGED IHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace no longer have a dependency to IHostingEnvironment (TFM netstandard2.0)
 - CHANGED IHostingEnvironmentTest interface in the Codebelt.Extensions.Xunit.Hosting namespace no longer have a dependency to IHostingEnvironment (TFM netstandard2.0)
- 
-Version 9.0.0
+
+Version: 9.0.0
 Availability: .NET 9, .NET 8 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
 - REMOVED Support for TFM .NET 6 (LTS)
- 
+
 # Breaking Changes
 - REMOVED AddXunitTestLogging overloaded extension method from the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace
- 
+
 # New Features
 - EXTENDED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace to enable ValidateOnBuild and ValidateScopes when TFM is .NET 9 (or greater) and started the Host for consistency with AspNetCoreHostFixture
 - EXTENDED IHostFixture interface in the Codebelt.Extensions.Xunit.Hosting namespace with two new methods: Dispose and DisposeAsync
 - EXTENDED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace with three new methods: InitializeAsync, OnDisposeManagedResourcesAsync, Dispose and DisposeAsync
- 
-Version 8.4.1
+
+Version: 8.4.1
 Availability: .NET 8, .NET 6 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 # Breaking Changes
 - RENAMED AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T} on the ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace to AddXunitTestLoggingOutputHelperAccessor and AddXunitTestLoggingOutputHelperAccessor{T} (for consistency)
- 
+
 # New Features
 - EXTENDED ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace with one new extension method for the IServiceCollection interface: An overload of AddXunitTestLogging
- 
-Version 8.4.0
+
+Version: 8.4.0
 Availability: .NET 8, .NET 6 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 # New Features
 - ADDED ServiceProviderExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of one extension method for the IServiceProvider interface: GetRequiredScopedService
 - EXTENDED ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace with two new extension methods for the IServiceCollection interface: AddXunitTestOutputHelperAccessor and AddXunitTestOutputHelperAccessor{T}
- 
-Version 8.3.2
+
+Version: 8.3.2
 Availability: .NET 8, .NET 6 and .NET Standard 2.0
- 
+
 # ALM
 - REMOVED Support for TFM .NET 7 (STS)
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
-Version 8.3.1
+
+Version: 8.3.1
 Availability: .NET 8, .NET 7, .NET 6 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
-Version 8.2.0
+
+Version: 8.2.0
 Availability: .NET 8, .NET 7, .NET 6 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 Version: 8.1.0
 Availability: .NET 8, .NET 7, .NET 6 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 # New Features
 - ADDED LoggerExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of extension methods for the ILogger{T} interface: GetTestStore{T}
 - ADDED ServiceCollectionExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace that consist of extension methods for the IServiceCollection interface: AddXunitTestLogging
 - ADDED XunitTestLoggerEntry record in the Codebelt.Extensions.Xunit.Hosting namespace that represents a captured log-entry for testing purposes
- 
+
 Version: 8.0.1
 Availability: .NET 8, .NET 7, .NET 6 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 Version: 8.0.0
 Availability: .NET 8, .NET 7, .NET 6 and .NET Standard 2.0
- 
+
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
- 
+
 # Breaking Changes
 - REMOVED CreateGenericHostTest method from GenericHostTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace
- 
+
 # Bug Fixes
 - FIXED HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace by adding a null conditional operator to the ServiceProvider property
- 
