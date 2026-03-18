@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +16,22 @@ namespace Codebelt.Extensions.Xunit.Hosting
     {
         private bool _isHostRunning = false;
         private readonly IServiceScope _scope;
+        private readonly IHost _constructorHost;
+        private readonly IServiceProvider _constructorServices;
         private readonly Func<IList<ICorrelationToken>> _correlationsFactory;
         private static readonly ConcurrentBag<ICorrelationToken> ScopedCorrelations = new();
 
         public HostTestTest(ManagedHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
         {
+            _constructorHost = hostFixture.Host;
+            _constructorServices = hostFixture.Host?.Services;
+
+            Assert.NotNull(_constructorHost);
+            Assert.NotNull(_constructorServices);
+            Assert.NotNull(Host);
+            Assert.NotNull(Configuration);
+            Assert.NotNull(Environment);
+
             _scope = hostFixture.Host.Services.CreateScope();
             _correlationsFactory = () => _scope.ServiceProvider.GetServices<ICorrelationToken>().ToList();
             var lifetime = hostFixture.Host.Services.GetRequiredService<IHostApplicationLifetime>();
@@ -70,6 +81,13 @@ namespace Codebelt.Extensions.Xunit.Hosting
         public void Test_ShouldHaveEnvironmentOfDevelopment()
         {
             Assert.Equal("Development", Environment.EnvironmentName);
+        }
+
+        [Fact]
+        public void Test_ShouldHaveHostAndServicesAvailableInConstructor()
+        {
+            Assert.Same(Host, _constructorHost);
+            Assert.Same(Host.Services, _constructorServices);
         }
 
         [Fact]
