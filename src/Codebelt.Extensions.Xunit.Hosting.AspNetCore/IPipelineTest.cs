@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 
-namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
+namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
+
+/// <summary>
+/// Represents the members needed for ASP.NET Core pipeline testing.
+/// </summary>
+public interface IPipelineTest
 {
     /// <summary>
-    /// Represents the members needed for ASP.NET Core pipeline testing.
+    /// Gets the <see cref="IApplicationBuilder"/> initialized by the <see cref="IHost"/>.
     /// </summary>
-    public interface IPipelineTest
-    {
-        /// <summary>
-        /// Gets the <see cref="IApplicationBuilder"/> initialized by the <see cref="IHost"/>.
-        /// </summary>
-        /// <value>The <see cref="IApplicationBuilder"/> initialized by the <see cref="IHost"/>.</value>
-        IApplicationBuilder Application { get; }
-    }
+    /// <value>The <see cref="IApplicationBuilder"/> initialized by the <see cref="IHost"/>.</value>
+    IApplicationBuilder Application { get; }
 }

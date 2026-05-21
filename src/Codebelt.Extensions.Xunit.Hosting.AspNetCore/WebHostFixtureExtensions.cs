@@ -1,23 +1,22 @@
-﻿namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
+﻿namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
+
+/// <summary>
+/// Extension methods for the <see cref="IWebHostFixture"/> interface.
+/// </summary>
+public static class WebHostFixtureExtensions
 {
     /// <summary>
-    /// Extension methods for the <see cref="IWebHostFixture"/> interface.
+    /// Determines whether the specified <see cref="IWebHostFixture"/> has a valid state.
     /// </summary>
-    public static class WebHostFixtureExtensions
+    /// <param name="hostFixture">The <see cref="IWebHostFixture"/> to check.</param>
+    /// <returns><c>true</c> if the specified <see cref="IWebHostFixture"/> has a valid state; otherwise, <c>false</c>.</returns>
+    /// <remarks>
+    /// A valid state is defined as having non-null values for the following properties:
+    /// <see cref="IWebHostFixture.ConfigureApplicationCallback"/>, <see cref="IGenericHostFixture.ConfigureServicesCallback"/> and <see cref="IGenericHostFixture.ConfigureHostCallback"/>.
+    /// </remarks>
+    public static bool HasValidState(this IWebHostFixture hostFixture)
     {
-        /// <summary>
-        /// Determines whether the specified <see cref="IWebHostFixture"/> has a valid state.
-        /// </summary>
-        /// <param name="hostFixture">The <see cref="IWebHostFixture"/> to check.</param>
-        /// <returns><c>true</c> if the specified <see cref="IWebHostFixture"/> has a valid state; otherwise, <c>false</c>.</returns>
-        /// <remarks>
-        /// A valid state is defined as having non-null values for the following properties:
-        /// <see cref="IWebHostFixture.ConfigureApplicationCallback"/>, <see cref="IGenericHostFixture.ConfigureServicesCallback"/> and <see cref="IGenericHostFixture.ConfigureHostCallback"/>.
-        /// </remarks>
-        public static bool HasValidState(this IWebHostFixture hostFixture)
-        {
-            var hasValidState = ((IGenericHostFixture)hostFixture).HasValidState();
-            return hasValidState && hostFixture.ConfigureApplicationCallback != null;
-        }
+        var hasValidState = ((IGenericHostFixture)hostFixture).HasValidState();
+        return hasValidState && hostFixture.ConfigureApplicationCallback != null;
     }
 }
