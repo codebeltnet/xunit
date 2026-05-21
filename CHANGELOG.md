@@ -9,7 +9,24 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 
 ## [11.0.10] - 2026-05-21
 
-This is a service update that focuses on package dependencies.
+This is a patch release focused on codebase modernization, enhanced testing coverage, and developer workflow improvements.
+
+### Changed
+
+- Refactored entire codebase across all three assemblies to use file-scoped namespaces for consistency with modern C# style conventions,
+- Updated developer instructions in `.github/copilot-instructions.md` and `AGENTS.md` to mandate file-scoped namespaces throughout the project,
+- Upgraded NGINX base image in documentation build Dockerfile to version 1.31.0-alpine for improved security and stability,
+- Normalized whitespace and line endings across dependency configuration and package metadata files for consistency.
+
+### Added
+
+- Comprehensive unit tests for ASP.NET Core hosting fixtures including BlockingManagedWebHostFixture, SelfManagedWebHostFixture, SelfManagedWebMinimalHostFixture, HostBuilderApplicationExtensions, and FakeHttpResponseFeature to ensure robust hosting infrastructure,
+- Unit test coverage for HTTP response feature mocking and request/response handling.
+
+### Fixed
+
+- Updated package README examples to reflect current API usage patterns with ManagedHostFixture and correct service provider access,
+- Corrected GitHub repository references in package documentation to point to the codebeltnet organization namespace.
 
 ## [11.0.9] - 2026-04-16
 
@@ -364,3 +381,15 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 - Added null conditional operator to the ServiceProvider property on the HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace
 
+
+[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.0.10...HEAD
+[11.0.10]: https://github.com/codebeltnet/xunit/compare/v11.0.9...v11.0.10
+[11.0.9]: https://github.com/codebeltnet/xunit/compare/v11.0.8...v11.0.9
+[11.0.8]: https://github.com/codebeltnet/xunit/compare/v11.0.7...v11.0.8
+[11.0.7]: https://github.com/codebeltnet/xunit/compare/v11.0.6...v11.0.7
+[11.0.6]: https://github.com/codebeltnet/xunit/compare/v11.0.5...v11.0.6
+[11.0.5]: https://github.com/codebeltnet/xunit/compare/v11.0.4...v11.0.5
+[11.0.4]: https://github.com/codebeltnet/xunit/compare/v11.0.3...v11.0.4
+[11.0.3]: https://github.com/codebeltnet/xunit/compare/v11.0.2...v11.0.3
+[11.0.2]: https://github.com/codebeltnet/xunit/compare/v11.0.1...v11.0.2
+[11.0.1]: https://github.com/codebeltnet/xunit/compare/v11.0.0...v11.0.1
