@@ -1,17 +1,16 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace Codebelt.Extensions.Xunit.Hosting
+namespace Codebelt.Extensions.Xunit.Hosting;
+
+/// <summary>
+/// Represents the members needed for DI testing with support for Configuration.
+/// </summary>
+public interface IConfigurationTest
 {
     /// <summary>
-    /// Represents the members needed for DI testing with support for Configuration.
+    /// Gets the <see cref="IConfiguration"/> initialized by the <see cref="IHost"/>.
     /// </summary>
-    public interface IConfigurationTest
-    {
-        /// <summary>
-        /// Gets the <see cref="IConfiguration"/> initialized by the <see cref="IHost"/>.
-        /// </summary>
-        /// <value>The <see cref="IConfiguration"/> initialized by the <see cref="IHost"/>.</value>
-        IConfiguration Configuration { get; }
-    }
+    /// <value>The <see cref="IConfiguration"/> initialized by the <see cref="IHost"/>.</value>
+    IConfiguration Configuration { get; }
 }
