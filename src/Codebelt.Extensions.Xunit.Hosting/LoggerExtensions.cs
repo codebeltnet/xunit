@@ -39,6 +39,22 @@ public static class LoggerExtensions
         throw new ArgumentException($"Logger does not contain a test store; did you remember to call {nameof(ServiceCollectionExtensions.AddXunitTestLogging)} before calling this method?", nameof(logger));
     }
 
+    /// <summary>
+    /// Returns the associated <see cref="ITestStore{T}"/> that is provided when settings up services from <see cref="ServiceCollectionExtensions.AddXunitTestLogging(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Logging.LogLevel)"/> or related.
+    /// </summary>
+    /// <param name="logger">The <see cref="ILogger{TCategoryName}"/> from which to retrieve the <see cref="ITestStore{T}"/>.</param>
+    /// <returns>Returns an implementation of <see cref="ITestStore{T}"/> with all logged entries expressed as <see cref="XunitTestLoggerEntry"/>.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="logger"/> cannot be null.
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    /// <paramref name="logger"/> does not contain a test store.
+    /// </exception>
+    public static ITestStore<XunitTestLoggerEntry> GetTestStore<T>(this ILogger<T> logger)
+    {
+        return GetTestStore(logger, typeof(T).FullName);
+    }
+
     private static object GetInternalLogger(ILogger logger)
     {
         var loggerType = logger.GetType();
@@ -67,21 +83,5 @@ public static class LoggerExtensions
         return categoryName == null
             ? xunitTestLogger.Provider
             : xunitTestLogger.Provider[categoryName];
-    }
-
-    /// <summary>
-    /// Returns the associated <see cref="ITestStore{T}"/> that is provided when settings up services from <see cref="ServiceCollectionExtensions.AddXunitTestLogging(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Logging.LogLevel)"/> or related.
-    /// </summary>
-    /// <param name="logger">The <see cref="ILogger{TCategoryName}"/> from which to retrieve the <see cref="ITestStore{T}"/>.</param>
-    /// <returns>Returns an implementation of <see cref="ITestStore{T}"/> with all logged entries expressed as <see cref="XunitTestLoggerEntry"/>.</returns>
-    /// <exception cref="ArgumentNullException">
-    /// <paramref name="logger"/> cannot be null.
-    /// </exception>
-    /// <exception cref="ArgumentException">
-    /// <paramref name="logger"/> does not contain a test store.
-    /// </exception>
-    public static ITestStore<XunitTestLoggerEntry> GetTestStore<T>(this ILogger<T> logger)
-    {
-        return GetTestStore(logger, typeof(T).FullName);
     }
 }
