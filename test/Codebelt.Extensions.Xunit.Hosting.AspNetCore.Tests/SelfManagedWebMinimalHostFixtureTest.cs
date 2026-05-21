@@ -1,23 +1,22 @@
 using Microsoft.AspNetCore.Builder;
 using Xunit;
 
-namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
+namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
+
+public class SelfManagedWebMinimalHostFixtureTest : MinimalWebHostTest<SelfManagedWebMinimalHostFixture>
 {
-    public class SelfManagedWebMinimalHostFixtureTest : MinimalWebHostTest<SelfManagedWebMinimalHostFixture>
+    public SelfManagedWebMinimalHostFixtureTest(SelfManagedWebMinimalHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
-        public SelfManagedWebMinimalHostFixtureTest(SelfManagedWebMinimalHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
-        {
-        }
+    }
 
-        [Fact]
-        public void Host_ShouldNotBeNull_WhenNoOpRunnerIsUsed()
-        {
-            Assert.NotNull(Host);
-            Assert.NotNull(Application);
-        }
+    [Fact]
+    public void Host_ShouldNotBeNull_WhenNoOpRunnerIsUsed()
+    {
+        Assert.NotNull(Host);
+        Assert.NotNull(Application);
+    }
 
-        public override void ConfigureApplication(IApplicationBuilder app)
-        {
-        }
+    public override void ConfigureApplication(IApplicationBuilder app)
+    {
     }
 }

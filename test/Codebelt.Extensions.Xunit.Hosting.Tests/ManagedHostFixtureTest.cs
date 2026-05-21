@@ -6,55 +6,54 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Xunit;
 
-namespace Codebelt.Extensions.Xunit.Hosting
+namespace Codebelt.Extensions.Xunit.Hosting;
+
+public class ManagedHostFixtureTest : Test
 {
-    public class ManagedHostFixtureTest : Test
+    private readonly ManagedHostFixture _hostFixture;
+
+    public ManagedHostFixtureTest(ITestOutputHelper output) : base(output)
     {
-        private readonly ManagedHostFixture _hostFixture;
+        _hostFixture = new ManagedHostFixture();
+    }
 
-        public ManagedHostFixtureTest(ITestOutputHelper output) : base(output)
-        {
-            _hostFixture = new ManagedHostFixture();
-        }
+    [Fact]
+    public void ConfigureHost_ShouldThrowArgumentNullException_WhenHostTestIsNull()
+    {
+        Assert.Throws<ArgumentNullException>(() => _hostFixture.ConfigureHost(null));
+    }
 
-        [Fact]
-        public void ConfigureHost_ShouldThrowArgumentNullException_WhenHostTestIsNull()
-        {
-            Assert.Throws<ArgumentNullException>(() => _hostFixture.ConfigureHost(null));
-        }
+    [Fact]
+    public void ConfigureHost_ShouldThrowArgumentOutOfRangeException_WhenHostTestIsNotAssignableFromHostTest()
+    {
+        var invalidHostTest = new InvalidHostTest<ManagedHostFixture>(new ManagedHostFixture());
+        Assert.Throws<ArgumentOutOfRangeException>(() => _hostFixture.ConfigureHost(invalidHostTest));
+    }
 
-        [Fact]
-        public void ConfigureHost_ShouldThrowArgumentOutOfRangeException_WhenHostTestIsNotAssignableFromHostTest()
-        {
-            var invalidHostTest = new InvalidHostTest<ManagedHostFixture>(new ManagedHostFixture());
-            Assert.Throws<ArgumentOutOfRangeException>(() => _hostFixture.ConfigureHost(invalidHostTest));
-        }
+    [Fact]
+    public void ConfigureHost_ShouldConfigureHostSuccessfully()
+    {
+        var validHostTest = new ValidHostTest(_hostFixture);
 
-        [Fact]
-        public void ConfigureHost_ShouldConfigureHostSuccessfully()
-        {
-            var validHostTest = new ValidHostTest(_hostFixture);
+        _hostFixture.ConfigureHost(validHostTest);
 
-            _hostFixture.ConfigureHost(validHostTest);
+        Assert.NotNull(_hostFixture.Host);
+        Assert.NotNull(_hostFixture.Host.Services);
+        Assert.NotNull(_hostFixture.Configuration);
+        Assert.NotNull(_hostFixture.Environment);
+    }
 
-            Assert.NotNull(_hostFixture.Host);
-            Assert.NotNull(_hostFixture.Host.Services);
-            Assert.NotNull(_hostFixture.Configuration);
-            Assert.NotNull(_hostFixture.Environment);
-        }
+    [Fact]
+    public void Dispose_ShouldDisposeResources()
+    {
+        _hostFixture.Dispose();
+        Assert.True(_hostFixture.Disposed);
+    }
 
-        [Fact]
-        public void Dispose_ShouldDisposeResources()
-        {
-            _hostFixture.Dispose();
-            Assert.True(_hostFixture.Disposed);
-        }
-
-        [Fact]
-        public async Task DisposeAsync_ShouldDisposeResourcesAsync()
-        {
-            await _hostFixture.DisposeAsync();
-            Assert.True(_hostFixture.Disposed);
-        }
+    [Fact]
+    public async Task DisposeAsync_ShouldDisposeResourcesAsync()
+    {
+        await _hostFixture.DisposeAsync();
+        Assert.True(_hostFixture.Disposed);
     }
 }

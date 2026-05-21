@@ -3,30 +3,29 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Xunit;
 
-namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore
+namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
+
+public class HostBuilderApplicationExtensionsTest : Test
 {
-    public class HostBuilderApplicationExtensionsTest : Test
+    public HostBuilderApplicationExtensionsTest(ITestOutputHelper output) : base(output)
     {
-        public HostBuilderApplicationExtensionsTest(ITestOutputHelper output) : base(output)
-        {
-        }
+    }
 
-        [Fact]
-        public void ToHostBuilder_ShouldReturnHostBuilder_WhenWebApplicationBuilderIsProvided()
-        {
-            IHostApplicationBuilder builder = WebApplication.CreateBuilder();
+    [Fact]
+    public void ToHostBuilder_ShouldReturnHostBuilder_WhenWebApplicationBuilderIsProvided()
+    {
+        IHostApplicationBuilder builder = WebApplication.CreateBuilder();
 
-            var hostBuilder = builder.ToHostBuilder();
+        var hostBuilder = builder.ToHostBuilder();
 
-            Assert.NotNull(hostBuilder);
-        }
+        Assert.NotNull(hostBuilder);
+    }
 
-        [Fact]
-        public void ToHostBuilder_ShouldThrowArgumentException_WhenNotWebApplicationBuilder()
-        {
-            IHostApplicationBuilder builder = Host.CreateApplicationBuilder();
+    [Fact]
+    public void ToHostBuilder_ShouldThrowArgumentException_WhenNotWebApplicationBuilder()
+    {
+        IHostApplicationBuilder builder = Host.CreateApplicationBuilder();
 
-            Assert.Throws<ArgumentException>(() => builder.ToHostBuilder());
-        }
+        Assert.Throws<ArgumentException>(() => builder.ToHostBuilder());
     }
 }

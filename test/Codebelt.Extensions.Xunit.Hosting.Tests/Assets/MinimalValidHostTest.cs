@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Codebelt.Extensions.Xunit.Hosting.Assets
+namespace Codebelt.Extensions.Xunit.Hosting.Assets;
+
+public class MinimalValidHostTest : MinimalHostTest<ManagedMinimalHostFixture>
 {
-    public class MinimalValidHostTest : MinimalHostTest<ManagedMinimalHostFixture>
+    public MinimalValidHostTest(ManagedMinimalHostFixture hostFixture) : base(hostFixture)
     {
-        public MinimalValidHostTest(ManagedMinimalHostFixture hostFixture) : base(hostFixture)
-        {
-        }
     }
 }
