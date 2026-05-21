@@ -1,19 +1,18 @@
-﻿using Cuemon.Configuration;
+using Cuemon.Configuration;
 
-namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Assets
+namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Assets;
+
+public class BoolOptions : IParameterObject
 {
-    public class BoolOptions : IParameterObject
-    {
-        public bool A { get; set; }
+    public bool A { get; set; }
 
-        public bool B { get; set; }
+    public bool B { get; set; }
 
-        public bool C { get; set; }
+    public bool C { get; set; }
 
-        public bool D { get; set; }
+    public bool D { get; set; }
 
-        public bool E { get; set; }
+    public bool E { get; set; }
 
-        public bool F { get; set; }
-    }
+    public bool F { get; set; }
 }

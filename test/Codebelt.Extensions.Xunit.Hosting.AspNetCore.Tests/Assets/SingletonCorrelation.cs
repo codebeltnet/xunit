@@ -1,8 +1,7 @@
-﻿using Cuemon.Messaging;
+using Cuemon.Messaging;
 
-namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Assets
+namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Assets;
+
+public sealed record SingletonCorrelation : CorrelationToken
 {
-    public sealed record SingletonCorrelation : CorrelationToken
-    {
-    }
 }

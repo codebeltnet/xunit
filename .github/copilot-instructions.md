@@ -17,16 +17,15 @@ This ensures consistent setup, teardown, and output handling across all tests.
 using Codebelt.Extensions.Xunit;
 using Xunit;
 
-namespace Your.Namespace
-{
-    public class YourTestClass : Test
-    {
-        public YourTestClass(ITestOutputHelper output) : base(output)
-        {
-        }
+namespace Your.Namespace;
 
-        // Your tests here
+public class YourTestClass : Test
+{
+    public YourTestClass(ITestOutputHelper output) : base(output)
+    {
     }
+
+    // Your tests here
 }
 ```
 
@@ -47,21 +46,20 @@ namespace Your.Namespace
 
 ## 5. File and Namespace Organization
 
+- **Always use file-scoped namespaces** (`namespace YourProject.Foo.Bar;`) — the entire codebase has been refactored to file-scoped namespaces. Never use block-scoped namespaces.
 - Place test files in the appropriate test project and folder structure.
 - Use namespaces that mirror the source code structure. The namespace of a test file MUST match the namespace of the System Under Test (SUT). Do NOT append ".Tests", ".Benchmarks" or similar suffixes to the namespace. Only the assembly/project name should indicate that the file is a test/benchmark (for example: YourProject.Foo.Tests assembly, but namespace YourProject.Foo).
     - Example: If the SUT class is declared as:
         ```csharp
-        namespace YourProject.Foo.Bar
-        {
-                public class Zoo { /* ... */ }
-        }
+        namespace YourProject.Foo.Bar;
+
+        public class Zoo { /* ... */ }
         ```
         then the corresponding unit test class must use the exact same namespace:
         ```csharp
-        namespace YourProject.Foo.Bar
-        {
-                public class ZooTest : Test { /* ... */ }
-        }
+        namespace YourProject.Foo.Bar;
+
+        public class ZooTest : Test { /* ... */ }
         ```
     - Do NOT use:
         ```csharp
@@ -91,16 +89,16 @@ using System.Globalization;
 using Codebelt.Extensions.Xunit;
 using Xunit;
 
-namespace YourProject
+namespace YourProject;
+
+/// <summary>
+/// Tests for the <see cref="DateSpan"/> class.
+/// </summary>
+public class DateSpanTest : Test
 {
-    /// <summary>
-    /// Tests for the <see cref="DateSpan"/> class.
-    /// </summary>
-    public class DateSpanTest : Test
+    public DateSpanTest(ITestOutputHelper output) : base(output)
     {
-        public DateSpanTest(ITestOutputHelper output) : base(output)
-        {
-        }
+    }
 
         [Fact]
         public void Parse_ShouldGetOneMonthOfDifference_UsingIso8601String()
@@ -132,7 +130,6 @@ namespace YourProject
 
             TestOutput.WriteLine(span.ToString());
         }
-    }
 }
 ```
 

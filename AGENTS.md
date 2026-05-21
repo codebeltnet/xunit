@@ -91,9 +91,8 @@ dotnet test --collect:"XPlat Code Coverage"
 - Keep existing style in files; many modern analyzers are explicitly disabled.
 
 ### Namespace Style
-- **Prefer file-scoped namespaces** (`namespace Codebelt.Extensions.Xunit;`) for new files.
-- The current majority of the codebase uses **block-scoped namespaces** — do not convert existing files unless explicitly asked.
-- When editing an existing file, follow whichever style that file already uses.
+- **Always use file-scoped namespaces** (`namespace Codebelt.Extensions.Xunit;`) — the entire codebase has been refactored to file-scoped namespaces.
+- **Never use block-scoped namespaces** for new or edited files.
 - **Never use top-level statements.** Always use explicit class declarations with a proper namespace.
 
 ### Disabled Analyzers (key rules — do NOT introduce these patterns)

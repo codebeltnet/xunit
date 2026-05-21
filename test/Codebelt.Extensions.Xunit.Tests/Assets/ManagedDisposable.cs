@@ -1,26 +1,25 @@
-﻿using System.IO;
+using System.IO;
 
-namespace Codebelt.Extensions.Xunit.Assets
+namespace Codebelt.Extensions.Xunit.Assets;
+
+public class ManagedDisposable : Test
 {
-    public class ManagedDisposable : Test
+    public ManagedDisposable()
     {
-        public ManagedDisposable()
+        Stream = new MemoryStream();
+    }
+
+    public MemoryStream Stream { get; private set; }
+
+    protected override void OnDisposeManagedResources()
+    {
+        try
         {
-            Stream = new MemoryStream();
+            Stream?.Dispose();
         }
-
-        public MemoryStream Stream { get; private set; }
-
-        protected override void OnDisposeManagedResources()
+        finally
         {
-            try
-            {
-                Stream?.Dispose();
-            }
-            finally
-            {
-                Stream = null;
-            }
+            Stream = null;
         }
     }
 }

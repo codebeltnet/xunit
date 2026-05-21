@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace Codebelt.Extensions.Xunit
+namespace Codebelt.Extensions.Xunit;
+
+/// <summary>
+/// Represents the members needed for vanilla testing.
+/// </summary>
+/// <seealso cref="IDisposable"/>
+public interface ITest : IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Represents the members needed for vanilla testing.
+    /// Gets the type of caller for this instance. Default is <see cref="object.GetType"/>.
     /// </summary>
-    /// <seealso cref="IDisposable"/>
-    public interface ITest : IDisposable, IAsyncDisposable
-    {
-        /// <summary>
-        /// Gets the type of caller for this instance. Default is <see cref="object.GetType"/>.
-        /// </summary>
-        /// <value>The type of caller for this instance.</value>
-        Type CallerType { get; }
-    }
+    /// <value>The type of caller for this instance.</value>
+    Type CallerType { get; }
 }

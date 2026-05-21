@@ -11,7 +11,7 @@ It is, by heart, free, flexible and built to extend and boost your agile codebel
 
 ## **Codebelt.Extensions.Xunit.App** for .NET
 
-`Codebelt.Extensions.Xunit.App`, aka `Extensions for xUnit API by Codebelt`, is a toolbelt of assemblies designed to extend upon [xUnit.net](https://xunit.net/) for more advanced unit test scenarios while also being the preferred unit test platform of [Cuemon for .NET](https://github.com/gimlichael/Cuemon).
+`Codebelt.Extensions.Xunit.App`, aka `Extensions for xUnit API by Codebelt`, is a toolbelt of assemblies designed to extend upon [xUnit.net](https://xunit.net/) for more advanced unit test scenarios while also being the preferred unit test platform of [Cuemon for .NET](https://github.com/codebeltnet/cuemon).
 
 More documentation available at our documentation site:
 

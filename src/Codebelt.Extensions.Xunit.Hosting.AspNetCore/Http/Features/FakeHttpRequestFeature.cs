@@ -1,23 +1,22 @@
 ﻿using System.Net.Http;
 using Microsoft.AspNetCore.Http.Features;
 
-namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features
+namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features;
+
+/// <summary>
+/// Represents a way to support some default values for Request context..
+/// </summary>
+/// <seealso cref="HttpRequestFeature" />
+public class FakeHttpRequestFeature : HttpRequestFeature
 {
     /// <summary>
-    /// Represents a way to support some default values for Request context..
+    /// Initializes a new instance of the <see cref="FakeHttpRequestFeature"/> class.
     /// </summary>
-    /// <seealso cref="HttpRequestFeature" />
-    public class FakeHttpRequestFeature : HttpRequestFeature
+    public FakeHttpRequestFeature()
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FakeHttpRequestFeature"/> class.
-        /// </summary>
-        public FakeHttpRequestFeature()
-        {
-            Method = HttpMethod.Get.ToString();
-            Path = "/";
-            Scheme = "http";
-            Protocol = "HTTP/1.1";
-        }
+        Method = HttpMethod.Get.ToString();
+        Path = "/";
+        Scheme = "http";
+        Protocol = "HTTP/1.1";
     }
 }
