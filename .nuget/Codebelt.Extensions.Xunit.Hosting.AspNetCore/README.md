@@ -30,7 +30,7 @@ More documentation available at our documentation site:
 
 ### CSharp Example
 
-Source: [ServerTimingMiddlewareTest.cs](https://github.com/gimlichael/Cuemon/blob/main/test/Cuemon.AspNetCore.Tests/Diagnostics/ServerTimingMiddlewareTest.cs)
+Source: [ServerTimingMiddlewareTest.cs](https://github.com/codebeltnet/cuemon/blob/main/test/Cuemon.AspNetCore.Tests/Diagnostics/ServerTimingMiddlewareTest.cs)
 
 ```csharp
 [Fact]
