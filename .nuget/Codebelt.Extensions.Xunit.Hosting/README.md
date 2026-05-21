@@ -31,7 +31,7 @@ public class HostTestTest : HostTest<ManagedHostFixture>
 {
     private readonly IServiceProvider _provider;
 
-    public HostTestTest(HostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+    public HostTestTest(ManagedHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
         _provider = hostFixture.Host?.Services;
         _provider.GetRequiredService<ITestOutputHelperAccessor>().TestOutput = output;
