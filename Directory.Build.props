@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsSourceProject)' == 'true'">
-    <TargetFrameworks>net10.0;net9.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net11.0;net10.0;netstandard2.0</TargetFrameworks>
     <Copyright>Copyright © Geekle 2024-2026. All rights reserved.</Copyright>
     <Authors>gimlichael</Authors>
     <Company>Geekle</Company>
@@ -55,11 +55,11 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'true' AND '$(IsLinux)' == 'true'">
-    <TargetFrameworks>net10.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net11.0;net10.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'true' AND '$(IsWindows)' == 'true'">
-    <TargetFrameworks>net10.0;net9.0;net48</TargetFrameworks>
+    <TargetFrameworks>net11.0;net10.0;net48</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(IsTestProject)' == 'true'">
@@ -108,7 +108,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(IsBenchmarkProject)' == 'true'">
-    <TargetFrameworks>net10.0;net9.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net11.0;net10.0;netstandard2.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <RunAnalyzers>false</RunAnalyzers>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>

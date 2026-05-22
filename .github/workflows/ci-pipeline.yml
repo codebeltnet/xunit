@@ -53,6 +53,7 @@ jobs:
       build-switches: ${{ needs.init.outputs.build-switches }}
       runs-on: ${{ matrix.arch == 'ARM64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
       upload-build-artifact-name: build-${{ matrix.configuration }}-${{ matrix.arch }}
+      include-preview: true
     secrets: inherit
 
   pack:
@@ -66,6 +67,7 @@ jobs:
       configuration: ${{ matrix.configuration }}
       version: ${{ needs.build.outputs.version }}
       download-build-artifact-pattern: build-${{ matrix.configuration }}-X64
+      include-preview: true
 
   test_linux:
     name: call-test-linux
@@ -83,6 +85,7 @@ jobs:
       restore: true # we need to restore the packages for the test project
       build: true # we need to build for .net48 tests
       download-pattern: build-${{ matrix.configuration }}-${{ matrix.arch }}
+      include-preview: true
 
   test_windows:
     name: call-test-windows
@@ -100,6 +103,7 @@ jobs:
       restore: true # we need to restore the packages for the test project
       build: true # we need to build for .net48 tests
       download-pattern: build-${{ matrix.configuration }}-${{ matrix.arch }}
+      include-preview: true
 
   sonarcloud:
     if: ${{ needs.init.outputs.run-privileged-jobs == 'true' }}
@@ -110,6 +114,7 @@ jobs:
       organization: geekle
       projectKey: xunit
       version: ${{ needs.build.outputs.version }}
+      include-preview: true
     secrets: inherit
 
   codecov:
@@ -121,18 +126,19 @@ jobs:
       repository: codebeltnet/xunit
     secrets: inherit
 
-  codeql:
-    if: ${{ needs.init.outputs.run-privileged-jobs == 'true' }}
-    name: call-codeql
-    needs: [init, build, test_linux, test_windows]
-    uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v3
-    permissions:
-      security-events: write
+  # It is really a joke that a Microsoft backed tool does not support latest-and-greatest .NET versions
+  # codeql:
+  #   if: ${{ needs.init.outputs.run-privileged-jobs == 'true' }}
+  #   name: call-codeql
+  #   needs: [init, build, test_linux, test_windows]
+  #   uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v3
+  #   permissions:
+  #     security-events: write
 
   deploy:
     if: github.event_name != 'pull_request'
     name: call-nuget
-    needs: [build, pack, test_linux, test_windows, sonarcloud, codecov, codeql]
+    needs: [build, pack, test_linux, test_windows, sonarcloud, codecov]
     uses: codebeltnet/jobs-nuget-push/.github/workflows/default.yml@v3
     with:
       version: ${{ needs.build.outputs.version }}

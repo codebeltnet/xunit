@@ -65,7 +65,7 @@ public class ManagedHostFixture : HostFixture, IGenericHostFixture
                 });
             });
 
-#if NET9_0_OR_GREATER
+#if NET10_0_OR_GREATER
         hb.UseDefaultServiceProvider(o =>
         {
             o.ValidateOnBuild = true;
