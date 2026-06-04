@@ -1,17 +1,23 @@
+Version: 11.1.0
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
+
+# ALM
+- CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
+
 Version: 11.0.10
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 11.0.9
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 11.0.8
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
@@ -19,49 +25,49 @@ Availability: .NET 10 and .NET 9
 - CHANGED PackageReleaseNotes retrieval in Directory.Build.targets to use simplified System.IO.File.ReadAllText approach
 
 Version: 11.0.7
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 11.0.6
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 11.0.5
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 11.0.4
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 11.0.3
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 11.0.2
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 11.0.1
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 11.0.0
-Availability: .NET 10 and .NET 9
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
@@ -70,49 +76,49 @@ Availability: .NET 10 and .NET 9
 - CHANGED Test class in the Codebelt.Extensions.Xunit namespace to use ValueTask for InitializeAsync instead of Task (xUnit v3 consequence change)
 
 Version: 10.0.7
-Availability: .NET 9 and .NET 8
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 10.0.6
-Availability: .NET 9 and .NET 8
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 10.0.5
-Availability: .NET 9 and .NET 8
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 10.0.4
-Availability: .NET 9 and .NET 8
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 10.0.3
-Availability: .NET 9 and .NET 8
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 10.0.2
-Availability: .NET 9 and .NET 8
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 10.0.1
-Availability: .NET 9 and .NET 8
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
 
 Version: 10.0.0
-Availability: .NET 9 and .NET 8
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
@@ -121,7 +127,7 @@ Availability: .NET 9 and .NET 8
 - EXTENDED Test class in the Codebelt.Extensions.Xunit namespace to report unhandled exceptions in the test output using the injected ITestOutputHelper interface
 
 Version: 9.1.3
-Availability: .NET 9 and .NET 8
+Availability: .NET 9, .NET 8 and .NET Standard 2.0
 
 # ALM
 - CHANGED Dependencies to latest and greatest with respect to TFMs
