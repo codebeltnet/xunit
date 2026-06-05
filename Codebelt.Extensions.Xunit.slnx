@@ -1,4 +1,14 @@
 <Solution>
+  <Folder Name="/app/">
+    <Project Path="app/Codebelt.Extensions.Xunit.Hosting.BootstrapperConsole.App/Codebelt.Extensions.Xunit.Hosting.BootstrapperConsole.App.csproj" />
+    <Project Path="app/Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App/Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App.csproj" />
+    <Project Path="app/Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWeb.App/Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWeb.App.csproj" />
+    <Project Path="app/Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWorker.App/Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWorker.App.csproj" />
+    <Project Path="app/Codebelt.Extensions.Xunit.Hosting.BootstrapperWeb.App/Codebelt.Extensions.Xunit.Hosting.BootstrapperWeb.App.csproj" />
+    <Project Path="app/Codebelt.Extensions.Xunit.Hosting.BootstrapperWorker.App/Codebelt.Extensions.Xunit.Hosting.BootstrapperWorker.App.csproj" />
+    <Project Path="app/Codebelt.Extensions.Xunit.Hosting.ClassicProgram.App/Codebelt.Extensions.Xunit.Hosting.ClassicProgram.App.csproj" />
+    <Project Path="app/Codebelt.Extensions.Xunit.Hosting.Program.App/Codebelt.Extensions.Xunit.Hosting.Program.App.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/Codebelt.Extensions.Xunit.App/Codebelt.Extensions.Xunit.App.csproj" />
     <Project Path="src/Codebelt.Extensions.Xunit.Hosting.AspNetCore/Codebelt.Extensions.Xunit.Hosting.AspNetCore.csproj" />
@@ -6,7 +16,9 @@
     <Project Path="src/Codebelt.Extensions.Xunit/Codebelt.Extensions.Xunit.csproj" />
   </Folder>
   <Folder Name="/test/">
+    <Project Path="test/Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests/Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests.csproj" />
     <Project Path="test/Codebelt.Extensions.Xunit.Hosting.AspNetCore.Tests/Codebelt.Extensions.Xunit.Hosting.AspNetCore.Tests.csproj" />
+    <Project Path="test/Codebelt.Extensions.Xunit.Hosting.FunctionalTests/Codebelt.Extensions.Xunit.Hosting.FunctionalTests.csproj" />
     <Project Path="test/Codebelt.Extensions.Xunit.Hosting.Tests/Codebelt.Extensions.Xunit.Hosting.Tests.csproj" />
     <Project Path="test/Codebelt.Extensions.Xunit.Tests/Codebelt.Extensions.Xunit.Tests.csproj" />
   </Folder>

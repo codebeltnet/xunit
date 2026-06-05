@@ -1,3 +1,13 @@
+Version: 11.1.0
+Availability: .NET 10 and .NET 9
+
+# ALM
+- CHANGED Dependencies have been upgraded to the latest compatible versions for all supported target frameworks (TFMs)
+
+# New Features
+- ADDED WebApplicationTestFactory class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for simplified static creation of ASP.NET Core application tests from a TEntryPoint with BlockingManagedWebApplicationFixture{TEntryPoint} as the default fixture
+- ADDED WebApplicationTest{TEntryPoint,T}, IWebApplicationFixture{TEntryPoint}, BlockingManagedWebApplicationFixture{TEntryPoint} and WebApplicationFixtureExtensions in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace to support Program.cs based ASP.NET Core tests with TestServer
+
 Version: 11.0.10
 Availability: .NET 10 and .NET 9
 
