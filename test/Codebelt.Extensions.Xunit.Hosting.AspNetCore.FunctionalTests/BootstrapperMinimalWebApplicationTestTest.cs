@@ -6,9 +6,9 @@ using BootstrapperMinimalWebProgram = Codebelt.Extensions.Xunit.Hosting.Bootstra
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 
-public class BootstrapperMinimalWebApplicationTestTest : WebApplicationTest<BootstrapperMinimalWebProgram, ManagedWebApplicationFixture<BootstrapperMinimalWebProgram>>
+public class BootstrapperMinimalWebApplicationTestTest : WebApplicationTest<BootstrapperMinimalWebProgram, BlockingManagedWebApplicationFixture<BootstrapperMinimalWebProgram>>
 {
-    public BootstrapperMinimalWebApplicationTestTest(ManagedWebApplicationFixture<BootstrapperMinimalWebProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+    public BootstrapperMinimalWebApplicationTestTest(BlockingManagedWebApplicationFixture<BootstrapperMinimalWebProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
     }
 

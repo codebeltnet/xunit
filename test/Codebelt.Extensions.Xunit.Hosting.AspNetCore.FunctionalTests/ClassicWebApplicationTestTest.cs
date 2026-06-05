@@ -5,9 +5,9 @@ using Classic = Codebelt.Extensions.Xunit.Hosting.ClassicProgram.App.Program;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 
-public class ClassicWebApplicationTestTest : WebApplicationTest<Classic, ManagedWebApplicationFixture<Classic>>
+public class ClassicWebApplicationTestTest : WebApplicationTest<Classic, BlockingManagedWebApplicationFixture<Classic>>
 {
-    public ClassicWebApplicationTestTest(ManagedWebApplicationFixture<Classic> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+    public ClassicWebApplicationTestTest(BlockingManagedWebApplicationFixture<Classic> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
     }
 

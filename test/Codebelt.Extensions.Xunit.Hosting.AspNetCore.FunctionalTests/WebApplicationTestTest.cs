@@ -11,9 +11,9 @@ using ModernProgram = Codebelt.Extensions.Xunit.Hosting.Program.App.Program;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 
-public class WebApplicationTestTest : WebApplicationTest<ModernProgram, ManagedWebApplicationFixture<ModernProgram>>
+public class WebApplicationTestTest : WebApplicationTest<ModernProgram, BlockingManagedWebApplicationFixture<ModernProgram>>
 {
-    public WebApplicationTestTest(ManagedWebApplicationFixture<ModernProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+    public WebApplicationTestTest(BlockingManagedWebApplicationFixture<ModernProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
     }
 
@@ -67,7 +67,7 @@ public class WebApplicationTestTest : WebApplicationTest<ModernProgram, ManagedW
     [Fact]
     public void ShouldHaveValidFixtureState_WhenApplicationIsBootstrapped()
     {
-        var fixture = new ManagedWebApplicationFixture<ModernProgram>();
+        var fixture = new BlockingManagedWebApplicationFixture<ModernProgram>();
         var test = new DeferredModernWebApplicationTest(fixture);
 
         fixture.ConfigureCallback = test.Configure;
