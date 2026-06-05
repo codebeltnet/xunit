@@ -70,7 +70,6 @@ public static class ApplicationHostFactory
             disposable.Dispose();
         }
 
-        host.Start();
         return host;
     }
 }
