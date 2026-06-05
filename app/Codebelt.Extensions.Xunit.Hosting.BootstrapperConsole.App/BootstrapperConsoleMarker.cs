@@ -8,6 +8,4 @@ public sealed class BootstrapperConsoleMarker
     }
 
     public string Value { get; }
-
-    public static string LastValue { get; set; }
 }

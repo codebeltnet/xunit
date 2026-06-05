@@ -1,4 +1,4 @@
-using Microsoft.Testing.Platform.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using BootstrapperConsoleMarker = Codebelt.Extensions.Xunit.Hosting.BootstrapperConsole.App.BootstrapperConsoleMarker;
 using BootstrapperConsoleProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperConsole.App.Program;

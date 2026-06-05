@@ -20,7 +20,6 @@ public sealed class Program : MinimalConsoleProgram<Program>
 
     public override Task RunAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
     {
-        BootstrapperMinimalConsoleMarker.LastValue = serviceProvider.GetRequiredService<BootstrapperMinimalConsoleMarker>().Value;
         return Task.CompletedTask;
     }
 }

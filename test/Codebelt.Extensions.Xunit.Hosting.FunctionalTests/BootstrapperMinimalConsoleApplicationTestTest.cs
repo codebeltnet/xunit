@@ -1,6 +1,6 @@
 using System;
 using Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App;
-using Microsoft.Testing.Platform.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using BootstrapperMinimalConsoleProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App.Program;
 

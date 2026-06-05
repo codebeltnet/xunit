@@ -25,7 +25,6 @@ public sealed class Startup : ConsoleStartup
 
     public override Task RunAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
     {
-        BootstrapperConsoleMarker.LastValue = serviceProvider.GetRequiredService<BootstrapperConsoleMarker>().Value;
         return Task.CompletedTask;
     }
 }
