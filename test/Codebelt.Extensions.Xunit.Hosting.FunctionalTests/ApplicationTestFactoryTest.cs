@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -92,5 +93,13 @@ public class ApplicationTestFactoryTest : Test
         {
             Assert.True(sut == application.CallerType.DeclaringType);
         }
+    }
+
+    [Fact]
+    public async Task Create_ShouldDisposeFixtureAsync_WhenApplicationIsDisposedAsync()
+    {
+        await using var application = ApplicationTestFactory.Create<BootstrapperMinimalConsoleProgram>();
+
+        Assert.NotNull(application.Host);
     }
 }
