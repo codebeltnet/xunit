@@ -28,7 +28,7 @@ public class UnmanagedDisposable : Test
 
     public UnmanagedDisposable()
     {
-#if NET8_0_OR_GREATER
+#if NET9_0_OR_GREATER
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             if (NativeLibrary.TryLoad("kernel32.dll", GetType().Assembly, DllImportSearchPath.System32, out _libHandle))
@@ -49,6 +49,13 @@ public class UnmanagedDisposable : Test
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             if (NativeLibrary.TryLoad("libc.so.6", GetType().Assembly, DllImportSearchPath.SafeDirectories, out _libHandle))
+            {
+                _handle = _libHandle; // i don't know of any native methods on unix
+            }
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            if (NativeLibrary.TryLoad("libSystem.B.dylib", GetType().Assembly, DllImportSearchPath.SafeDirectories, out _libHandle))
             {
                 _handle = _libHandle; // i don't know of any native methods on unix
             }
@@ -74,6 +81,12 @@ public class UnmanagedDisposable : Test
             _libHandle = _nativeLibrary.Handle;
             _handle = _libHandle; // i don't know of any native methods on unix
         }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            _nativeLibrary = new NativeLibrary("libSystem.B.dylib");
+            _libHandle = _nativeLibrary.Handle;
+            _handle = _libHandle; // i don't know of any native methods on unix
+        }
 #endif
     }
 
@@ -89,7 +102,7 @@ public class UnmanagedDisposable : Test
 
     protected override void OnDisposeUnmanagedResources()
     {
-#if NET8_0_OR_GREATER
+#if NET9_0_OR_GREATER
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             if (_handle != IntPtr.Zero)
@@ -106,6 +119,10 @@ public class UnmanagedDisposable : Test
         {
             NativeLibrary.Free(_libHandle);
         }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            NativeLibrary.Free(_libHandle);
+        }
 #else
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -118,6 +135,10 @@ public class UnmanagedDisposable : Test
             _nativeLibrary.Dispose();
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            _nativeLibrary.Dispose();
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
             _nativeLibrary.Dispose();
         }
