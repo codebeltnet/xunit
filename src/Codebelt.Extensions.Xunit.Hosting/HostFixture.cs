@@ -119,7 +119,7 @@ public abstract class HostFixture : IHostFixture, IAsyncLifetime
     /// <summary>
     /// Called when this object is being disposed by <see cref="DisposeAsync()"/>.
     /// </summary>
-#if NET8_0_OR_GREATER
+#if NET9_0_OR_GREATER
     protected virtual async ValueTask OnDisposeManagedResourcesAsync()
     {
         if (Host is IAsyncDisposable asyncDisposable)

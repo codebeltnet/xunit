@@ -7,7 +7,7 @@ namespace Codebelt.Extensions.Xunit.Assets;
 public class AsyncDisposable : Test
 {
     IDisposable _disposableResource = new MemoryStream();
-#if NET8_0_OR_GREATER
+#if NET9_0_OR_GREATER
     IAsyncDisposable _asyncDisposableResource = new MemoryStream();
 #else
     IAsyncDisposable _asyncDisposableResource = new WemoryStream();
