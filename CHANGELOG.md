@@ -9,22 +9,23 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 
 ## [11.1.0] - 2026-06-05
 
-This is a minor release focused on Program.cs-based integration testing patterns, hosting abstractions for vanilla applications, and comprehensive fixture support for both Generic Host and ASP.NET Core scenarios.
+This is a minor release that brings WebApplicationFactory-like integration testing patterns to the entire .NET application stack — not just ASP.NET Core. ApplicationHostFactory and ApplicationTest abstractions enable Program.cs-based testing for Generic Host scenarios, while WebApplicationTest provides the equivalent TestServer experience for ASP.NET Core. Both patterns support modern minimal hosting and legacy Startup.cs configurations, with comprehensive bootstrapper reference applications and functional test coverage demonstrating real-world testing scenarios.
 
 ### Added
 
 - ApplicationHostFactory class in the Codebelt.Extensions.Xunit.Hosting namespace that creates started IHost instances from Program.cs entry points,
 - ApplicationTest{TEntryPoint,T} base classes in the Codebelt.Extensions.Xunit.Hosting namespace for host integration testing patterns with generic and non-generic variants,
-- IApplicationFixture{TEntryPoint} interface and ManagedApplicationFixture{TEntryPoint} implementation in the Codebelt.Extensions.Xunit.Hosting namespace for fixture-based host lifecycle management,
+- ApplicationTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace for static factory methods to create host test instances,
+- IApplicationFixture{TEntryPoint} interface in the Codebelt.Extensions.Xunit.Hosting namespace for fixture-based host lifecycle management,
+- BlockingManagedApplicationFixture{TEntryPoint} class in the Codebelt.Extensions.Xunit.Hosting namespace providing non-blocking host fixture implementation,
 - ApplicationFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace providing convenient fixture setup methods,
-- DeferredHostBuilder class in the Codebelt.Extensions.Xunit.Hosting namespace for deferred host configuration during fixture initialization,
-- ProgramHostFactoryResolver class in the Codebelt.Extensions.Xunit.Hosting namespace for resolving host factories from entry points via reflection,
 - WebApplicationTest{TEntryPoint,T} base classes in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for ASP.NET Core Program.cs-based TestServer testing,
-- IWebApplicationFixture{TEntryPoint} interface and ManagedWebApplicationFixture{TEntryPoint} implementation in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for web application fixture lifecycle management,
+- WebApplicationTestFactory class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for static factory methods to create web application test instances,
+- IWebApplicationFixture{TEntryPoint} interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for web application fixture lifecycle management,
+- BlockingManagedWebApplicationFixture{TEntryPoint} class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace providing non-blocking web fixture implementation,
 - WebApplicationFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace providing convenient web fixture setup methods,
-- WebApplicationHostFactory class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for creating started web application instances from entry points,
 - Eight bootstrapper reference applications demonstrating host patterns: BootstrapperConsole.App (classic Startup pattern), BootstrapperMinimalConsole.App (minimal hosting), BootstrapperWorker.App (BackgroundService with Startup), BootstrapperMinimalWorker.App (minimal worker service), BootstrapperWeb.App (ASP.NET Core with Startup), BootstrapperMinimalWeb.App (ASP.NET Core minimal), BootstrapperClassicProgram.App (top-level statements), and BootstrapperProgram.App (advanced customization),
-- Comprehensive functional test coverage for hosting abstractions and integration patterns across both Generic Host and ASP.NET Core scenarios.
+- Comprehensive functional test coverage for hosting abstractions and integration patterns across Generic Host and ASP.NET Core scenarios, including all bootstrapper configurations.
 
 ### Changed
 

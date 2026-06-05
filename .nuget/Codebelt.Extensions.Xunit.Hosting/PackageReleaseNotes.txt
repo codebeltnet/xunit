@@ -6,7 +6,8 @@ Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
 # New Features
 - ADDED ApplicationHostFactory class in the Codebelt.Extensions.Xunit.Hosting namespace for creating started IHost instances from an application entry point assembly
-- ADDED ApplicationTest{TEntryPoint,T}, IApplicationFixture{TEntryPoint}, ManagedApplicationFixture{TEntryPoint} and ApplicationFixtureExtensions in the Codebelt.Extensions.Xunit.Hosting namespace to support Program.cs based host tests for console, worker and generic host applications
+- ADDED ApplicationTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace for simplified static creation of application tests from a TEntryPoint with BlockingManagedApplicationFixture{TEntryPoint} as the default fixture
+- ADDED ApplicationTest{TEntryPoint,T}, IApplicationFixture{TEntryPoint}, BlockingManagedApplicationFixture{TEntryPoint} and ApplicationFixtureExtensions in the Codebelt.Extensions.Xunit.Hosting namespace to support Program.cs based host tests for console, worker and generic host applications
 
 Version: 11.0.10
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
