@@ -155,6 +155,9 @@ internal static class ProgramHostFactoryResolver
             catch (TargetInvocationException ex) when (ex.InnerException?.GetType().Name == nameof(HostAbortedException))
             {
             }
+            catch (HostAbortedException)
+            {
+            }
             catch (TargetInvocationException ex)
             {
                 exception = ex.InnerException ?? ex;

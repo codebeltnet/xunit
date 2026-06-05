@@ -13,6 +13,6 @@ internal static class WebApplicationHostFactory
         {
             webHostBuilder.UseTestServer(o => o.PreserveExecutionContext = true);
             configureWebHost?.Invoke(webHostBuilder);
-        }));
+        }), false);
     }
 }
