@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net10.0;net9.0</TargetFrameworks>
+    <RootNamespace>Codebelt.Extensions.Xunit.Hosting.AspNetCore</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\app\Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWeb.App\Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWeb.App.csproj" />
+    <ProjectReference Include="..\..\app\Codebelt.Extensions.Xunit.Hosting.BootstrapperWeb.App\Codebelt.Extensions.Xunit.Hosting.BootstrapperWeb.App.csproj" />
+    <ProjectReference Include="..\..\app\Codebelt.Extensions.Xunit.Hosting.ClassicProgram.App\Codebelt.Extensions.Xunit.Hosting.ClassicProgram.App.csproj" />
+    <ProjectReference Include="..\..\app\Codebelt.Extensions.Xunit.Hosting.Program.App\Codebelt.Extensions.Xunit.Hosting.Program.App.csproj" />
+    <ProjectReference Include="..\..\src\Codebelt.Extensions.Xunit.Hosting.AspNetCore\Codebelt.Extensions.Xunit.Hosting.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>

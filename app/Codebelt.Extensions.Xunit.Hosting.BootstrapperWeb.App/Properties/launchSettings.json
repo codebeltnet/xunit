@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Codebelt.Extensions.Xunit.Hosting.AspNetCore.BootstrapperWebTestSite": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:64267;http://localhost:64269"
+    }
+  }
+}

@@ -64,7 +64,7 @@ public class TestTest : Test
         var expected = "Hello World";
         var actual = "Hello World";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -75,7 +75,7 @@ public class TestTest : Test
         var expected = "Hello World";
         var actual = "Goodbye World";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.False(result);
     }
@@ -86,7 +86,7 @@ public class TestTest : Test
         var expected = "Hello * World";
         var actual = "Hello Beautiful World";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -97,7 +97,7 @@ public class TestTest : Test
         var expected = "Hello ?orld";
         var actual = "Hello World";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -108,7 +108,7 @@ public class TestTest : Test
         var expected = "* test ? result *";
         var actual = "This is a test 1 result with more text";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -119,7 +119,7 @@ public class TestTest : Test
         var expected = "*World";
         var actual = "Hello World";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -130,7 +130,7 @@ public class TestTest : Test
         var expected = "Hello*";
         var actual = "Hello World";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -141,7 +141,7 @@ public class TestTest : Test
         var expected = "Hello ? World";
         var actual = "Hello Beautiful World";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.False(result);
     }
@@ -153,7 +153,7 @@ public class TestTest : Test
         var actual = "Goodbye World";
 
         var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
-            Test.Match(expected, actual, options => options.ThrowOnNoMatch = true));
+            Match(expected, actual, options => options.ThrowOnNoMatch = true));
 
         TestOutput.WriteLine(exception.Message);
         TestOutput.WriteLine($"ParamName: {exception.ParamName}");
@@ -170,7 +170,7 @@ public class TestTest : Test
         var expected = "Hello ## World";
         var actual = "Hello Beautiful World";
 
-        var result = Test.Match(expected, actual, options => options.GroupOfCharacters = "\\#\\#");
+        var result = Match(expected, actual, options => options.GroupOfCharacters = "\\#\\#");
 
         Assert.True(result);
     }
@@ -181,7 +181,7 @@ public class TestTest : Test
         var expected = "Hello #orld";
         var actual = "Hello World";
 
-        var result = Test.Match(expected, actual, options => options.SingleCharacter = "\\#");
+        var result = Match(expected, actual, options => options.SingleCharacter = "\\#");
 
         Assert.True(result);
     }
@@ -192,7 +192,7 @@ public class TestTest : Test
         var expected = $"Line 1{Environment.NewLine}Line 2{Environment.NewLine}Line 3";
         var actual = $"Line 1{Environment.NewLine}Line 2{Environment.NewLine}Line 3";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -203,7 +203,7 @@ public class TestTest : Test
         var expected = $"Line 1{Environment.NewLine}Line ?{Environment.NewLine}Line *";
         var actual = $"Line 1{Environment.NewLine}Line 2{Environment.NewLine}Line 3";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -214,7 +214,7 @@ public class TestTest : Test
         var expected = $"Line 1{Environment.NewLine}Line 2{Environment.NewLine}Line 3";
         var actual = $"Line 1{Environment.NewLine}Line 4{Environment.NewLine}Line 3";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.False(result);
     }
@@ -225,7 +225,7 @@ public class TestTest : Test
         var expected = string.Empty;
         var actual = string.Empty;
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -236,7 +236,7 @@ public class TestTest : Test
         var expected = "Hello.World";
         var actual = "Hello.World";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -247,7 +247,7 @@ public class TestTest : Test
         var expected = "Test (value)";
         var actual = "Test (value)";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -258,7 +258,7 @@ public class TestTest : Test
         var expected = "Test [value]";
         var actual = "Test [value]";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -269,7 +269,7 @@ public class TestTest : Test
         var expected = "Test+Value";
         var actual = "Test+Value";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -280,7 +280,7 @@ public class TestTest : Test
         var expected = "Test?Value";
         var actual = "TestMultipleValue";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.False(result);
     }
@@ -291,7 +291,7 @@ public class TestTest : Test
         var expected = "Test*Value";
         var actual = "TestValue";
 
-        var result = Test.Match(expected, actual);
+        var result = Match(expected, actual);
 
         Assert.True(result);
     }
@@ -303,7 +303,7 @@ public class TestTest : Test
         var actual = $"Line 1{Environment.NewLine}Actual Line{Environment.NewLine}Line 3";
 
         var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
-            Test.Match(expected, actual, options => options.ThrowOnNoMatch = true));
+            Match(expected, actual, options => options.ThrowOnNoMatch = true));
 
         Assert.Contains("Expected Line", exception.ActualValue.ToString());
     }

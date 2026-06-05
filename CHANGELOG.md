@@ -7,9 +7,32 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
-## [11.0.11] - 2026-06-04
+## [11.1.0] - 2026-06-05
 
-This is a service update that focuses on package dependencies.
+This is a minor release that brings WebApplicationFactory-like integration testing patterns to the entire .NET application stack — not just ASP.NET Core. ApplicationHostFactory and ApplicationTest abstractions enable Program.cs-based testing for Generic Host scenarios, while WebApplicationTest provides the equivalent TestServer experience for ASP.NET Core. Both patterns support modern minimal hosting and legacy Startup.cs configurations, with comprehensive bootstrapper reference applications and functional test coverage demonstrating real-world testing scenarios.
+
+### Added
+
+- ApplicationHostFactory class in the Codebelt.Extensions.Xunit.Hosting namespace that creates started IHost instances from Program.cs entry points,
+- ApplicationTest{TEntryPoint,T} base classes in the Codebelt.Extensions.Xunit.Hosting namespace for host integration testing patterns with generic and non-generic variants,
+- ApplicationTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace for static factory methods to create host test instances,
+- IApplicationFixture{TEntryPoint} interface in the Codebelt.Extensions.Xunit.Hosting namespace for fixture-based host lifecycle management,
+- BlockingManagedApplicationFixture{TEntryPoint} class in the Codebelt.Extensions.Xunit.Hosting namespace providing non-blocking host fixture implementation,
+- ApplicationFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace providing convenient fixture setup methods,
+- WebApplicationTest{TEntryPoint,T} base classes in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for ASP.NET Core Program.cs-based TestServer testing,
+- WebApplicationTestFactory class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for static factory methods to create web application test instances,
+- IWebApplicationFixture{TEntryPoint} interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for web application fixture lifecycle management,
+- BlockingManagedWebApplicationFixture{TEntryPoint} class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace providing non-blocking web fixture implementation,
+- WebApplicationFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace providing convenient web fixture setup methods,
+- Eight bootstrapper reference applications demonstrating host patterns: BootstrapperConsole.App (classic Startup pattern), BootstrapperMinimalConsole.App (minimal hosting), BootstrapperWorker.App (BackgroundService with Startup), BootstrapperMinimalWorker.App (minimal worker service), BootstrapperWeb.App (ASP.NET Core with Startup), BootstrapperMinimalWeb.App (ASP.NET Core minimal), BootstrapperClassicProgram.App (top-level statements), and BootstrapperProgram.App (advanced customization),
+- Comprehensive functional test coverage for hosting abstractions and integration patterns across Generic Host and ASP.NET Core scenarios, including all bootstrapper configurations.
+
+### Changed
+
+- Dependencies upgraded to latest compatible versions: added Codebelt.Bootstrapper.Console (5.1.0), Codebelt.Bootstrapper.Web (5.1.0), and Codebelt.Bootstrapper.Worker (5.1.0) packages; upgraded Codebelt.Extensions.BenchmarkDotNet.Console from 1.2.6 to 1.2.7; upgraded Microsoft.NET.Test.Sdk from 18.5.1 to 18.6.0,
+- Solution structure reorganized with new /app/ folder containing eight bootstrapper reference applications,
+- Project configuration updated with new Codebelt.Extensions.Xunit.Hosting.FunctionalTests and Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests functional test projects,
+- Package release notes for all previous versions updated with consistent availability format information.
 
 ## [11.0.10] - 2026-05-21
 
@@ -386,7 +409,10 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 - Added null conditional operator to the ServiceProvider property on the HostFixture class in the Codebelt.Extensions.Xunit.Hosting namespace
 
 
-[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.0.10...HEAD
+
+
+[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.1.0...HEAD
+[11.1.0]: https://github.com/codebeltnet/xunit/compare/v11.0.10...v11.1.0
 [11.0.10]: https://github.com/codebeltnet/xunit/compare/v11.0.9...v11.0.10
 [11.0.9]: https://github.com/codebeltnet/xunit/compare/v11.0.8...v11.0.9
 [11.0.8]: https://github.com/codebeltnet/xunit/compare/v11.0.7...v11.0.8
