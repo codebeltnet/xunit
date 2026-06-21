@@ -7,6 +7,10 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [11.1.1] - 2026-06-21
+
+This is a service update that focuses on package dependencies.
+
 ## [11.1.0] - 2026-06-05
 
 This is a minor release that brings WebApplicationFactory-like integration testing patterns to the entire .NET application stack — not just ASP.NET Core. ApplicationHostFactory and ApplicationTest abstractions enable Program.cs-based testing for Generic Host scenarios, while WebApplicationTest provides the equivalent TestServer experience for ASP.NET Core. Both patterns support modern minimal hosting and legacy Startup.cs configurations, with comprehensive bootstrapper reference applications and functional test coverage demonstrating real-world testing scenarios.
