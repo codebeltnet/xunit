@@ -27,12 +27,12 @@
       {
         "files": [
           "api/**/*.yml",
-          "api/**/*.md",
           "packages/**/*.md",
           "toc.yml",
           "*.md"
         ],
         "exclude": [
+          "api/namespaces/**",
           "bin/**",
           "obj/**"
         ]
@@ -70,7 +70,7 @@
     "overwrite": [
       {
         "files": [
-          "api/namespaces/**.md"
+          "api/namespaces/**/*.md"
         ],
         "exclude": [
           "obj/**",
