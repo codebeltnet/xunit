@@ -9,7 +9,27 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 
 ## [11.1.1] - 2026-06-25
 
-This is a service update that focuses on package dependencies.
+This is a patch release that improves documentation clarity, enhances DocFX infrastructure, and updates test framework dependencies. All changes are non-breaking service refinements.
+
+### Added
+
+- Prohibition on ExcludeFromCodeCoverage attribute usage in AGENTS.md agent guidance documentation,
+- DocFX documentation workflow section in AGENTS.md documenting the complete maintenance and verification process for public API documentation.
+
+### Changed
+
+- Upgraded Microsoft.NET.Test.Sdk from 18.6.0 to 18.7.0 for improved test framework capabilities,
+- Updated NGINX base image and coordinated package version updates for improved compatibility,
+- Expanded DocFX namespace pages with improved entry-point guidance, usage patterns, and extension member tables,
+- Configured DocFX build system to include newly generated type-level overwrite files for comprehensive public API documentation,
+- Enhanced Hosting package README with clearer usage guidance for entry-point factory patterns and fixture options,
+- Enhanced AspNetCore package README to clarify lightweight positioning versus WebApplicationFactory and decision criteria.
+
+### Fixed
+
+- Corrected ApplicationHostFactory XML documentation comments to accurately reflect that methods create and configure the host without starting it,
+- Fixed changelog fixture descriptions to accurately state that BlockingManagedApplicationFixture and BlockingManagedWebApplicationFixture provide blocking implementation,
+- Fixed DocFX overwrite glob pattern configuration to properly resolve api/namespaces/**/*.md files.
 
 ## [11.1.0] - 2026-06-05
 
@@ -415,7 +435,8 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 
 
-[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.1.0...HEAD
+[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.1.1...HEAD
+[11.1.1]: https://github.com/codebeltnet/xunit/compare/v11.1.0...v11.1.1
 [11.1.0]: https://github.com/codebeltnet/xunit/compare/v11.0.10...v11.1.0
 [11.0.10]: https://github.com/codebeltnet/xunit/compare/v11.0.9...v11.0.10
 [11.0.9]: https://github.com/codebeltnet/xunit/compare/v11.0.8...v11.0.9
