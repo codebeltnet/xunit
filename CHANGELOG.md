@@ -7,7 +7,7 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
-## [11.1.1] - 2026-06-21
+## [11.1.1] - 2026-06-25
 
 This is a service update that focuses on package dependencies.
 
@@ -21,12 +21,12 @@ This is a minor release that brings WebApplicationFactory-like integration testi
 - ApplicationTest{TEntryPoint,T} base classes in the Codebelt.Extensions.Xunit.Hosting namespace for host integration testing patterns with generic and non-generic variants,
 - ApplicationTestFactory class in the Codebelt.Extensions.Xunit.Hosting namespace for static factory methods to create host test instances,
 - IApplicationFixture{TEntryPoint} interface in the Codebelt.Extensions.Xunit.Hosting namespace for fixture-based host lifecycle management,
-- BlockingManagedApplicationFixture{TEntryPoint} class in the Codebelt.Extensions.Xunit.Hosting namespace providing non-blocking host fixture implementation,
+- BlockingManagedApplicationFixture{TEntryPoint} class in the Codebelt.Extensions.Xunit.Hosting namespace providing blocking host fixture implementation,
 - ApplicationFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting namespace providing convenient fixture setup methods,
 - WebApplicationTest{TEntryPoint,T} base classes in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for ASP.NET Core Program.cs-based TestServer testing,
 - WebApplicationTestFactory class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for static factory methods to create web application test instances,
 - IWebApplicationFixture{TEntryPoint} interface in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace for web application fixture lifecycle management,
-- BlockingManagedWebApplicationFixture{TEntryPoint} class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace providing non-blocking web fixture implementation,
+- BlockingManagedWebApplicationFixture{TEntryPoint} class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace providing blocking web fixture implementation,
 - WebApplicationFixtureExtensions class in the Codebelt.Extensions.Xunit.Hosting.AspNetCore namespace providing convenient web fixture setup methods,
 - Eight bootstrapper reference applications demonstrating host patterns: BootstrapperConsole.App (classic Startup pattern), BootstrapperMinimalConsole.App (minimal hosting), BootstrapperWorker.App (BackgroundService with Startup), BootstrapperMinimalWorker.App (minimal worker service), BootstrapperWeb.App (ASP.NET Core with Startup), BootstrapperMinimalWeb.App (ASP.NET Core minimal), BootstrapperClassicProgram.App (top-level statements), and BootstrapperProgram.App (advanced customization),
 - Comprehensive functional test coverage for hosting abstractions and integration patterns across Generic Host and ASP.NET Core scenarios, including all bootstrapper configurations.
