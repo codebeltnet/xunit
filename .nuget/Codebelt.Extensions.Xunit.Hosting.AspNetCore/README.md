@@ -13,7 +13,7 @@ It is, by heart, free, flexible and built to extend and boost your agile codebel
 
 The `Codebelt.Extensions.Xunit.Hosting.AspNetCore` namespace contains types that provides a uniform way of doing unit testing that depends on ASP.NET Core and used in conjunction with Microsoft Dependency Injection. The namespace relates to the `Microsoft.AspNetCore.TestHost` namespace.
 
-Perhaps even more convenient than what [WebApplicationFactory](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.testing.webapplicationfactory-1) has to offer?
+`WebApplicationTestFactory.Create<TEntryPoint>` is a lightweight alternative for focused integration tests that prefer inline `IWebHostBuilder` customization and Codebelt's common `IHostTest` model. It is not a drop-in replacement for [WebApplicationFactory<TEntryPoint>](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.testing.webapplicationfactory-1): use Microsoft's factory when reusable derived factories, `CreateClient` options, `WithWebHostBuilder`, or MVC content-root conventions are central to the test suite.
 
 More documentation available at our documentation site:
 

@@ -13,6 +13,8 @@ It is, by heart, free, flexible and built to extend and boost your agile codebel
 
 The `Codebelt.Extensions.Xunit.Hosting` namespace contains types that provides a uniform way of doing unit testing that is used in conjunction with Microsoft Dependency Injection. The namespace relates to the `Xunit.Abstractions` namespace.
 
+Use `ApplicationTestFactory.Create<TEntryPoint>` for a focused integration test against an existing console, worker or Generic Host application's `Program` assembly. It brings the entry-point testing pattern commonly associated with ASP.NET Core to the rest of the .NET application stack, while `ApplicationTest<TEntryPoint, TFixture>` and `BlockingManagedApplicationFixture<TEntryPoint>` provide the reusable xUnit class-fixture form.
+
 More documentation available at our documentation site:
 
 - [Codebelt.Extensions.Xunit.Hosting](https://xunit.codebelt.net/api/Codebelt.Extensions.Xunit.Hosting.html) 🔗
