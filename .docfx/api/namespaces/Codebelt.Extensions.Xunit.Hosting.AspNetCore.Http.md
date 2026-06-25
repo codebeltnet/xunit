@@ -2,7 +2,8 @@
 uid: Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http
 summary: *content
 ---
-The `Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http` namespace contains types that provides a uniform way of doing unit testing that depends on ASP.NET Core and used in conjunction with Microsoft Dependency Injection. The namespace relates to the `Microsoft.AspNetCore.Http` namespace.
+
+Isolate unit tests from the real `IHttpContextAccessor` and `HttpContext` pipeline. The `Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http` namespace provides `FakeHttpContextAccessor`, a test double that implements `IHttpContextAccessor` with settable `HttpContext` and `HttpContextFactory` properties, letting you simulate request context without hosting a full server. Use this type when your tested code depends on `IHttpContextAccessor` and you need deterministic, fast test setup.
 
 [!INCLUDE [availability-modern](../../includes/availability-modern.md)]
 
