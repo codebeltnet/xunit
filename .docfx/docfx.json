@@ -33,6 +33,7 @@
         ],
         "exclude": [
           "api/namespaces/**",
+          "api/types/**",
           "bin/**",
           "obj/**"
         ]
@@ -70,7 +71,8 @@
     "overwrite": [
       {
         "files": [
-          "api/namespaces/**/*.md"
+          "api/namespaces/**/*.md",
+          "api/types/**/*.md"
         ],
         "exclude": [
           "obj/**",
