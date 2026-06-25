@@ -12,7 +12,7 @@ namespace Codebelt.Extensions.Xunit.Hosting;
 public static class ApplicationHostFactory
 {
     /// <summary>
-    /// Creates, configures, builds and starts an <see cref="IHost"/> from the assembly containing <typeparamref name="TEntryPoint"/>.
+    /// Creates, configures and builds an <see cref="IHost"/> from the assembly containing <typeparamref name="TEntryPoint"/>.
     /// </summary>
     /// <typeparam name="TEntryPoint">A type in the entry point assembly of the application.</typeparam>
     /// <param name="configureHost">The delegate that provides a way to override the <see cref="IHostBuilder"/> before the application is built.</param>
@@ -26,7 +26,7 @@ public static class ApplicationHostFactory
     }
 
     /// <summary>
-    /// Creates, configures, builds and starts an <see cref="IHost"/> from the assembly containing <typeparamref name="TEntryPoint"/>.
+    /// Creates, configures and builds an <see cref="IHost"/> from the assembly containing <typeparamref name="TEntryPoint"/>.
     /// </summary>
     /// <typeparam name="TEntryPoint">A type in the entry point assembly of the application.</typeparam>
     /// <param name="configureHost">The delegate that provides a way to override the <see cref="IHostBuilder"/> before the application is built.</param>
