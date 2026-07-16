@@ -7,6 +7,10 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [11.1.2] - 2026-07-16
+
+This is a service update that focuses on package dependencies.
+
 ## [11.1.1] - 2026-06-25
 
 This is a patch release that improves documentation clarity, enhances DocFX infrastructure, and updates test framework dependencies. All changes are non-breaking service refinements.
