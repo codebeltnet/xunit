@@ -7,108 +7,130 @@ using BenchmarkDotNet.Configs;
 namespace Codebelt.Extensions.Xunit;
 
 /// <summary>
-/// Benchmarks for the <see cref="InMemoryTestStore{T}"/> class querying operations.
+/// Benchmarks the consumer-visible querying cost of <see cref="InMemoryTestStore{T}"/>.
 /// </summary>
+/// <remarks>
+/// Two questions are answered:
+/// <list type="number">
+/// <item>How does <see cref="InMemoryTestStore{T}.Query"/> with a predicate scale with store size and selectivity when consumed by a terminal <c>Count()</c>?</item>
+/// <item>Does <see cref="InMemoryTestStore{T}.QueryFor{TResult}"/> add measurable overhead beyond the equivalent lean type-equality predicate, when both terminate in <c>Count()</c> and return the same count?</item>
+/// </list>
+/// </remarks>
 [MemoryDiagnoser]
 [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
 public class InMemoryTestStoreBenchmark
 {
-    [Params(8, 256, 4096)]
+    [Params(256, 4096, 65536)]
     public int Count { get; set; }
 
     private InMemoryTestStore<string> _stringStore;
     private InMemoryTestStore<ItemBase> _mixedStore;
-    private int _expectedSimpleCount;
-    private int _expectedComplexCount;
-    private int _expectedTypeCount;
+
+    private int _expectedAllMatch;
+    private int _expectedHalfMatch;
+    private int _expectedNoMatch;
+    private int _expectedDerived1Count;
 
     [GlobalSetup]
     public void Setup()
     {
-        // String store for basic query benchmarks
         _stringStore = new InMemoryTestStore<string>();
         for (int i = 0; i < Count; i++)
         {
-            _stringStore.Add($"item-{i}");
+            _stringStore.Add("item-" + i.ToString("D5"));
         }
 
-        // Validate baseline query returns all items
-        var allItems = _stringStore.Query().Count();
-        if (allItems != Count)
-            throw new InvalidOperationException($"Expected {Count} items, got {allItems}");
+        _expectedAllMatch = Count;
+        _expectedHalfMatch = 0;
+        for (int i = 0; i < Count; i++)
+        {
+            int lastDigit = i % 10;
+            if (lastDigit % 2 == 0)
+            {
+                _expectedHalfMatch++;
+            }
+        }
+        _expectedNoMatch = 0;
 
-        // Simple predicate: length > 7 (excludes single-digit counts, includes multi-digit)
-        _expectedSimpleCount = _stringStore.Query(x => x.Length > 7).Count();
-        if (_expectedSimpleCount == 0)
-            throw new InvalidOperationException("Simple predicate returned no results; adjust test data");
+        if (_stringStore.Query(x => x.Length == 10).Count() != _expectedAllMatch)
+        {
+            throw new InvalidOperationException("AllMatch oracle mismatch");
+        }
+        if (_stringStore.Query(IsLastDigitEven).Count() != _expectedHalfMatch)
+        {
+            throw new InvalidOperationException("HalfMatch oracle mismatch");
+        }
+        if (_stringStore.Query(x => x.Length > 100).Count() != _expectedNoMatch)
+        {
+            throw new InvalidOperationException("NoMatch oracle mismatch");
+        }
 
-        // Complex predicate: contains "item" AND length >= 8
-        _expectedComplexCount = _stringStore.Query(x => x.Contains("item") && x.Length >= 8).Count();
-
-        // Mixed type store for QueryFor<TResult> benchmark
         _mixedStore = new InMemoryTestStore<ItemBase>();
         for (int i = 0; i < Count; i++)
         {
-            if (i % 2 == 0)
-            {
-                _mixedStore.Add(new ItemDerived1 { Id = i });
-            }
-            else
-            {
-                _mixedStore.Add(new ItemDerived2 { Id = i });
-            }
+            _mixedStore.Add(i % 2 == 0 ? new Derived1() : new Derived2());
         }
+        _expectedDerived1Count = (Count + 1) / 2;
 
-        // Verify type filtering works
-        _expectedTypeCount = _mixedStore.QueryFor<ItemDerived1>().Count();
-        if (_expectedTypeCount == 0)
-            throw new InvalidOperationException("QueryFor<ItemDerived1> returned no results");
-
-        // Sanity check: approx half should be ItemDerived1 (every other item)
-        var expectedApprox = Count / 2;
-        if (Math.Abs(_expectedTypeCount - expectedApprox) > 2)
-            throw new InvalidOperationException($"Type filter count {_expectedTypeCount} unexpected for {Count} items");
+        if (_mixedStore.Query(item => item.GetType() == typeof(Derived1)).Count() != _expectedDerived1Count)
+        {
+            throw new InvalidOperationException("Lean predicate Derived1 oracle mismatch");
+        }
+        if (_mixedStore.QueryFor<Derived1>().Count() != _expectedDerived1Count)
+        {
+            throw new InvalidOperationException("QueryFor<Derived1> oracle mismatch");
+        }
     }
 
-    [Benchmark(Baseline = true, Description = "Query all items (no predicate)")]
-    public int Query_AllItems()
+    [BenchmarkCategory("Query")]
+    [Benchmark(Description = "Query(predicate).Count() - all items match")]
+    public int Query_Predicate_AllMatch()
     {
-        var result = _stringStore.Query();
-        return result.Count();
+        return _stringStore.Query(x => x.Length == 10).Count();
     }
 
-    [Benchmark(Description = "Query with simple predicate")]
-    public int Query_SimplePredicate()
+    [BenchmarkCategory("Query")]
+    [Benchmark(Description = "Query(predicate).Count() - half items match")]
+    public int Query_Predicate_HalfMatch()
     {
-        var result = _stringStore.Query(x => x.Length > 7);
-        return result.Count();
+        return _stringStore.Query(IsLastDigitEven).Count();
     }
 
-    [Benchmark(Description = "Query with complex predicate")]
-    public int Query_ComplexPredicate()
+    [BenchmarkCategory("Query")]
+    [Benchmark(Description = "Query(predicate).Count() - no items match")]
+    public int Query_Predicate_NoMatch()
     {
-        var result = _stringStore.Query(x => x.Contains("item") && x.Length >= 8);
-        return result.Count();
+        return _stringStore.Query(x => x.Length > 100).Count();
     }
 
-    [Benchmark(Description = "QueryFor<T> type filtering")]
+    [BenchmarkCategory("QueryFor")]
+    [Benchmark(Baseline = true, Description = "Query(type-equality predicate).Count()")]
+    public int Query_LeanTypePredicate()
+    {
+        return _mixedStore.Query(item => item.GetType() == typeof(Derived1)).Count();
+    }
+
+    [BenchmarkCategory("QueryFor")]
+    [Benchmark(Description = "QueryFor<Derived1>().Count()")]
     public int QueryFor_TypeFilter()
     {
-        var result = _mixedStore.QueryFor<ItemDerived1>();
-        return result.Count();
+        return _mixedStore.QueryFor<Derived1>().Count();
     }
 
-    // Test item hierarchy
+    private static bool IsLastDigitEven(string value)
+    {
+        return (value[value.Length - 1] - '0') % 2 == 0;
+    }
+
     private abstract class ItemBase
     {
-        public int Id { get; set; }
     }
 
-    private sealed class ItemDerived1 : ItemBase
+    private sealed class Derived1 : ItemBase
     {
     }
 
-    private sealed class ItemDerived2 : ItemBase
+    private sealed class Derived2 : ItemBase
     {
     }
 }
