@@ -7,9 +7,24 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
-## [11.1.2] - 2026-07-16
+## [11.1.2] - 2026-07-18
 
-This is a service update that focuses on package dependencies.
+This is a patch release that updates package dependencies across all supported target frameworks and introduces query performance benchmarks for the InMemoryTestStore implementation. All changes are non-breaking service refinements.
+
+### Added
+
+- InMemoryTestStoreBenchmark class in the tuning folder with 7 query performance methods covering null-predicate fast path, selective filtering at varying selectivity rates, type filtering with QueryFor<T>, and materialization cost measurement across workload sizes of 10, 100, and 1000 items,
+- Query performance analysis reports documenting benchmark results across .NET 10.0, 9.0, and 4.8 runtimes.
+
+### Changed
+
+- Upgraded Codebelt.Bootstrapper.Console, Codebelt.Bootstrapper.Web, and Codebelt.Bootstrapper.Worker from 5.1.1 to 5.1.2,
+- Upgraded Codebelt.Extensions.BenchmarkDotNet.Console from 1.3.0 to 1.3.1,
+- Upgraded Cuemon.Core, Cuemon.Extensions.AspNetCore, and Cuemon.Extensions.IO from 10.5.4 to 10.5.5,
+- Upgraded Microsoft.NET.Test.Sdk from 18.7.0 to 18.8.1,
+- Upgraded Microsoft.Bcl.AsyncInterfaces from 10.0.9 to 10.0.10 for netstandard2.0,
+- Upgraded Microsoft.Extensions.* packages (Configuration, EnvironmentVariables, FileExtensions, Json, Hosting, AspNetCore.TestHost) from 9.0.17 to 9.0.18 for .NET 9,
+- Upgraded Microsoft.Extensions.* packages (Configuration, EnvironmentVariables, FileExtensions, Json, Hosting, AspNetCore.TestHost) from 10.0.9 to 10.0.10 for .NET 10.
 
 ## [11.1.1] - 2026-06-25
 
@@ -439,7 +454,8 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 
 
-[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.1.1...HEAD
+[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.1.2...HEAD
+[11.1.2]: https://github.com/codebeltnet/xunit/compare/v11.1.1...v11.1.2
 [11.1.1]: https://github.com/codebeltnet/xunit/compare/v11.1.0...v11.1.1
 [11.1.0]: https://github.com/codebeltnet/xunit/compare/v11.0.10...v11.1.0
 [11.0.10]: https://github.com/codebeltnet/xunit/compare/v11.0.9...v11.0.10
