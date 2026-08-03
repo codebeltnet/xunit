@@ -1,10 +1,10 @@
 ---
-uid: Codebelt.Extensions.Xunit.Hosting.AspNetCore.BlockingManagedWebApplicationFixture`1
+uid: Codebelt.Extensions.Xunit.Hosting.AspNetCore.ManagedWebApplicationFixture`1
 example:
 - *content
 ---
 
-The test project references a minimal ASP.NET Core application and shares its in-memory server through xUnit's class-fixture lifetime. `BlockingManagedWebApplicationFixture<TEntryPoint>` is an obsolete compatibility fixture that preserves the legacy blocking startup path for the current minor release; new tests should use `ManagedWebApplicationFixture<TEntryPoint>` so the real application entry point owns startup. This compatibility type should be removed or changed in the next major release.
+Use `ManagedWebApplicationFixture<TEntryPoint>` when an xUnit class fixture should exercise an ASP.NET Core application's real entry point and let that entry point start the in-memory server. This is an opt-in path for the current minor release. Fixture setup remains lazy; consuming the test host starts the deferred host, after which the test can create a client from the exposed `TestServer` and verify the application's endpoint behavior. The legacy blocking path is retained for compatibility until it can be removed or changed in the next major release.
 
 ```csharp
 using System.Threading.Tasks;
@@ -15,11 +15,11 @@ using Xunit;
 
 namespace CatalogApi.Tests;
 
-public sealed class CatalogApiTest : IClassFixture<BlockingManagedWebApplicationFixture<CatalogProgram>>
+public sealed class CatalogApiTest : IClassFixture<ManagedWebApplicationFixture<CatalogProgram>>
 {
-    private readonly BlockingManagedWebApplicationFixture<CatalogProgram> _fixture;
+    private readonly ManagedWebApplicationFixture<CatalogProgram> _fixture;
 
-    public CatalogApiTest(BlockingManagedWebApplicationFixture<CatalogProgram> fixture)
+    public CatalogApiTest(ManagedWebApplicationFixture<CatalogProgram> fixture)
     {
         _fixture = fixture;
     }
