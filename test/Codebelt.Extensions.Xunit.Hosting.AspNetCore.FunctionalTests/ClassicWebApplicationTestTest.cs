@@ -1,13 +1,15 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using Classic = Codebelt.Extensions.Xunit.Hosting.ClassicProgram.App.Program;
+using ClassicProgramState = Codebelt.Extensions.Xunit.Hosting.ClassicProgram.App.ClassicProgramState;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 
-public class ClassicWebApplicationTestTest : WebApplicationTest<Classic, BlockingManagedWebApplicationFixture<Classic>>
+public class ClassicWebApplicationTestTest : WebApplicationTest<Classic, ManagedWebApplicationFixture<Classic>>
 {
-    public ClassicWebApplicationTestTest(BlockingManagedWebApplicationFixture<Classic> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+    public ClassicWebApplicationTestTest(ManagedWebApplicationFixture<Classic> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
     }
 
@@ -21,5 +23,6 @@ public class ClassicWebApplicationTestTest : WebApplicationTest<Classic, Blockin
 
         Assert.True(response.IsSuccessStatusCode);
         Assert.Equal("Classic Program", body);
+        Assert.True(Host.Services.GetRequiredService<ClassicProgramState>().MainInvoked);
     }
 }

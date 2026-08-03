@@ -9,6 +9,7 @@ using Xunit;
 using BootstrapperMinimalWebProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWeb.App.Program;
 using BootstrapperWebProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperWeb.App.Program;
 using Classic = Codebelt.Extensions.Xunit.Hosting.ClassicProgram.App.Program;
+using ClassicProgramState = Codebelt.Extensions.Xunit.Hosting.ClassicProgram.App.ClassicProgramState;
 using ModernProgram = Codebelt.Extensions.Xunit.Hosting.Program.App.Program;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
@@ -48,7 +49,7 @@ public class WebApplicationTestFactoryTest : Test
     [Fact]
     public async Task Create_ShouldBootstrapApplication_WhenEntryPointUsesClassicProgram()
     {
-        using var application = WebApplicationTestFactory.Create<Classic>();
+        using var application = WebApplicationTestFactory.Create<Classic>(hostFixture: new ManagedWebApplicationFixture<Classic>());
         using var client = application.Host.GetTestClient();
 
         var response = await client.GetAsync("/").ConfigureAwait(false);
@@ -56,6 +57,9 @@ public class WebApplicationTestFactoryTest : Test
 
         Assert.True(response.IsSuccessStatusCode);
         Assert.Equal("Classic Program", body);
+        var state = application.Host.Services.GetRequiredService<ClassicProgramState>();
+        Assert.True(state.MainInvoked);
+        Assert.True(state.EntrypointStarted);
     }
 
     [Fact]
@@ -100,6 +104,20 @@ public class WebApplicationTestFactoryTest : Test
         Assert.Equal("Configured from WebApplicationTestFactory", configurationBody);
         Assert.True(serviceResponse.IsSuccessStatusCode);
         Assert.Equal("Custom service from WebApplicationTestFactory", serviceBody);
+    }
+
+    [Fact]
+    public async Task Create_ShouldSupportExplicitBlockingFixture()
+    {
+        using var application = WebApplicationTestFactory.Create<Classic>(hostFixture: new BlockingManagedWebApplicationFixture<Classic>());
+        using var client = application.Host.GetTestClient();
+
+        using var response = await client.GetAsync("/").ConfigureAwait(false);
+        var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+        Assert.True(response.IsSuccessStatusCode);
+        Assert.Equal("Classic Program", body);
+        Assert.False(application.Host.Services.GetRequiredService<ClassicProgramState>().MainInvoked);
     }
 
     [Fact]

@@ -8,6 +8,7 @@ using Xunit;
 using BootstrapperConsoleMarker = Codebelt.Extensions.Xunit.Hosting.BootstrapperConsole.App.BootstrapperConsoleMarker;
 using BootstrapperConsoleProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperConsole.App.Program;
 using BootstrapperMinimalConsoleProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App.Program;
+using BootstrapperMinimalConsoleState = Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App.BootstrapperMinimalConsoleState;
 using BootstrapperMinimalWorkerMarker = Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWorker.App.BootstrapperMinimalWorkerMarker;
 using BootstrapperMinimalWorkerProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWorker.App.Program;
 using BootstrapperWorkerMarker = Codebelt.Extensions.Xunit.Hosting.BootstrapperWorker.App.BootstrapperWorkerMarker;
@@ -81,6 +82,17 @@ public class ApplicationTestFactoryTest : Test
         });
 
         Assert.Equal("Configured from ApplicationTestFactory", application.Configuration["Factory:Message"]);
+    }
+
+    [Fact]
+    public void Create_ShouldSupportExplicitBlockingFixture()
+    {
+        using var application = ApplicationTestFactory.Create<BootstrapperMinimalConsoleProgram>(hostFixture: new BlockingManagedApplicationFixture<BootstrapperMinimalConsoleProgram>());
+        var state = application.Host.Services.GetRequiredService<BootstrapperMinimalConsoleState>();
+
+        Assert.NotNull(application.Host);
+        Assert.True(state.MainInvoked);
+        Assert.False(state.EntrypointStarted);
     }
 
     [Fact]

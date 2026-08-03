@@ -7,9 +7,9 @@ using BootstrapperWebProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperWeb
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 
-public class BootstrapperWebApplicationTestTest : WebApplicationTest<BootstrapperWebProgram, BlockingManagedWebApplicationFixture<BootstrapperWebProgram>>
+public class BootstrapperWebApplicationTestTest : WebApplicationTest<BootstrapperWebProgram, ManagedWebApplicationFixture<BootstrapperWebProgram>>
 {
-    public BootstrapperWebApplicationTestTest(BlockingManagedWebApplicationFixture<BootstrapperWebProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+    public BootstrapperWebApplicationTestTest(ManagedWebApplicationFixture<BootstrapperWebProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
     }
 
