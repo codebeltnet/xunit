@@ -1,3 +1,16 @@
+Version: Unreleased
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
+
+# New Features
+- ADDED ManagedApplicationFixture{TEntryPoint} as an opt-in entrypoint-owned fixture for application tests
+
+# Changed
+- CHANGED ManagedApplicationFixture{TEntryPoint} to invoke supported Main methods and let the application entry point own startup
+- PRESERVED ApplicationTestFactory and BlockingManagedApplicationFixture{TEntryPoint} startup behavior for the current minor release
+
+# Deprecated
+- DEPRECATED BlockingManagedApplicationFixture{TEntryPoint}; use ManagedApplicationFixture{TEntryPoint} for new entrypoint-owned tests. The compatibility fixture should be removed or changed in the next major release.
+
 Version: 11.1.2
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
