@@ -14,6 +14,8 @@ namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 /// <seealso cref="IClassFixture{TFixture}" />
 public abstract class WebApplicationTest<TEntryPoint, T> : HostTest, IClassFixture<T> where TEntryPoint : class where T : class, IWebApplicationFixture<TEntryPoint>
 {
+    private TestServer _server;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="WebApplicationTest{TEntryPoint,T}"/> class.
     /// </summary>
@@ -53,7 +55,16 @@ public abstract class WebApplicationTest<TEntryPoint, T> : HostTest, IClassFixtu
     /// Gets the <see cref="TestServer"/> initialized by the <see cref="IHostFixture.Host"/>.
     /// </summary>
     /// <value>The <see cref="TestServer"/> initialized by the <see cref="IHostFixture.Host"/>.</value>
-    public TestServer Server { get; protected set; }
+    /// <remarks>Accessing the server starts an entry-point-owned deferred host when necessary.</remarks>
+    public TestServer Server
+    {
+        get
+        {
+            _ = Host;
+            return _server;
+        }
+        protected set => _server = value;
+    }
 
     /// <summary>
     /// Provides a way to override the <see cref="IWebHostBuilder"/> defaults before the application is built.

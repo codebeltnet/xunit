@@ -10,7 +10,11 @@ public sealed class Program
 {
     public static void Main(string[] args)
     {
-        CreateHostBuilder(args).Build().Run();
+        var host = CreateHostBuilder(args).Build();
+        var state = host.Services.GetRequiredService<ClassicProgramState>();
+        state.MainInvoked = true;
+        host.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStarted.Register(() => state.EntrypointStarted = true);
+        host.Run();
     }
 
     public static IHostBuilder CreateHostBuilder(string[] args)
@@ -18,7 +22,11 @@ public sealed class Program
         return Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(builder =>
             {
-                builder.ConfigureServices(services => services.AddSingleton(new ClassicProgramMarker("Classic Program")));
+                builder.ConfigureServices(services =>
+                {
+                    services.AddSingleton<ClassicProgramState>();
+                    services.AddSingleton(new ClassicProgramMarker("Classic Program"));
+                });
                 builder.Configure(app => app.Run(async context =>
                 {
                     var marker = context.RequestServices.GetRequiredService<ClassicProgramMarker>();

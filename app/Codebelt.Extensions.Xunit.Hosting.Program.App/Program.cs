@@ -8,13 +8,19 @@ namespace Codebelt.Extensions.Xunit.Hosting.Program.App;
 
 public sealed class Program
 {
+    public static bool MainInvoked { get; private set; }
+
+    public static bool EntrypointStarted { get; private set; }
+
     public static void Main(string[] args)
     {
+        MainInvoked = true;
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddSingleton(new ProgramMarker("Modern Program"));
 
         var app = builder.Build();
+        app.Lifetime.ApplicationStarted.Register(() => EntrypointStarted = true);
 
         app.MapGet("/", (ProgramMarker marker, IHostEnvironment environment) => $"{marker.Value}|{environment.EnvironmentName}");
         app.MapGet("/configuration", (IConfiguration configuration) => configuration["ProgramLane:Message"] ?? "Missing");

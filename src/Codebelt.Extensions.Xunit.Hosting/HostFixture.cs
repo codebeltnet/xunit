@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Codebelt.Extensions.Xunit.Hosting.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Xunit;
@@ -41,6 +42,34 @@ public abstract class HostFixture : IHostFixture, IAsyncLifetime
     /// </summary>
     protected HostFixture()
     {
+    }
+
+    /// <summary>
+    /// Creates an entrypoint-owned host for a derived application fixture.
+    /// </summary>
+    /// <typeparam name="TEntryPoint">A type in the entry point assembly of the application.</typeparam>
+    /// <param name="configureHost">The delegate that provides a way to override the <see cref="IHostBuilder"/> before the application is built.</param>
+    /// <returns>An unstarted <see cref="IHost"/> wrapper that captures the host built by the application entry point.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// The entry point assembly does not expose a supported application host.
+    /// </exception>
+    /// <remarks>
+    /// This protected hook is used by the opt-in <c>ManagedApplicationFixture&lt;TEntryPoint&gt;</c> and <c>ManagedWebApplicationFixture&lt;TEntryPoint&gt;</c> implementations. It keeps the deferred path out of the existing public <see cref="ApplicationHostFactory.Create{TEntryPoint}(Action{IHostBuilder})"/> contract while allowing both fixture packages to share the same implementation.
+    /// </remarks>
+    protected static IHost CreateEntrypointOwnedHost<TEntryPoint>(Action<IHostBuilder> configureHost) where TEntryPoint : class
+    {
+        // Minor-release compatibility: only the new managed application fixtures opt into IDeferredHost and HostTest lazy startup.
+        // Major release: remove or change this split when the legacy application factory and blocking fixtures are removed or changed.
+        return DeferredHostFactory.Create(typeof(TEntryPoint).Assembly, configureHost, false, true);
+    }
+
+    /// <summary>
+    /// Releases an entrypoint-owned application after the fixture has captured its host metadata.
+    /// </summary>
+    /// <param name="host">The host captured from the application entry point.</param>
+    protected static void ReleaseEntrypoint(IHost host)
+    {
+        (host as IDeferredHost)?.ReleaseEntrypoint();
     }
 
     /// <summary>

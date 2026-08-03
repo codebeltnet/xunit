@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting.Internal;
@@ -64,7 +65,7 @@ internal static class ProgramHostFactoryResolver
         private readonly Action<object> _configure;
         private readonly Action<Exception> _entryPointCompleted;
         private readonly MethodInfo _entryPoint;
-        private readonly TaskCompletionSource<object> _host = new(TaskCreationOptions.RunContinuationsAsynchronously);
+        private readonly TaskCompletionSource<HostCapture> _host = new(TaskCreationOptions.RunContinuationsAsynchronously);
         private readonly bool _stopApplication;
         private readonly TimeSpan _waitTimeout;
         private IDisposable _disposable;
@@ -126,11 +127,14 @@ internal static class ProgramHostFactoryResolver
 
             if (value.Key == "HostBuilt")
             {
-                _host.TrySetResult(value.Value);
+                var capture = new HostCapture((IHost)value.Value);
+                _host.TrySetResult(capture);
                 if (_stopApplication)
                 {
                     throw new HostAbortedException();
                 }
+
+                capture.WaitForRelease();
             }
         }
 
@@ -177,6 +181,31 @@ internal static class ProgramHostFactoryResolver
 
         private sealed class HostAbortedException : Exception
         {
+        }
+    }
+
+    internal sealed class HostCapture
+    {
+        private readonly TaskCompletionSource<object> _released = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        public HostCapture(IHost host)
+        {
+            Host = host;
+            ApplicationLifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
+        }
+
+        public IHost Host { get; }
+
+        public IHostApplicationLifetime ApplicationLifetime { get; }
+
+        public void Release()
+        {
+            _released.TrySetResult(null);
+        }
+
+        public void WaitForRelease()
+        {
+            _released.Task.GetAwaiter().GetResult();
         }
     }
 }
