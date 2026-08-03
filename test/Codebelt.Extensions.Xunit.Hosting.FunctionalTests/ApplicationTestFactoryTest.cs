@@ -35,6 +35,18 @@ public class ApplicationTestFactoryTest : Test
     }
 
     [Fact]
+    public void Create_ShouldStartEntrypoint_WhenUsingManagedApplicationFixture()
+    {
+        using var application = ApplicationTestFactory.Create<BootstrapperConsoleProgram>(hostFixture: new ManagedApplicationFixture<BootstrapperConsoleProgram>());
+
+        var marker = application.Host.Services.GetRequiredService<BootstrapperConsoleMarker>();
+
+        Assert.Equal("Bootstrapper Console", marker.Value);
+        Assert.True(BootstrapperConsoleProgram.MainInvoked);
+        Assert.True(BootstrapperConsoleProgram.EntrypointStarted);
+    }
+
+    [Fact]
     public void Create_ShouldBootstrapApplication_WhenEntryPointUsesMinimalConsoleProgram()
     {
         using var application = ApplicationTestFactory.Create<BootstrapperMinimalConsoleProgram>();
