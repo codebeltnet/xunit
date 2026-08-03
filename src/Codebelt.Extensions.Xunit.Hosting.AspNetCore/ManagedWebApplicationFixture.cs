@@ -1,8 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
@@ -42,23 +40,22 @@ public class ManagedWebApplicationFixture<TEntryPoint> : HostFixture, IWebApplic
         if (!HasTypes(hostTest.GetType(), typeof(WebApplicationTest<,>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(WebApplicationTest<,>), $"{nameof(hostTest)} is not assignable from WebApplicationTest<TEntryPoint, T>."); }
         if (this.HasValidState()) { return; }
 
-        Host = CreateEntrypointOwnedHost<TEntryPoint>(hostBuilder => hostBuilder.ConfigureWebHost(webHostBuilder =>
+        var applicationFixture = new ManagedApplicationFixture<TEntryPoint>
         {
-            webHostBuilder.UseTestServer(o => o.PreserveExecutionContext = true);
-            ConfigureWebHostCallback?.Invoke(webHostBuilder);
-        }));
-        try
-        {
-            Server = Host.GetTestServer();
-            Configuration = Host.Services.GetRequiredService<IConfiguration>();
-            Environment = Host.Services.GetRequiredService<IHostEnvironment>();
+            ConfigureCallback = ConfigureCallback,
+            ConfigureHostCallback = hostBuilder => hostBuilder.ConfigureWebHost(webHostBuilder =>
+            {
+                webHostBuilder.UseTestServer(o => o.PreserveExecutionContext = true);
+                ConfigureWebHostCallback?.Invoke(webHostBuilder);
+            })
+        };
 
-            ConfigureCallback(Configuration, Environment);
-        }
-        finally
-        {
-            ReleaseEntrypoint(Host);
-        }
+        applicationFixture.ConfigureHost(hostTest);
+
+        Host = applicationFixture.Host;
+        Server = Host.GetTestServer();
+        Configuration = applicationFixture.Configuration;
+        Environment = applicationFixture.Environment;
     }
 
     /// <summary>

@@ -40,26 +40,18 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
         }
 
         var capture = (ProgramHostFactoryResolver.HostCapture)_hostFactory(args.ToArray());
-        try
-        {
-            var host = capture.Host;
-            // Preserve the legacy wrapper for ApplicationHostFactory fallback callers. Only managed application fixtures opt into the marker that HostTest uses for lazy startup.
-            var deferredHost = _entrypointOwned
-                ? new EntrypointOwnedDeferredHost(host, _hostStarted, capture)
-                : new DeferredHost(host, _hostStarted, capture);
+        var host = capture.Host;
+        // Preserve the legacy wrapper for ApplicationHostFactory fallback callers. Only managed application fixtures opt into the marker that HostTest uses for lazy startup.
+        var deferredHost = _entrypointOwned
+            ? new EntrypointOwnedDeferredHost(host, _hostStarted, capture)
+            : new DeferredHost(host, _hostStarted, capture);
 
-            if (!_entrypointOwned)
-            {
-                capture.Release();
-            }
-
-            return deferredHost;
-        }
-        catch
+        if (!_entrypointOwned)
         {
             capture.Release();
-            throw;
         }
+
+        return deferredHost;
     }
 
     public IHostBuilder ConfigureAppConfiguration(Action<HostBuilderContext, IConfigurationBuilder> configureDelegate)

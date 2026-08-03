@@ -27,13 +27,13 @@ public class ManagedApplicationFixture<TEntryPoint> : HostFixture, IApplicationF
     /// <summary>
     /// Creates and configures the <see cref="IHost"/> of this instance.
     /// </summary>
-    /// <param name="hostTest">The object that inherits from <see cref="ApplicationTest{TEntryPoint,T}"/>.</param>
+    /// <param name="hostTest">The object that inherits from <see cref="HostTest"/>.</param>
     /// <remarks><paramref name="hostTest"/> was added to support those cases where the caller is required in the host configuration.</remarks>
     /// <exception cref="ArgumentNullException">
     /// <paramref name="hostTest"/> is null.
     /// </exception>
     /// <exception cref="ArgumentOutOfRangeException">
-    /// <paramref name="hostTest"/> is not assignable from <see cref="ApplicationTest{TEntryPoint,T}"/>.
+    /// <paramref name="hostTest"/> is not assignable from <see cref="HostTest"/>.
     /// </exception>
     public virtual void ConfigureHost(Test hostTest)
     {
@@ -42,10 +42,10 @@ public class ManagedApplicationFixture<TEntryPoint> : HostFixture, IApplicationF
 #else
         ArgumentNullException.ThrowIfNull(hostTest);
 #endif
-        if (!HasTypes(hostTest.GetType(), typeof(ApplicationTest<,>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(ApplicationTest<,>), $"{nameof(hostTest)} is not assignable from ApplicationTest<TEntryPoint, T>."); }
+        if (!HasTypes(hostTest.GetType(), typeof(HostTest))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(HostTest), $"{nameof(hostTest)} is not assignable from HostTest."); }
         if (this.HasValidState()) { return; }
 
-        Host = CreateEntrypointOwnedHost<TEntryPoint>(ConfigureHostCallback);
+        Host = DeferredHostFactory.Create(typeof(TEntryPoint).Assembly, ConfigureHostCallback, false, true);
         try
         {
             Configuration = Host.Services.GetRequiredService<IConfiguration>();
@@ -55,7 +55,7 @@ public class ManagedApplicationFixture<TEntryPoint> : HostFixture, IApplicationF
         }
         finally
         {
-            ReleaseEntrypoint(Host);
+            (Host as IDeferredHost)?.ReleaseEntrypoint();
         }
     }
 
