@@ -7,6 +7,24 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [11.2.0] - 2026-08-03
+
+This is a minor release that adds opt-in entrypoint-owned startup for application and ASP.NET Core tests, while keeping the existing factory paths compatible for the current minor release and marking the older blocking fixtures as obsolete.
+
+### Added
+
+- `ManagedApplicationFixture<TEntryPoint>` and `ManagedWebApplicationFixture<TEntryPoint>` for opt-in entrypoint-owned startup in application and ASP.NET Core tests,
+- Regression coverage for classic, minimal, Bootstrapper, worker, and modern ASP.NET Core entry points.
+
+### Changed
+
+- `HostTest`, `WebApplicationTest`, `ApplicationHostFactory`, and `WebApplicationTestFactory` now support lazy entrypoint-owned startup when the managed fixtures are used, while the existing factory paths preserve their previous startup behavior for the current minor release,
+- Package README and release-note guidance were updated to explain when to choose the managed fixtures versus the compatibility paths.
+
+### Deprecated
+
+- `BlockingManagedApplicationFixture<TEntryPoint>` and `BlockingManagedWebApplicationFixture<TEntryPoint>` remain available for source and binary compatibility but are obsolete for new tests; they should be removed or changed in the next major release.
+
 ## [11.1.2] - 2026-07-18
 
 This is a patch release that updates package dependencies across all supported target frameworks and introduces query performance benchmarks for the InMemoryTestStore implementation. All changes are non-breaking service refinements.
@@ -454,7 +472,8 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 
 
-[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.1.2...HEAD
+[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.2.0...HEAD
+[11.2.0]: https://github.com/codebeltnet/xunit/compare/v11.1.2...v11.2.0
 [11.1.2]: https://github.com/codebeltnet/xunit/compare/v11.1.1...v11.1.2
 [11.1.1]: https://github.com/codebeltnet/xunit/compare/v11.1.0...v11.1.1
 [11.1.0]: https://github.com/codebeltnet/xunit/compare/v11.0.10...v11.1.0
