@@ -4,7 +4,7 @@ example:
 - *content
 ---
 
-The test project references a worker application's entry point and shares one bootstrapped host through xUnit's class-fixture lifetime. `BlockingManagedApplicationFixture<TEntryPoint>` waits until the host is ready before constructing the test class, so each test can immediately resolve services registered by the real application.
+The test project references a worker application's entry point and shares one bootstrapped host through xUnit's class-fixture lifetime. `BlockingManagedApplicationFixture<TEntryPoint>` is an obsolete compatibility fixture that preserves the legacy blocking startup path for the current minor release; new tests should use `ManagedApplicationFixture<TEntryPoint>` so the real application entry point owns startup. This compatibility type should be removed or changed in the next major release.
 
 ```csharp
 using Codebelt.Extensions.Xunit.Hosting;

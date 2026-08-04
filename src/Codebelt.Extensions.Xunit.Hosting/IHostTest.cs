@@ -14,5 +14,6 @@ public interface IHostTest : IConfigurationTest, IEnvironmentTest, ITest
     /// Gets the <see cref="IHost"/> initialized by the <see cref="IGenericHostFixture"/>.
     /// </summary>
     /// <value>The <see cref="IHost"/> initialized by the <see cref="IGenericHostFixture"/>.</value>
+    /// <remarks>For hosts captured by the opt-in managed application fixture path, accessing this property starts the deferred host when necessary.</remarks>
     IHost Host { get; }
 }

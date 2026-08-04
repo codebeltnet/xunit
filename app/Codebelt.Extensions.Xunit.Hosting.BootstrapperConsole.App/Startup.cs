@@ -23,8 +23,14 @@ public sealed class Startup : ConsoleStartup
     {
     }
 
-    public override Task RunAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
+    public override async Task RunAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+        try
+        {
+            await Task.Delay(Timeout.Infinite, cancellationToken).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+        }
     }
 }

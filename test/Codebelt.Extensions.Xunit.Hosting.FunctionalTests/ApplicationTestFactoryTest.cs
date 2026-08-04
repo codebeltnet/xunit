@@ -8,6 +8,7 @@ using Xunit;
 using BootstrapperConsoleMarker = Codebelt.Extensions.Xunit.Hosting.BootstrapperConsole.App.BootstrapperConsoleMarker;
 using BootstrapperConsoleProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperConsole.App.Program;
 using BootstrapperMinimalConsoleProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App.Program;
+using BootstrapperMinimalConsoleState = Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App.BootstrapperMinimalConsoleState;
 using BootstrapperMinimalWorkerMarker = Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWorker.App.BootstrapperMinimalWorkerMarker;
 using BootstrapperMinimalWorkerProgram = Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWorker.App.Program;
 using BootstrapperWorkerMarker = Codebelt.Extensions.Xunit.Hosting.BootstrapperWorker.App.BootstrapperWorkerMarker;
@@ -31,6 +32,19 @@ public class ApplicationTestFactoryTest : Test
         Assert.Equal("Bootstrapper Console", marker.Value);
         Assert.Equal("Development", application.Environment.EnvironmentName);
         Assert.NotNull(application.Host);
+    }
+
+    [Fact]
+    public void Create_ShouldStartEntrypoint_WhenUsingManagedApplicationFixture()
+    {
+        using var application = ApplicationTestFactory.Create<BootstrapperConsoleProgram>(hostFixture: new ManagedApplicationFixture<BootstrapperConsoleProgram>());
+        var services = application.Host.Services;
+        var lifetime = services.GetRequiredService<IHostApplicationLifetime>();
+        var marker = services.GetRequiredService<BootstrapperConsoleMarker>();
+
+        Assert.Equal("Bootstrapper Console", marker.Value);
+        Assert.True(BootstrapperConsoleProgram.MainInvoked);
+        Assert.True(lifetime.ApplicationStarted.IsCancellationRequested);
     }
 
     [Fact]
@@ -81,6 +95,17 @@ public class ApplicationTestFactoryTest : Test
         });
 
         Assert.Equal("Configured from ApplicationTestFactory", application.Configuration["Factory:Message"]);
+    }
+
+    [Fact]
+    public void Create_ShouldSupportExplicitBlockingFixture()
+    {
+        using var application = ApplicationTestFactory.Create<BootstrapperMinimalConsoleProgram>(hostFixture: new BlockingManagedApplicationFixture<BootstrapperMinimalConsoleProgram>());
+        var state = application.Host.Services.GetRequiredService<BootstrapperMinimalConsoleState>();
+
+        Assert.NotNull(application.Host);
+        Assert.True(state.MainInvoked);
+        Assert.False(state.EntrypointStarted);
     }
 
     [Fact]

@@ -8,17 +8,17 @@ using Microsoft.Extensions.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting.Internal;
 
-// Adapted from the ASP.NET Core testing infrastructure.
-// Licensed to the .NET Foundation under one or more agreements under the MIT license.
 internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
 {
     private readonly ConfigurationManager _hostConfiguration = new();
     private readonly TaskCompletionSource<object> _hostStarted = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private readonly bool _entrypointOwned;
     private Action<IHostBuilder> _configure;
     private Func<string[], object> _hostFactory;
 
-    public DeferredHostBuilder()
+    public DeferredHostBuilder(bool entrypointOwned)
     {
+        _entrypointOwned = entrypointOwned;
         _configure = builder =>
         {
             foreach (var pair in Properties)
@@ -39,8 +39,19 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
             args.Add($"--{pair.Key}={pair.Value}");
         }
 
-        var host = (IHost)_hostFactory(args.ToArray());
-        return new DeferredHost(host, _hostStarted);
+        var capture = (ProgramHostFactoryResolver.HostCapture)_hostFactory(args.ToArray());
+        var host = capture.Host;
+        // Preserve the legacy wrapper for ApplicationHostFactory fallback callers. Only managed application fixtures opt into the marker that HostTest uses for lazy startup.
+        var deferredHost = _entrypointOwned
+            ? new EntrypointOwnedDeferredHost(host, _hostStarted, capture)
+            : new DeferredHost(host, _hostStarted, capture);
+
+        if (!_entrypointOwned)
+        {
+            capture.Release();
+        }
+
+        return deferredHost;
     }
 
     public IHostBuilder ConfigureAppConfiguration(Action<HostBuilderContext, IConfigurationBuilder> configureDelegate)
@@ -105,14 +116,18 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
         _hostConfiguration.Dispose();
     }
 
-    private sealed class DeferredHost : IHost, IAsyncDisposable
+    private class DeferredHost : IHost, IAsyncDisposable
     {
         private readonly IHost _host;
+        private readonly IHostApplicationLifetime _applicationLifetime;
+        private readonly ProgramHostFactoryResolver.HostCapture _capture;
         private readonly TaskCompletionSource<object> _hostStarted;
 
-        public DeferredHost(IHost host, TaskCompletionSource<object> hostStarted)
+        public DeferredHost(IHost host, TaskCompletionSource<object> hostStarted, ProgramHostFactoryResolver.HostCapture capture)
         {
             _host = host;
+            _applicationLifetime = capture.ApplicationLifetime;
+            _capture = capture;
             _hostStarted = hostStarted;
         }
 
@@ -136,8 +151,14 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
 
         public async Task StartAsync(CancellationToken cancellationToken = default)
         {
+            if (_hostStarted.Task.IsCompleted)
+            {
+                await _hostStarted.Task.ConfigureAwait(false);
+                return;
+            }
+
             using var registration = cancellationToken.Register(() => _hostStarted.TrySetCanceled());
-            using var startedRegistration = _host.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStarted.Register(() => _hostStarted.TrySetResult(null));
+            using var startedRegistration = _applicationLifetime.ApplicationStarted.Register(() => _hostStarted.TrySetResult(null));
 
             await _hostStarted.Task.ConfigureAwait(false);
         }
@@ -145,6 +166,18 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
         public Task StopAsync(CancellationToken cancellationToken = default)
         {
             return _host.StopAsync(cancellationToken);
+        }
+
+        public void ReleaseEntrypoint()
+        {
+            _capture.Release();
+        }
+    }
+
+    private sealed class EntrypointOwnedDeferredHost : DeferredHost, IDeferredHost
+    {
+        public EntrypointOwnedDeferredHost(IHost host, TaskCompletionSource<object> hostStarted, ProgramHostFactoryResolver.HostCapture capture) : base(host, hostStarted, capture)
+        {
         }
     }
 }

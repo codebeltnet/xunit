@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -6,9 +8,9 @@ using BootstrapperMinimalConsoleProgram = Codebelt.Extensions.Xunit.Hosting.Boot
 
 namespace Codebelt.Extensions.Xunit.Hosting;
 
-public class BootstrapperMinimalConsoleApplicationTestTest : ApplicationTest<BootstrapperMinimalConsoleProgram, BlockingManagedApplicationFixture<BootstrapperMinimalConsoleProgram>>
+public class BootstrapperMinimalConsoleApplicationTestTest : ApplicationTest<BootstrapperMinimalConsoleProgram, ManagedApplicationFixture<BootstrapperMinimalConsoleProgram>>
 {
-    public BootstrapperMinimalConsoleApplicationTestTest(BlockingManagedApplicationFixture<BootstrapperMinimalConsoleProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+    public BootstrapperMinimalConsoleApplicationTestTest(ManagedApplicationFixture<BootstrapperMinimalConsoleProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
     }
 
@@ -19,5 +21,15 @@ public class BootstrapperMinimalConsoleApplicationTestTest : ApplicationTest<Boo
         Assert.Equal("Bootstrapper Minimal Console", marker.Value);
         Assert.Equal("Development", Environment.EnvironmentName);
         Assert.NotNull(Host);
+    }
+
+    [Fact]
+    public async Task ShouldCompleteRunAsync_WhenCancellationIsRequested()
+    {
+        using var cancellation = new CancellationTokenSource();
+        var run = new BootstrapperMinimalConsoleProgram().RunAsync(Host.Services, cancellation.Token);
+        cancellation.Cancel();
+
+        await run.ConfigureAwait(false);
     }
 }

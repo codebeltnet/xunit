@@ -12,14 +12,22 @@ public sealed class Program : MinimalConsoleProgram<Program>
     public static Task Main(string[] args)
     {
         var builder = CreateHostBuilder(args);
+        var state = new BootstrapperMinimalConsoleState { MainInvoked = true };
+        builder.Services.AddSingleton(state);
         builder.Services.AddSingleton(new BootstrapperMinimalConsoleMarker("Bootstrapper Minimal Console"));
 
         var host = builder.Build();
+        host.Services.GetRequiredService<IHostApplicationLifetime>().ApplicationStarted.Register(() => state.EntrypointStarted = true);
         return host.RunAsync();
     }
 
-    public override Task RunAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
+    public override async Task RunAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+        try
+        {
+            await Task.Delay(Timeout.Infinite, cancellationToken).ConfigureAwait(false);
+        } catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+        }
     }
 }

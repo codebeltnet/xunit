@@ -1,44 +1,30 @@
-using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Internal;
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 
 /// <summary>
-/// Provides a blocking managed implementation of the <see cref="IWebApplicationFixture{TEntryPoint}"/> interface.
+/// Provides an entrypoint-owned implementation of the <see cref="IWebApplicationFixture{TEntryPoint}"/> interface.
 /// </summary>
 /// <typeparam name="TEntryPoint">A type in the entry point assembly of the application.</typeparam>
 /// <seealso cref="HostFixture" />
 /// <seealso cref="IWebApplicationFixture{TEntryPoint}" />
 /// <remarks>
-/// Unlike the base managed web host fixtures, this fixture starts the resolved application host synchronously.
-/// ASP.NET Core application entry point testing must expose a started <see cref="TestServer"/> after fixture initialization.
-/// Use <see cref="ManagedWebApplicationFixture{TEntryPoint}"/> for entrypoint-owned startup in new tests.
-/// This compatibility fixture is retained for the current minor release and should be removed or changed in the next major release.
+/// The ASP.NET Core application's <c>Main</c> method owns host startup. The fixture captures the host after it has been built without starting it during fixture setup; the test host starts the deferred host when it is consumed.
 /// </remarks>
-[Obsolete("Use ManagedWebApplicationFixture<TEntryPoint> so the application entry point owns host startup. This compatibility fixture will be removed or changed in the next major release.")]
-public class BlockingManagedWebApplicationFixture<TEntryPoint> : HostFixture, IWebApplicationFixture<TEntryPoint> where TEntryPoint : class
+public class ManagedWebApplicationFixture<TEntryPoint> : HostFixture, IWebApplicationFixture<TEntryPoint> where TEntryPoint : class
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="BlockingManagedWebApplicationFixture{TEntryPoint}"/> class.
+    /// Initializes a new instance of the <see cref="ManagedWebApplicationFixture{TEntryPoint}"/> class.
     /// </summary>
-    public BlockingManagedWebApplicationFixture()
+    public ManagedWebApplicationFixture()
     {
-        AsyncHostRunnerCallback = (host, _) =>
-        {
-            host.Start();
-            return Task.CompletedTask;
-        };
     }
 
     /// <summary>
-    /// Creates and configures the <see cref="IHost" /> of this instance.
+    /// Creates and configures the <see cref="IHost"/> of this instance.
     /// </summary>
     /// <param name="hostTest">The object that inherits from <see cref="WebApplicationTest{TEntryPoint,T}"/>.</param>
     /// <remarks><paramref name="hostTest"/> was added to support those cases where the caller is required in the host configuration.</remarks>
@@ -54,14 +40,22 @@ public class BlockingManagedWebApplicationFixture<TEntryPoint> : HostFixture, IW
         if (!HasTypes(hostTest.GetType(), typeof(WebApplicationTest<,>))) { throw new ArgumentOutOfRangeException(nameof(hostTest), typeof(WebApplicationTest<,>), $"{nameof(hostTest)} is not assignable from WebApplicationTest<TEntryPoint, T>."); }
         if (this.HasValidState()) { return; }
 
-        Host = WebApplicationHostFactory.Create<TEntryPoint>(ConfigureWebHostCallback);
+        var applicationFixture = new ManagedApplicationFixture<TEntryPoint>
+        {
+            ConfigureCallback = ConfigureCallback,
+            ConfigureHostCallback = hostBuilder => hostBuilder.ConfigureWebHost(webHostBuilder =>
+            {
+                webHostBuilder.UseTestServer(o => o.PreserveExecutionContext = true);
+                ConfigureWebHostCallback?.Invoke(webHostBuilder);
+            })
+        };
+
+        applicationFixture.ConfigureHost(hostTest);
+
+        Host = applicationFixture.Host;
         Server = Host.GetTestServer();
-        Configuration = Host.Services.GetRequiredService<IConfiguration>();
-        Environment = Host.Services.GetRequiredService<IHostEnvironment>();
-
-        ConfigureCallback(Configuration, Environment);
-
-        AsyncHostRunnerCallback(Host, CancellationToken.None);
+        Configuration = applicationFixture.Configuration;
+        Environment = applicationFixture.Environment;
     }
 
     /// <summary>

@@ -1,3 +1,16 @@
+Version: Unreleased
+Availability: .NET 10 and .NET 9
+
+# New Features
+- ADDED ManagedWebApplicationFixture{TEntryPoint} as an opt-in entrypoint-owned fixture for ASP.NET Core application tests
+
+# Changed
+- CHANGED ManagedWebApplicationFixture{TEntryPoint} to invoke supported Main methods and let the application entry point own web-host startup
+- PRESERVED WebApplicationTestFactory and BlockingManagedWebApplicationFixture{TEntryPoint} startup behavior for the current minor release
+
+# Deprecated
+- DEPRECATED BlockingManagedWebApplicationFixture{TEntryPoint}; use ManagedWebApplicationFixture{TEntryPoint} for new entrypoint-owned tests. The compatibility fixture should be removed or changed in the next major release.
+
 Version: 11.1.2
 Availability: .NET 10 and .NET 9
 

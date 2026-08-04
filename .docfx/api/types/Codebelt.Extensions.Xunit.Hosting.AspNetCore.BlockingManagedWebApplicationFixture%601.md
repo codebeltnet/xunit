@@ -4,7 +4,7 @@ example:
 - *content
 ---
 
-The test project references a minimal ASP.NET Core application and shares its in-memory server through xUnit's class-fixture lifetime. `BlockingManagedWebApplicationFixture<TEntryPoint>` waits for startup before constructing the test class, so the test can create a client from `TestServer` and exercise the real request pipeline immediately.
+The test project references a minimal ASP.NET Core application and shares its in-memory server through xUnit's class-fixture lifetime. `BlockingManagedWebApplicationFixture<TEntryPoint>` is an obsolete compatibility fixture that preserves the legacy blocking startup path for the current minor release; new tests should use `ManagedWebApplicationFixture<TEntryPoint>` so the real application entry point owns startup. This compatibility type should be removed or changed in the next major release.
 
 ```csharp
 using System.Threading.Tasks;

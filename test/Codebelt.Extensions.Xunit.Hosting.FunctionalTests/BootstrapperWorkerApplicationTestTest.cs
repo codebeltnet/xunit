@@ -6,9 +6,9 @@ using BootstrapperWorkerProgram = Codebelt.Extensions.Xunit.Hosting.Bootstrapper
 
 namespace Codebelt.Extensions.Xunit.Hosting;
 
-public class BootstrapperWorkerApplicationTestTest : ApplicationTest<BootstrapperWorkerProgram, BlockingManagedApplicationFixture<BootstrapperWorkerProgram>>
+public class BootstrapperWorkerApplicationTestTest : ApplicationTest<BootstrapperWorkerProgram, ManagedApplicationFixture<BootstrapperWorkerProgram>>
 {
-    public BootstrapperWorkerApplicationTestTest(BlockingManagedApplicationFixture<BootstrapperWorkerProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+    public BootstrapperWorkerApplicationTestTest(ManagedApplicationFixture<BootstrapperWorkerProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
     }
 

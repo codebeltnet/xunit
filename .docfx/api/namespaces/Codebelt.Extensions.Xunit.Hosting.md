@@ -16,7 +16,7 @@ Complements: [xUnit: Shared Context between Tests](https://xunit.net/docs/shared
 |When you need to|Start with|Why|
 |---|---|---|
 |Bootstrap an existing console, worker, or Generic Host application for one test|`ApplicationTestFactory.Create<TEntryPoint>`|Runs the application's entry-point setup and returns an owned `IHostTest` context that the caller disposes.|
-|Share an existing application across an xUnit test class|`ApplicationTest<TEntryPoint, TFixture>` with `BlockingManagedApplicationFixture<TEntryPoint>`|Moves application startup and disposal into xUnit's fixture lifecycle while retaining configuration and service access.|
+|Share an existing application across an xUnit test class|`ApplicationTest<TEntryPoint, TFixture>` with `ManagedApplicationFixture<TEntryPoint>`|Opt-in entrypoint-owned startup through the new managed fixture while retaining configuration and service access.|
 |Build a conventional Generic Host entirely inside the test|`HostTestFactory`|Configures `IServiceCollection` and `IHostBuilder` directly without requiring an application entry point.|
 |Build with the modern `IHostApplicationBuilder` model|`MinimalHostTestFactory`|Keeps minimal-host tests focused on services and application-builder configuration.|
 |Configure the host now but decide when it starts|A `SelfManaged` fixture|Leaves startup under test control so observers and pre-start assertions can be attached first.|
@@ -27,11 +27,11 @@ Host fixtures follow a lifecycle naming convention:
 
 |Prefix|Convention|
 |---|---|
-|`Managed`|The fixture owns host creation, configuration, startup and disposal using the default host runner.|
+|`Managed`|The fixture owns host creation, configuration and disposal while the application entry point owns startup; test-host consumption starts the deferred host when needed.|
 |`SelfManaged`|The fixture owns host creation and configuration, but leaves host startup to the test.|
 |`BlockingManaged`|The fixture owns the host lifecycle and starts the host synchronously before returning control to the test.|
 
-Application-entry-point fixtures use the `BlockingManaged` prefix by default. Existing application entry points are discovered and built from their `Program` assembly, so tests receive a ready host after fixture initialization. Use `BlockingManagedApplicationFixture<TEntryPoint>` when testing a console, worker, or Generic Host application from an existing entry point.
+For the current minor release, the existing `ApplicationTestFactory` and blocking fixture paths preserve legacy startup behavior. Use `ManagedApplicationFixture<TEntryPoint>` explicitly when the real `Main` method should own startup; fixture setup remains lazy and test-host consumption starts the deferred host. `BlockingManagedApplicationFixture<TEntryPoint>` remains available as an obsolete compatibility fixture and should be removed or changed in the next major release.
 
 ### Extension Members
 

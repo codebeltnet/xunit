@@ -1,4 +1,5 @@
 using System;
+using Codebelt.Extensions.Xunit.Hosting.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +15,10 @@ namespace Codebelt.Extensions.Xunit.Hosting;
 /// <seealso cref="IEnvironmentTest" />
 public abstract class HostTest : Test, IHostTest
 {
+    private readonly object _hostLock = new();
+    private IHost _host;
+    private bool _hostStartAttempted;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="HostTest"/> class.
     /// </summary>
@@ -38,7 +43,41 @@ public abstract class HostTest : Test, IHostTest
     /// Gets the <see cref="IHost"/> initialized by the <see cref="IGenericHostFixture"/>.
     /// </summary>
     /// <value>The <see cref="IHost"/> initialized by the <see cref="IGenericHostFixture"/>.</value>
-    public IHost Host { get; protected set; }
+    /// <remarks>
+    /// For an entry-point-owned host captured by the managed application fixture path, accessing the host starts it when the
+    /// application entry point has not started it yet. This keeps the opt-in entrypoint-owned applications lazy while matching
+    /// the startup behavior of <c>WebApplicationFactory</c> when its server is consumed.
+    /// </remarks>
+    public IHost Host
+    {
+        get
+        {
+            var host = _host;
+            if (host == null) { return null; }
+
+            lock (_hostLock)
+            {
+                if (!_hostStartAttempted)
+                {
+                    _hostStartAttempted = true;
+                    if (host is IDeferredHost)
+                    {
+                        host.Start();
+                    }
+                }
+            }
+
+            return host;
+        }
+        protected set
+        {
+            lock (_hostLock)
+            {
+                _host = value;
+                _hostStartAttempted = false;
+            }
+        }
+    }
 
     /// <summary>
     /// Gets the <see cref="IConfiguration"/> initialized by the <see cref="IHost"/>.

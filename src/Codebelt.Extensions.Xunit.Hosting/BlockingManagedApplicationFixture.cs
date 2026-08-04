@@ -16,7 +16,10 @@ namespace Codebelt.Extensions.Xunit.Hosting;
 /// <remarks>
 /// Unlike the base managed host fixtures, this fixture starts the resolved application host synchronously.
 /// Application entry point testing must expose a fully started host after fixture initialization.
+/// Use <see cref="ManagedApplicationFixture{TEntryPoint}"/> for entrypoint-owned startup in new tests.
+/// This compatibility fixture is retained for the current minor release and should be removed or changed in the next major release.
 /// </remarks>
+[Obsolete("Use ManagedApplicationFixture<TEntryPoint> so the application entry point owns host startup. This compatibility fixture will be removed or changed in the next major release.")]
 public class BlockingManagedApplicationFixture<TEntryPoint> : HostFixture, IApplicationFixture<TEntryPoint> where TEntryPoint : class
 {
     /// <summary>
