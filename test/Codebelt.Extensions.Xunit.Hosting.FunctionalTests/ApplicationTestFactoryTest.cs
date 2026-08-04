@@ -38,12 +38,13 @@ public class ApplicationTestFactoryTest : Test
     public void Create_ShouldStartEntrypoint_WhenUsingManagedApplicationFixture()
     {
         using var application = ApplicationTestFactory.Create<BootstrapperConsoleProgram>(hostFixture: new ManagedApplicationFixture<BootstrapperConsoleProgram>());
-
-        var marker = application.Host.Services.GetRequiredService<BootstrapperConsoleMarker>();
+        var services = application.Host.Services;
+        var lifetime = services.GetRequiredService<IHostApplicationLifetime>();
+        var marker = services.GetRequiredService<BootstrapperConsoleMarker>();
 
         Assert.Equal("Bootstrapper Console", marker.Value);
         Assert.True(BootstrapperConsoleProgram.MainInvoked);
-        Assert.True(BootstrapperConsoleProgram.EntrypointStarted);
+        Assert.True(lifetime.ApplicationStarted.IsCancellationRequested);
     }
 
     [Fact]
