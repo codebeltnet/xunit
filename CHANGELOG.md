@@ -7,6 +7,10 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [11.2.1] - 2026-08-12
+
+This is a service update that focuses on package dependencies.
+
 ## [11.2.0] - 2026-08-03
 
 This is a minor release that adds opt-in entrypoint-owned startup for application and ASP.NET Core tests, while keeping the existing factory paths compatible for the current minor release and marking the older blocking fixtures as obsolete.
