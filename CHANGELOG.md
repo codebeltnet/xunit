@@ -9,7 +9,20 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 
 ## [11.2.1] - 2026-08-12
 
-This is a service update that focuses on package dependencies.
+This is a patch release providing dependency updates to the latest compatible versions across all supported target frameworks.
+
+### Changed
+
+- Upgraded Codebelt.Bootstrapper.Console, Codebelt.Bootstrapper.Web, and Codebelt.Bootstrapper.Worker from 5.1.2 to 5.2.0,
+- Upgraded Codebelt.Extensions.BenchmarkDotNet.Console from 1.3.1 to 1.3.2,
+- Upgraded Cuemon.Core, Cuemon.Extensions.AspNetCore, and Cuemon.Extensions.IO from 10.5.5 to 10.7.0,
+- Upgraded Microsoft.Bcl.AsyncInterfaces from 10.0.10 to 10.0.11 for netstandard2.0,
+- Upgraded Microsoft.Extensions.* packages (Configuration, EnvironmentVariables, FileExtensions, Json, Hosting, AspNetCore.TestHost) from 9.0.18 to 9.0.19 for .NET 9,
+- Upgraded Microsoft.Extensions.* packages (Configuration, EnvironmentVariables, FileExtensions, Json, Hosting, AspNetCore.TestHost) from 10.0.10 to 10.0.11 for .NET 10.
+
+### Added
+
+- Newtonsoft.Json added as a conditional dependency for Codebelt.Extensions.Xunit.Tests to explicitly manage transitive package resolution with transitive pinning enabled.
 
 ## [11.2.0] - 2026-08-03
 
@@ -476,7 +489,8 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 
 
-[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.2.0...HEAD
+[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.2.1...HEAD
+[11.2.1]: https://github.com/codebeltnet/xunit/compare/v11.2.0...v11.2.1
 [11.2.0]: https://github.com/codebeltnet/xunit/compare/v11.1.2...v11.2.0
 [11.1.2]: https://github.com/codebeltnet/xunit/compare/v11.1.1...v11.1.2
 [11.1.1]: https://github.com/codebeltnet/xunit/compare/v11.1.0...v11.1.1
