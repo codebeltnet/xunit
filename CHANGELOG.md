@@ -17,9 +17,11 @@ This is a major release driven by the upgrade to xUnit v4.0.0, reflecting the de
 > [!IMPORTANT]
 > **CI migration for xUnit v4 on .NET 10 and later:** CI users upgrading to this release must add a root `global.json` opting into [Microsoft.Testing.Platform](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test) and update VSTest-specific test, result, and coverage arguments to their MTP-native equivalents. Add [`Microsoft.Testing.Extensions.CodeCoverage`](https://learn.microsoft.com/en-us/dotnet/core/testing/microsoft-testing-platform-extensions-code-coverage) to test projects when collecting coverage through MTP. Repositories that remain on pre-v4 xUnit or do not opt into MTP continue using the existing CI path.
 
-### Breaking Changes
+### Added
 
-- Removed `BlockingManagedApplicationFixture<TEntryPoint>` and `BlockingManagedWebApplicationFixture<TEntryPoint>`; use `ManagedApplicationFixture<TEntryPoint>` and `ManagedWebApplicationFixture<TEntryPoint>` instead.
+- Global opt-in configuration via `global.json` to enable Microsoft.Testing.Platform `dotnet test` experience for xUnit v4 on .NET 10 and later,
+- `Microsoft.Testing.Extensions.CodeCoverage` dependency to support native TRX and coverage reporting through MTP,
+- `.gitattributes` file for consistent line-ending handling and merge strategies across platforms to reduce merge conflicts.
 
 ### Changed
 
@@ -28,14 +30,19 @@ This is a major release driven by the upgrade to xUnit v4.0.0, reflecting the de
 - Upgraded Codebelt.Bootstrapper.Console, Codebelt.Bootstrapper.Web, and Codebelt.Bootstrapper.Worker from v5.2.0 to v5.2.1,
 - Upgraded Codebelt.Extensions.BenchmarkDotNet.Console from v1.3.2 to v1.3.3,
 - Upgraded Microsoft.NET.Test.Sdk from v18.8.1 to v18.9.0 for improved compatibility with xUnit v4,
+- `ApplicationTestFactory` and `WebApplicationTestFactory` now default to `ManagedApplicationFixture<TEntryPoint>` and `ManagedWebApplicationFixture<TEntryPoint>` for entrypoint-owned deferred startup behavior,
 - Consolidated Docker test environments to a unified ubuntu-testrunner:8-9-10-11 image for improved maintainability across .NET 8, 9, 10, and 11,
 - Updated DocFX base image to nginx 1.31-alpine and bumped DocFX from v2.78.4 to v2.78.5,
 - Removed obsolete analyzer rules (CA1200 for cref tag prefix usage and IDE0330 for System.Threading.Lock) from editor configuration that are no longer relevant.
 
+### Removed
+
+- `BlockingManagedApplicationFixture<TEntryPoint>` and `BlockingManagedWebApplicationFixture<TEntryPoint>`; migrate to `ManagedApplicationFixture<TEntryPoint>` and `ManagedWebApplicationFixture<TEntryPoint>` which are now the default fixtures in the factory methods.
+
 ### Fixed
 
-- Fixed CI test execution for xUnit v4 on .NET 10 and later by opting into the Microsoft.Testing.Platform `dotnet test` experience and using its native TRX and coverage reporting,
-- Fixed typo in .editorconfig IDE0036 comment documentation.
+- Deferred host startup completion in managed fixtures by registering the ApplicationStarted callback before releasing the host, ensuring StartAsync waits on the correct completion signal without introducing the legacy registration race,
+- Typo in .editorconfig IDE0036 comment documentation.
 
 ## [11.2.1] - 2026-08-12
 
