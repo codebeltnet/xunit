@@ -7,6 +7,32 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [12.0.0] - 2026-08-24
+
+This is a major release driven by the upgrade to xUnit v4.0.0, reflecting the decision to bump this library's major version in alignment with the xUnit framework's major release after careful consideration. The xUnit v4 upgrade introduces breaking changes to the testing framework that may require updates to existing test code.
+
+> [!WARNING]
+> **xUnit v4 Breaking Changes:** This release upgrades to xUnit v4.0.0, which contains breaking changes to the xUnit testing framework. Before upgrading, please review the [xUnit v4.0.0 release notes](https://xunit.net/releases/v3/4.0.0) for details on required code updates, API removals, and migration guidance. Pay special attention to changes in assertion methods, fixture behavior, and test collection definitions.
+
+### Breaking Changes
+
+- Removed `BlockingManagedApplicationFixture<TEntryPoint>` and `BlockingManagedWebApplicationFixture<TEntryPoint>`; use `ManagedApplicationFixture<TEntryPoint>` and `ManagedWebApplicationFixture<TEntryPoint>` instead.
+
+### Changed
+
+- Upgraded xunit.v3, xunit.v3.assert, xunit.v3.extensibility.core, and xunit.v3.runner.console from v3.2.2 to v4.0.0,
+- Upgraded xunit.runner.visualstudio from v3.1.5 to v4.0.0 for Visual Studio test explorer integration,
+- Upgraded Codebelt.Bootstrapper.Console, Codebelt.Bootstrapper.Web, and Codebelt.Bootstrapper.Worker from v5.2.0 to v5.2.1,
+- Upgraded Codebelt.Extensions.BenchmarkDotNet.Console from v1.3.2 to v1.3.3,
+- Upgraded Microsoft.NET.Test.Sdk from v18.8.1 to v18.9.0 for improved compatibility with xUnit v4,
+- Consolidated Docker test environments to a unified ubuntu-testrunner:8-9-10-11 image for improved maintainability across .NET 8, 9, 10, and 11,
+- Updated DocFX base image to nginx 1.31-alpine and bumped DocFX from v2.78.4 to v2.78.5,
+- Removed obsolete analyzer rules (CA1200 for cref tag prefix usage and IDE0330 for System.Threading.Lock) from editor configuration that are no longer relevant.
+
+### Fixed
+
+- Fixed typo in .editorconfig IDE0036 comment documentation.
+
 ## [11.2.1] - 2026-08-12
 
 This is a patch release providing dependency updates to the latest compatible versions across all supported target frameworks.
@@ -489,7 +515,8 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 
 
-[Unreleased]: https://github.com/codebeltnet/xunit/compare/v11.2.1...HEAD
+[Unreleased]: https://github.com/codebeltnet/xunit/compare/v12.0.0...HEAD
+[12.0.0]: https://github.com/codebeltnet/xunit/compare/v11.2.1...v12.0.0
 [11.2.1]: https://github.com/codebeltnet/xunit/compare/v11.2.0...v11.2.1
 [11.2.0]: https://github.com/codebeltnet/xunit/compare/v11.1.2...v11.2.0
 [11.1.2]: https://github.com/codebeltnet/xunit/compare/v11.1.1...v11.1.2
