@@ -16,8 +16,7 @@ public static class ApplicationHostFactory
     /// <param name="configureHost">The delegate that provides a way to override the <see cref="IHostBuilder"/> before the application is built.</param>
     /// <returns>A built <see cref="IHost"/> instance.</returns>
     /// <remarks>
-    /// For compatibility, applications that expose <c>CreateHostBuilder(string[])</c> are built through that factory. Applications that do not expose the legacy factory use the deferred entry-point path.
-    /// The legacy path and its wrapper behavior are retained for the current minor release; only the managed application fixtures opt into entrypoint-owned deferred startup. The legacy path should be removed or changed in the next major release.
+    /// For compatibility, applications that expose <c>CreateHostBuilder(string[])</c> are built through that factory. Applications that do not expose the legacy factory use the deferred entry-point path. Managed application fixtures use the deferred entry-point path so the application owns startup.
     /// </remarks>
     /// <exception cref="InvalidOperationException">
     /// The entry point assembly does not expose a supported application host.
@@ -35,8 +34,7 @@ public static class ApplicationHostFactory
     /// <param name="stopApplication">A value indicating whether the entry point should be stopped after the host is built.</param>
     /// <returns>A built <see cref="IHost"/> instance.</returns>
     /// <remarks>
-    /// For compatibility, applications that expose <c>CreateHostBuilder(string[])</c> are built through that factory and the <paramref name="stopApplication"/> value is ignored for that path.
-    /// The legacy path and its wrapper behavior are retained for the current minor release; only the managed application fixtures opt into entrypoint-owned deferred startup. The legacy path should be removed or changed in the next major release.
+    /// For compatibility, applications that expose <c>CreateHostBuilder(string[])</c> are built through that factory and the <paramref name="stopApplication"/> value is ignored for that path. Managed application fixtures use the deferred entry-point path so the application owns startup.
     /// </remarks>
     /// <exception cref="InvalidOperationException">
     /// The entry point assembly does not expose a supported application host.
