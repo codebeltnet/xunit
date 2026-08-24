@@ -4,7 +4,7 @@ example:
 - *content
 ---
 
-The test project references a worker application's entry-point assembly. `ApplicationHostFactory.Create<TEntryPoint>` preserves the current minor-release compatibility path, including direct use of an application's `CreateHostBuilder` when it is available. When the application entry point should own startup, pass `ManagedApplicationFixture<TEntryPoint>` to `ApplicationTestFactory.Create<TEntryPoint>`; the fixture opts into the deferred path without changing the existing factory method signature. The compatibility path is intentionally retained until it can be removed or changed in the next major release. Because this lower-level factory returns the host directly, the caller still owns disposal.
+The test project references a worker application's entry-point assembly. `ApplicationHostFactory.Create<TEntryPoint>` preserves the compatibility path, including direct use of an application's `CreateHostBuilder` when it is available. `ApplicationTestFactory.Create<TEntryPoint>` uses `ManagedApplicationFixture<TEntryPoint>` by default when the application entry point should own startup; pass an explicit fixture when a shared test context needs to customize its lifecycle. Because this lower-level factory returns the host directly, the caller still owns disposal.
 
 ```csharp
 using Codebelt.Extensions.Xunit.Hosting;
