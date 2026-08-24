@@ -10,6 +10,9 @@ Availability: .NET 10, .NET 9 and .NET Standard 2.0
 # Improvements
 - CHANGED ApplicationTestFactory to use ManagedApplicationFixture{TEntryPoint} as its default fixture
 
+# Bug Fixes
+- FIXED deferred host startup completion in managed fixtures by registering the ApplicationStarted callback before releasing the host, ensuring StartAsync waits on the correct completion signal
+
 Version: 11.2.1
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
