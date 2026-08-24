@@ -17,16 +17,14 @@ public static class WebApplicationTestFactory
     /// </summary>
     /// <typeparam name="TEntryPoint">A type in the entry point assembly of the application.</typeparam>
     /// <param name="webHostSetup">The <see cref="IWebHostBuilder"/> which may be configured.</param>
-    /// <param name="hostFixture">An optional <see cref="IWebApplicationFixture{TEntryPoint}"/> implementation to use instead of the default <see cref="BlockingManagedWebApplicationFixture{TEntryPoint}"/> instance.</param>
+    /// <param name="hostFixture">An optional <see cref="IWebApplicationFixture{TEntryPoint}"/> implementation to use instead of the default <see cref="ManagedWebApplicationFixture{TEntryPoint}"/> instance.</param>
     /// <returns>An instance of an <see cref="IHostTest"/> implementation.</returns>
     /// <remarks>
-    /// Passing a <see cref="ManagedWebApplicationFixture{TEntryPoint}"/> opts this call into entrypoint-owned deferred startup. Omitting <paramref name="hostFixture"/> preserves the blocking compatibility path for the current minor release; that default should be removed or changed in the next major release.
+    /// When <paramref name="hostFixture"/> is omitted, the factory uses <see cref="ManagedWebApplicationFixture{TEntryPoint}"/> so the application entry point owns deferred host startup. Pass another <see cref="IWebApplicationFixture{TEntryPoint}"/> implementation when the test requires a different lifecycle.
     /// </remarks>
     public static IHostTest Create<TEntryPoint>(Action<IWebHostBuilder> webHostSetup = null, IWebApplicationFixture<TEntryPoint> hostFixture = null) where TEntryPoint : class
     {
-        // Minor-release compatibility: keep the historical blocking default while allowing callers to opt in by passing ManagedWebApplicationFixture<TEntryPoint>.
-        // Major release: remove or change this default when the compatibility fixture is retired. Hint: ManagedWebApplicationFixture
-        return new Internal.WebApplicationTest<TEntryPoint>(webHostSetup, hostFixture ?? new BlockingManagedWebApplicationFixture<TEntryPoint>());
+        return new Internal.WebApplicationTest<TEntryPoint>(webHostSetup, hostFixture ?? new ManagedWebApplicationFixture<TEntryPoint>());
     }
 
     /// <summary>
@@ -35,7 +33,7 @@ public static class WebApplicationTestFactory
     /// <typeparam name="TEntryPoint">A type in the entry point assembly of the application.</typeparam>
     /// <param name="webHostSetup">The <see cref="IWebHostBuilder"/> which may be configured.</param>
     /// <param name="responseFactory">The function delegate that creates a <see cref="HttpResponseMessage"/> from the <see cref="HttpClient"/>. Default is a GET request to the root URL ("/").</param>
-    /// <param name="hostFixture">An optional <see cref="IWebApplicationFixture{TEntryPoint}"/> implementation to use instead of the default <see cref="BlockingManagedWebApplicationFixture{TEntryPoint}"/> instance.</param>
+    /// <param name="hostFixture">An optional <see cref="IWebApplicationFixture{TEntryPoint}"/> implementation to use instead of the default <see cref="ManagedWebApplicationFixture{TEntryPoint}"/> instance.</param>
     /// <returns>A <see cref="Task"/> that represents the asynchronous operation. The task result contains the <see cref="HttpResponseMessage"/> for the test server.</returns>
     public static async Task<HttpResponseMessage> RunAsync<TEntryPoint>(Action<IWebHostBuilder> webHostSetup = null, Func<HttpClient, Task<HttpResponseMessage>> responseFactory = null, IWebApplicationFixture<TEntryPoint> hostFixture = null) where TEntryPoint : class
     {
