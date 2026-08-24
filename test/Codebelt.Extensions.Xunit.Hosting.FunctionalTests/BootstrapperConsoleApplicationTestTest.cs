@@ -5,9 +5,9 @@ using BootstrapperConsoleProgram = Codebelt.Extensions.Xunit.Hosting.Bootstrappe
 
 namespace Codebelt.Extensions.Xunit.Hosting;
 
-public class BootstrapperConsoleApplicationTestTest : ApplicationTest<BootstrapperConsoleProgram, BlockingManagedApplicationFixture<BootstrapperConsoleProgram>>
+public class BootstrapperConsoleApplicationTestTest : ApplicationTest<BootstrapperConsoleProgram, ManagedApplicationFixture<BootstrapperConsoleProgram>>
 {
-    public BootstrapperConsoleApplicationTestTest(BlockingManagedApplicationFixture<BootstrapperConsoleProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
+    public BootstrapperConsoleApplicationTestTest(ManagedApplicationFixture<BootstrapperConsoleProgram> hostFixture, ITestOutputHelper output) : base(hostFixture, output)
     {
     }
 

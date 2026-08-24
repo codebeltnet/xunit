@@ -36,22 +36,6 @@ public class StartupValidationWebApplicationTestTest : Test
         Assert.True(validation.Started);
     }
 
-    [Fact]
-    public void ShouldNotInvokeEntrypoint_WhenUsingBlockingManagedWebApplicationFixture()
-    {
-        var missing = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
-        var state = new ClassicProgramState();
-        var validation = new StartupValidationService(state, missing);
-        using var fixture = new BlockingManagedWebApplicationFixture<Classic>();
-        using var application = WebApplicationTestFactory.Create<Classic>(
-            builder => ConfigureStartupValidation(builder, state, validation),
-            fixture);
-
-        Assert.NotNull(application.Host.Services);
-        Assert.False(state.MainInvoked);
-        Assert.True(validation.Started);
-    }
-
     private static void ConfigureStartupValidation(IWebHostBuilder builder, ClassicProgramState state, StartupValidationService validation)
     {
         builder.ConfigureLogging(logging => logging.ClearProviders());

@@ -51,9 +51,12 @@ public class ApplicationTestFactoryTest : Test
     public void Create_ShouldBootstrapApplication_WhenEntryPointUsesMinimalConsoleProgram()
     {
         using var application = ApplicationTestFactory.Create<BootstrapperMinimalConsoleProgram>();
+        var state = application.Host.Services.GetRequiredService<BootstrapperMinimalConsoleState>();
 
         Assert.Equal("Development", application.Environment.EnvironmentName);
         Assert.NotNull(application.Host);
+        Assert.True(state.MainInvoked);
+        Assert.True(state.EntrypointStarted);
     }
 
     [Fact]
@@ -95,17 +98,6 @@ public class ApplicationTestFactoryTest : Test
         });
 
         Assert.Equal("Configured from ApplicationTestFactory", application.Configuration["Factory:Message"]);
-    }
-
-    [Fact]
-    public void Create_ShouldSupportExplicitBlockingFixture()
-    {
-        using var application = ApplicationTestFactory.Create<BootstrapperMinimalConsoleProgram>(hostFixture: new BlockingManagedApplicationFixture<BootstrapperMinimalConsoleProgram>());
-        var state = application.Host.Services.GetRequiredService<BootstrapperMinimalConsoleState>();
-
-        Assert.NotNull(application.Host);
-        Assert.True(state.MainInvoked);
-        Assert.False(state.EntrypointStarted);
     }
 
     [Fact]
