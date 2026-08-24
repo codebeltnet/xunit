@@ -13,7 +13,7 @@ It is, by heart, free, flexible and built to extend and boost your agile codebel
 
 The `Codebelt.Extensions.Xunit.Hosting` namespace contains types that provides a uniform way of doing unit testing that is used in conjunction with Microsoft Dependency Injection. The namespace relates to the `Xunit.Abstractions` namespace.
 
-Use `ApplicationTestFactory.Create<TEntryPoint>` for a focused integration test against an existing console, worker or Generic Host application's `Program` assembly. It brings the entry-point testing pattern commonly associated with ASP.NET Core to the rest of the .NET application stack. For the current minor release, existing factory and blocking fixture paths preserve their legacy startup behavior; use `ManagedApplicationFixture<TEntryPoint>` explicitly when the application's `Main` method should own startup and the deferred host should start when the test host is consumed. `BlockingManagedApplicationFixture<TEntryPoint>` remains as an obsolete compatibility option until it can be removed or changed in the next major release.
+Use `ApplicationTestFactory.Create<TEntryPoint>` for a focused integration test against an existing console, worker or Generic Host application's `Program` assembly. It brings the entry-point testing pattern commonly associated with ASP.NET Core to the rest of the .NET application stack. The factory uses `ManagedApplicationFixture<TEntryPoint>` by default, so the application's `Main` method owns startup and the deferred host starts when the test host is consumed. Use `ManagedApplicationFixture<TEntryPoint>` explicitly with `ApplicationTest<TEntryPoint, TFixture>` when tests share the application context.
 
 More documentation available at our documentation site:
 

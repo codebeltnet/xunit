@@ -41,10 +41,12 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
 
         var capture = (ProgramHostFactoryResolver.HostCapture)_hostFactory(args.ToArray());
         var host = capture.Host;
+        // Register before the entry point is released from HostBuilt so its later ApplicationStarted callbacks run before this completion signal.
+        var startedRegistration = capture.ApplicationLifetime.ApplicationStarted.Register(() => _hostStarted.TrySetResult(null));
         // Preserve the legacy wrapper for ApplicationHostFactory fallback callers. Only managed application fixtures opt into the marker that HostTest uses for lazy startup.
         var deferredHost = _entrypointOwned
-            ? new EntrypointOwnedDeferredHost(host, _hostStarted, capture)
-            : new DeferredHost(host, _hostStarted, capture);
+            ? new EntrypointOwnedDeferredHost(host, _hostStarted, capture, startedRegistration)
+            : new DeferredHost(host, _hostStarted, capture, startedRegistration);
 
         if (!_entrypointOwned)
         {
@@ -119,27 +121,29 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
     private class DeferredHost : IHost, IAsyncDisposable
     {
         private readonly IHost _host;
-        private readonly IHostApplicationLifetime _applicationLifetime;
         private readonly ProgramHostFactoryResolver.HostCapture _capture;
         private readonly TaskCompletionSource<object> _hostStarted;
+        private readonly CancellationTokenRegistration _startedRegistration;
 
-        public DeferredHost(IHost host, TaskCompletionSource<object> hostStarted, ProgramHostFactoryResolver.HostCapture capture)
+        public DeferredHost(IHost host, TaskCompletionSource<object> hostStarted, ProgramHostFactoryResolver.HostCapture capture, CancellationTokenRegistration startedRegistration)
         {
             _host = host;
-            _applicationLifetime = capture.ApplicationLifetime;
             _capture = capture;
             _hostStarted = hostStarted;
+            _startedRegistration = startedRegistration;
         }
 
         public IServiceProvider Services => _host.Services;
 
         public void Dispose()
         {
+            _startedRegistration.Dispose();
             _host.Dispose();
         }
 
         public async ValueTask DisposeAsync()
         {
+            _startedRegistration.Dispose();
             if (_host is IAsyncDisposable disposable)
             {
                 await disposable.DisposeAsync().ConfigureAwait(false);
@@ -151,15 +155,7 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
 
         public async Task StartAsync(CancellationToken cancellationToken = default)
         {
-            if (_hostStarted.Task.IsCompleted)
-            {
-                await _hostStarted.Task.ConfigureAwait(false);
-                return;
-            }
-
             using var registration = cancellationToken.Register(() => _hostStarted.TrySetCanceled());
-            using var startedRegistration = _applicationLifetime.ApplicationStarted.Register(() => _hostStarted.TrySetResult(null));
-
             await _hostStarted.Task.ConfigureAwait(false);
         }
 
@@ -176,7 +172,7 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
 
     private sealed class EntrypointOwnedDeferredHost : DeferredHost, IDeferredHost
     {
-        public EntrypointOwnedDeferredHost(IHost host, TaskCompletionSource<object> hostStarted, ProgramHostFactoryResolver.HostCapture capture) : base(host, hostStarted, capture)
+        public EntrypointOwnedDeferredHost(IHost host, TaskCompletionSource<object> hostStarted, ProgramHostFactoryResolver.HostCapture capture, CancellationTokenRegistration startedRegistration) : base(host, hostStarted, capture, startedRegistration)
         {
         }
     }

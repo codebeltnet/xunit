@@ -4,7 +4,7 @@ example:
 - *content
 ---
 
-The test project references a minimal ASP.NET Core application with a `/health` endpoint. `WebApplicationTestFactory` runs that real entry point on `TestServer`, applies a test-only service override through `IWebHostBuilder`, and gives the test an owned host from which it creates an HTTP client.
+The test project references a minimal ASP.NET Core application with a `/health` endpoint. `WebApplicationTestFactory` uses `ManagedWebApplicationFixture<TEntryPoint>` by default, runs that real entry point on `TestServer`, applies a test-only service override through `IWebHostBuilder`, and gives the test an owned host from which it creates an HTTP client. Pass an explicit `IWebApplicationFixture<TEntryPoint>` when the test needs a different lifecycle.
 
 ```csharp
 using System.Threading.Tasks;

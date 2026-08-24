@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 
-internal sealed class DeferredInvalidWebApplicationTest : WebApplicationTest<ManagedWebHostFixture, BlockingManagedWebApplicationFixture<ManagedWebHostFixture>>
+internal sealed class DeferredInvalidWebApplicationTest : WebApplicationTest<ManagedWebHostFixture, ManagedWebApplicationFixture<ManagedWebHostFixture>>
 {
-    public DeferredInvalidWebApplicationTest(BlockingManagedWebApplicationFixture<ManagedWebHostFixture> hostFixture) : base(true, hostFixture)
+    public DeferredInvalidWebApplicationTest(ManagedWebApplicationFixture<ManagedWebHostFixture> hostFixture) : base(true, hostFixture)
     {
     }
 

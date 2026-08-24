@@ -4,7 +4,7 @@ example:
 - *content
 ---
 
-The test project references a worker application whose entry point registers `WorkerIdentity`. `ApplicationTestFactory` runs that application's real host setup, then exposes its services and environment through an owned test context so the test can verify application behavior without recreating `Program` configuration.
+The test project references a worker application whose entry point registers `WorkerIdentity`. `ApplicationTestFactory` uses `ManagedApplicationFixture<TEntryPoint>` by default, runs that application's real host setup, and exposes its services and environment through an owned test context so the test can verify application behavior without recreating `Program` configuration. Pass an explicit `IApplicationFixture<TEntryPoint>` when the test needs a different lifecycle.
 
 ```csharp
 using Codebelt.Extensions.Xunit.Hosting;

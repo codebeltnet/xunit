@@ -88,6 +88,7 @@
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'">
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
     <PackageReference Include="xunit.v3" />
     <PackageReference Include="xunit.v3.runner.console" />
     <PackageReference Include="xunit.runner.visualstudio">

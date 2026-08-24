@@ -17,7 +17,7 @@ Complements: [ASP.NET Core integration tests](https://learn.microsoft.com/en-us/
 |---|---|---|
 |Bootstrap an existing ASP.NET Core application for one focused test|`WebApplicationTestFactory.Create<TEntryPoint>`|Returns an owned `IHostTest` whose host exposes the application's `TestServer`, services, configuration, and environment.|
 |Send one request to an existing application|`WebApplicationTestFactory.RunAsync<TEntryPoint>`|Combines application startup, `HttpClient` creation, request execution, and cleanup in one call.|
-|Share an existing application across an xUnit test class|`WebApplicationTest<TEntryPoint, TFixture>` with `ManagedWebApplicationFixture<TEntryPoint>`|Opt-in entrypoint-owned startup while the fixture exposes `TestServer`.|
+|Share an existing application across an xUnit test class|`WebApplicationTest<TEntryPoint, TFixture>` with `ManagedWebApplicationFixture<TEntryPoint>`|Uses entrypoint-owned startup while the fixture exposes `TestServer`.|
 |Define services and middleware entirely inside the test|`WebHostTestFactory` or `MinimalWebHostTestFactory`|Builds a purpose-specific in-memory pipeline without loading an application project.|
 |Attach observers or change state before startup|A `SelfManaged` web fixture|Builds the host and pipeline but leaves startup to the test.|
 
@@ -41,11 +41,10 @@ ASP.NET Core host fixtures follow the same lifecycle naming convention as the ho
 |---|---|
 |`Managed`|The fixture owns host creation, configuration and disposal while the application entry point owns startup; test-host consumption starts the deferred host when needed.|
 |`SelfManaged`|The fixture owns host creation and configuration, but leaves host startup to the test.|
-|`BlockingManaged`|The fixture owns the host lifecycle and starts the host synchronously before returning control to the test.|
 
-For the current minor release, the existing `WebApplicationTestFactory` and blocking fixture paths preserve legacy startup behavior. Use `ManagedWebApplicationFixture<TEntryPoint>` explicitly when the real `Main` method should own startup; fixture setup remains lazy and test-host consumption starts the deferred host. `BlockingManagedWebApplicationFixture<TEntryPoint>` remains available as an obsolete compatibility fixture and should be removed or changed in the next major release.
+`WebApplicationTestFactory` uses `ManagedWebApplicationFixture<TEntryPoint>` by default, so the real application entry point owns startup and fixture setup remains lazy. Use `ManagedWebApplicationFixture<TEntryPoint>` explicitly with `WebApplicationTest<TEntryPoint, TFixture>` when tests share the application context; use a `SelfManaged` fixture when the test must control startup itself.
 
-`BlockingManagedWebHostFixture` remains the opt-in blocking variant for the lower-level web host fixture family. The application-entry-point fixture is named `BlockingManagedWebApplicationFixture<TEntryPoint>` directly because this API is blocking by convention from its first release.
+`BlockingManagedWebHostFixture` remains the opt-in blocking variant for the lower-level web host fixture family. It is separate from the application-entry-point fixture, which uses `ManagedWebApplicationFixture<TEntryPoint>` for entrypoint-owned startup.
 
 ### Extension Members
 

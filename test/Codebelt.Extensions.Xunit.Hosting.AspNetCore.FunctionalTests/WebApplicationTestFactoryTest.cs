@@ -49,7 +49,7 @@ public class WebApplicationTestFactoryTest : Test
     [Fact]
     public async Task Create_ShouldBootstrapApplication_WhenEntryPointUsesClassicProgram()
     {
-        using var application = WebApplicationTestFactory.Create<Classic>(hostFixture: new ManagedWebApplicationFixture<Classic>());
+        using var application = WebApplicationTestFactory.Create<Classic>();
         using var client = application.Host.GetTestClient();
 
         var response = await client.GetAsync("/").ConfigureAwait(false);
@@ -104,20 +104,6 @@ public class WebApplicationTestFactoryTest : Test
         Assert.Equal("Configured from WebApplicationTestFactory", configurationBody);
         Assert.True(serviceResponse.IsSuccessStatusCode);
         Assert.Equal("Custom service from WebApplicationTestFactory", serviceBody);
-    }
-
-    [Fact]
-    public async Task Create_ShouldSupportExplicitBlockingFixture()
-    {
-        using var application = WebApplicationTestFactory.Create<Classic>(hostFixture: new BlockingManagedWebApplicationFixture<Classic>());
-        using var client = application.Host.GetTestClient();
-
-        using var response = await client.GetAsync("/").ConfigureAwait(false);
-        var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-        Assert.True(response.IsSuccessStatusCode);
-        Assert.Equal("Classic Program", body);
-        Assert.False(application.Host.Services.GetRequiredService<ClassicProgramState>().MainInvoked);
     }
 
     [Fact]
