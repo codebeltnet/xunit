@@ -15,7 +15,7 @@ The `Codebelt.Extensions.Xunit.Hosting.AspNetCore` namespace contains types that
 
 `WebApplicationTestFactory.Create<TEntryPoint>` is a lightweight alternative for focused integration tests that prefer inline `IWebHostBuilder` customization and Codebelt's common `IHostTest` model. It is not a drop-in replacement for [WebApplicationFactory<TEntryPoint>](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.testing.webapplicationfactory-1): use Microsoft's factory when reusable derived factories, `CreateClient` options, `WithWebHostBuilder`, or MVC content-root conventions are central to the test suite.
 
-For the current minor release, the existing factory and blocking fixture paths preserve their legacy startup behavior. Use `ManagedWebApplicationFixture<TEntryPoint>` explicitly when the application's `Main` method should own startup and the deferred `TestServer` should start when the test host is consumed. `BlockingManagedWebApplicationFixture<TEntryPoint>` remains available as an obsolete compatibility option until it can be removed or changed in the next major release.
+`WebApplicationTestFactory` uses `ManagedWebApplicationFixture<TEntryPoint>` by default, so the application's `Main` method owns startup and the deferred `TestServer` starts when the test host is consumed. Use `ManagedWebApplicationFixture<TEntryPoint>` explicitly with `WebApplicationTest<TEntryPoint, TFixture>` when tests share the application context. For lower-level web-host tests that require synchronous startup, use the separate `BlockingManagedWebHostFixture`.
 
 More documentation available at our documentation site:
 

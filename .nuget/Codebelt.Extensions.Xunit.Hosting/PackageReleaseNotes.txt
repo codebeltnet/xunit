@@ -1,3 +1,15 @@
+Version: 12.0.0
+Availability: .NET 10, .NET 9 and .NET Standard 2.0
+
+# ALM
+- CHANGED xunit framework suite from v3.2.2 to v4.0.0 and upgraded supporting dependencies: Codebelt.Bootstrapper packages to v5.2.1, Codebelt.Extensions.BenchmarkDotNet.Console to v1.3.3, and Microsoft.NET.Test.Sdk to v18.9.0
+
+# Breaking Changes
+- REMOVED BlockingManagedApplicationFixture{TEntryPoint}; use ManagedApplicationFixture{TEntryPoint} instead
+
+# Improvements
+- CHANGED ApplicationTestFactory to use ManagedApplicationFixture{TEntryPoint} as its default fixture
+
 Version: 11.2.1
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
