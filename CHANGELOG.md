@@ -14,6 +14,9 @@ This is a major release driven by the upgrade to xUnit v4.0.0, reflecting the de
 > [!WARNING]
 > **xUnit v4 Breaking Changes:** This release upgrades to xUnit v4.0.0, which contains breaking changes to the xUnit testing framework. Before upgrading, please review the [xUnit v4.0.0 release notes](https://xunit.net/releases/v3/4.0.0) for details on required code updates, API removals, and migration guidance. Pay special attention to changes in assertion methods, fixture behavior, and test collection definitions.
 
+> [!IMPORTANT]
+> **CI migration for xUnit v4 on .NET 10 and later:** CI users upgrading to this release must add a root `global.json` opting into [Microsoft.Testing.Platform](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-with-dotnet-test) and update VSTest-specific test, result, and coverage arguments to their MTP-native equivalents. Add [`Microsoft.Testing.Extensions.CodeCoverage`](https://learn.microsoft.com/en-us/dotnet/core/testing/microsoft-testing-platform-extensions-code-coverage) to test projects when collecting coverage through MTP. Repositories that remain on pre-v4 xUnit or do not opt into MTP continue using the existing CI path.
+
 ### Breaking Changes
 
 - Removed `BlockingManagedApplicationFixture<TEntryPoint>` and `BlockingManagedWebApplicationFixture<TEntryPoint>`; use `ManagedApplicationFixture<TEntryPoint>` and `ManagedWebApplicationFixture<TEntryPoint>` instead.
@@ -31,6 +34,7 @@ This is a major release driven by the upgrade to xUnit v4.0.0, reflecting the de
 
 ### Fixed
 
+- Fixed CI test execution for xUnit v4 on .NET 10 and later by opting into the Microsoft.Testing.Platform `dotnet test` experience and using its native TRX and coverage reporting,
 - Fixed typo in .editorconfig IDE0036 comment documentation.
 
 ## [11.2.1] - 2026-08-12
