@@ -7,6 +7,10 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [12.0.1] - 2026-09-10
+
+This is a service update that focuses on package dependencies.
+
 ## [12.0.0] - 2026-08-24
 
 This is a major release driven by the upgrade to xUnit v4.0.0, reflecting the decision to bump this library's major version in alignment with the xUnit framework's major release after careful consideration. The xUnit v4 upgrade introduces breaking changes to the testing framework that may require updates to existing test code.
