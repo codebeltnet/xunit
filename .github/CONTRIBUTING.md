@@ -35,7 +35,7 @@ Run tests one project at a time so a failing or hanging project is attributable.
 ```powershell
 $testProjects = Get-ChildItem test -Filter *.csproj -Recurse
 foreach ($project in $testProjects) {
-    dotnet test $project.FullName --configuration Release --no-restore
+    dotnet test --project $project.FullName --configuration Release --no-restore
 }
 ```
 
