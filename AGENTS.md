@@ -65,8 +65,8 @@ dotnet test --filter "FullyQualifiedName~TestTest"
 # Run tests with specific trait
 dotnet test --filter "Category=Unit"
 
-# Run tests with Microsoft.Testing.Platform coverage in Cobertura format
-dotnet test --coverage --coverage-output-format cobertura
+# Run an MTP target with xUnit TRX and OpenCover coverage
+dotnet test --project test/Codebelt.Extensions.Xunit.Tests --framework net10.0 -- --report-xunit-trx --coverlet --coverlet-output-format opencover
 ```
 
 ### Benchmarks
@@ -82,45 +82,51 @@ dotnet test --coverage --coverage-output-format cobertura
 ## Code Style and Conventions
 
 ### General Principles
+
 - Follow Framework Design Guidelines and Microsoft Engineering Guidelines.
 - Adhere to SOLID, DRY, separation of concerns.
 - Apply the boy scout rule; do not duplicate code.
 
 ### Formatting
+
 - 4 spaces for `.cs` files; 2 spaces for `.xml` (`.editorconfig`).
 - Keep existing style in files; many modern analyzers are explicitly disabled.
 
 ### Namespace Style
+
 - **Always use file-scoped namespaces** (`namespace Codebelt.Extensions.Xunit;`) — the entire codebase has been refactored to file-scoped namespaces.
 - **Never use block-scoped namespaces** for new or edited files.
 - **Never use top-level statements.** Always use explicit class declarations with a proper namespace.
 
 ### Disabled Analyzers (key rules — do NOT introduce these patterns)
 
-| Rule | What it forces | Why disabled |
-|------|---------------|--------------|
-| IDE0066 | switch expressions | style consistency |
-| IDE0063 | using declarations | style consistency |
-| IDE0290 | primary constructors | style consistency |
-| IDE0022 | expression-bodied methods | style consistency |
-| IDE0300/0301/0028/0305 | collection expressions | netstandard2.0 compat |
-| CA1846/1847/1865-1867 | Span/char overloads | netstandard2.0 compat |
-| IDE0330 | `System.Threading.Lock` | requires net9.0+ |
-| Performance category | various | netstandard2.0 compat |
+| Rule                   | What it forces            | Why disabled          |
+| ---------------------- | ------------------------- | --------------------- |
+| IDE0066                | switch expressions        | style consistency     |
+| IDE0063                | using declarations        | style consistency     |
+| IDE0290                | primary constructors      | style consistency     |
+| IDE0022                | expression-bodied methods | style consistency     |
+| IDE0300/0301/0028/0305 | collection expressions    | netstandard2.0 compat |
+| CA1846/1847/1865-1867  | Span/char overloads       | netstandard2.0 compat |
+| IDE0330                | `System.Threading.Lock`   | requires net9.0+      |
+| Performance category   | various                   | netstandard2.0 compat |
 
 ### Namespaces
+
 - **CRITICAL**: Test namespaces MUST match the System Under Test (SUT) exactly
 - Do NOT append `.Tests` or `.Benchmarks` to namespaces
 - Example: SUT `Codebelt.Extensions.Xunit` → Tests `Codebelt.Extensions.Xunit` (not `Codebelt.Extensions.Xunit.Tests`)
 - Override `RootNamespace` in `.csproj` to match SUT namespace
 
 ### Test Classes
+
 - Always inherit from `Test` base class from `Codebelt.Extensions.Xunit`
 - Constructor must accept `ITestOutputHelper output` and pass to base
 - Class names end with `Test` (e.g., `DateSpanTest`)
 
 ```csharp
 using Codebelt.Extensions.Xunit;
+
 using Xunit;
 
 namespace Codebelt.Extensions.Xunit  // Same as SUT
@@ -133,6 +139,7 @@ namespace Codebelt.Extensions.Xunit  // Same as SUT
 ```
 
 ### Imports
+
 - Use `using Xunit;` - NOT `Xunit.Abstractions` (xUnit v3 removed this namespace)
 - Use `using Xunit.v3;` when needed for xUnit v3 specific types
 - Place System.* usings first, then third-party, then project
@@ -140,17 +147,21 @@ namespace Codebelt.Extensions.Xunit  // Same as SUT
 - Follow existing ordering; do not auto-reorder.
 
 ### Naming Conventions
+
 - Test methods: Use descriptive names with `Should` prefix
+
   - Pattern: `Should{ExpectedResult}_When{Condition}`
   - Example: `ShouldReturnTrue_WhenConditionIsMet`
 - Use `[Fact]` for standard tests, `[Theory]` for parameterized tests
 - Benchmark classes: End with `Benchmark`
 
 ### Types and `var`
+
 - Do not blindly enforce `var`; use explicit types when it improves clarity.
 - IDE0008 (use explicit type) is disabled — either form is acceptable.
 
 ### Error Handling
+
 - Use guard clauses with `ArgumentNullException`, `ArgumentOutOfRangeException`
 - **Always use `Validator` pattern** (e.g., `Validator.ThrowIfNull(param)`)
 - Pattern: `if (param == null) { throw new ArgumentNullException(nameof(param)); }` only when Validator is not available
@@ -158,6 +169,7 @@ namespace Codebelt.Extensions.Xunit  // Same as SUT
 - Prefer deterministic, testable error paths; never swallow exceptions.
 
 ### XML Documentation
+
 - Document all public/protected APIs with XML comments
 - Use `<see cref="TypeName"/>` for type references
 - Include `<exception>` tags for thrown exceptions
@@ -165,17 +177,24 @@ namespace Codebelt.Extensions.Xunit  // Same as SUT
 
 ## Testing Guidelines
 
+### Refactoring
+
+Refactoring always requires 100% unit test coverage of the functionality being refactored. Before changing implementation structure, verify that the affected functionality is fully covered by unit tests. If coverage is missing, incomplete, or uncertain, add or strengthen the tests first to establish the current behavioral contract. Only then may refactoring begin, and the refactoring must preserve both the established behavior and 100% unit test coverage of the affected functionality.
+
 ### Test Doubles
+
 - Preferred: dummies, fakes, stubs, spies
 - Mocks allowed: Moq library for special circumstances only
 - Never mock `IMarshaller`; use `JsonMarshaller` instance instead
 
 ### Internal Members
+
 - Do NOT use `InternalsVisibleTo`
 - Test internal logic via public APIs that consume them
 - Use Public Facade Testing pattern
 
 ### Async Tests
+
 - Override `InitializeAsync()` for async setup
 - Use `ValueTask` for async operations (not `Task`)
 - Implement `IAsyncLifetime` when needed via `Test` base class
@@ -195,12 +214,23 @@ namespace Codebelt.Extensions.Xunit  // Same as SUT
 - Do not add version numbers in individual `.csproj` files
 - Test frameworks are centrally managed
 
+### Test platform and coverage policy
+
+- Microsoft.Testing.Platform is the test platform for this repository.
+- `coverlet.MTP` is the selected MTP-native coverage engine.
+- Pin `coverlet.MTP` to `8.0.1` for `net9.0` and `10.0.1` for `net10.0` and `net48` test targets.
+- The `net9.0` test-only transitive `Microsoft.Extensions.Configuration` version required by Coverlet is `10.0.1`; keep the shared non-test `net9.0` pin at `9.0.20`.
+- OpenCover is the canonical Codebelt coverage interchange format.
+- `coverlet.collector` and `coverlet.msbuild` are legacy integrations and must not be added to MTP-based test projects.
+- `Microsoft.Testing.Extensions.CodeCoverage` is not the selected coverage provider.
+- MTP coverage is enabled for supported modern .NET targets and `net48`; other .NET Framework targets remain test-only unless verified.
+- `Microsoft.Testing.Extensions.HangDump` provides MTP hang-dump diagnostics for the existing CI inputs.
+
 ## CI/Build Notes
 
 - Assembly signing uses `xunit.snk` (skip for external builds)
 - MinVer handles versioning based on Git tags
-- Code coverage uses Microsoft.Testing.Platform with the selected Microsoft.Testing.Extensions.CodeCoverage extension and produces Cobertura output for the existing ReportGenerator, GitHub summary/artifact, and Codecov flow. xUnit v4 uses Microsoft.Testing.Platform, but this extension is selected by the repository rather than required by xUnit v4 itself.
-- Do not add coverlet.collector or coverlet.msbuild, which are legacy VSTest/MSBuild integrations, or coverlet.MTP, which is an alternative MTP coverage engine not selected here.
+- MTP coverage uses `coverlet.MTP` and emits OpenCover under TestResults.
 - SonarCloud and CodeQL analysis enabled
 
 ## Release Notes
@@ -226,22 +256,22 @@ Example: `✨ Add Test.Match wildcard overload`
 
 ### Common Gitmojis
 
-| Emoji | Use for |
-|-------|---------|
-| ✨ | New feature |
-| 🐛 | Bug fix |
-| ♻️ | Refactoring |
-| ✅ | Adding / updating unit test / functional test |
-| 📝 | Documentation |
-| ⚡ | Performance improvement |
-| 🎨 | Code style / formatting |
-| 🔥 | Removing code or files |
-| 🚧 | Work in progress |
-| 📦 | Package / dependency update |
-| 🔧 | Configuration / tooling |
-| 🚚 | Moving / renaming files |
-| 💥 | Breaking change |
-| 🩹 | Non-critical fix |
+| Emoji | Use for                                       |
+| ----- | --------------------------------------------- |
+| ✨     | New feature                                   |
+| 🐛    | Bug fix                                       |
+| ♻️    | Refactoring                                   |
+| ✅     | Adding / updating unit test / functional test |
+| 📝    | Documentation                                 |
+| ⚡     | Performance improvement                       |
+| 🎨    | Code style / formatting                       |
+| 🔥    | Removing code or files                        |
+| 🚧    | Work in progress                              |
+| 📦    | Package / dependency update                   |
+| 🔧    | Configuration / tooling                       |
+| 🚚    | Moving / renaming files                       |
+| 💥    | Breaking change                               |
+| 🩹    | Non-critical fix                              |
 
 ### Rules
 
@@ -255,7 +285,7 @@ Example: `✨ Add Test.Match wildcard overload`
 
 1. Identify the correct project area (`src/`, `test/`, `tuning/`, `tooling/`).
 2. Follow namespace and naming rules **before** writing any code.
-3. Before potentially refactoring any code, verify the code in question is well tested; if coverage is missing, add or update tests first to reduce regression risk.
+3. Before refactoring any code, satisfy the Refactoring requirements under Testing Guidelines. Do not begin the refactoring until the affected functionality has 100% unit test coverage.
 4. Build the affected source project to check for style violations.
 5. Run targeted tests when changing logic.
 6. Keep changes minimal and consistent with existing local style.
@@ -263,11 +293,13 @@ Example: `✨ Add Test.Match wildcard overload`
 ## Copilot Instructions
 
 See `.github/copilot-instructions.md` for detailed guidelines on:
+
 - Writing unit tests
 - Writing performance tests (BenchmarkDotNet)
 - Writing XML documentation
 
 <!-- dotnet-docfx-digest:start -->
+
 ## DocFX Documentation Maintenance
 
 When changing public .NET APIs, keep the DocFX documentation current in the same change set.
@@ -316,7 +348,9 @@ Before completing documentation work, run the relevant verification commands, no
 
 ```bash
 dotnet build
+
 dotnet test
+
 dotnet run --file <resolved-skill-dir>/scripts/docfx.cs -- --repo-root . --build-api-model --validate-samples --verify-docfx-build
 ```
 
@@ -325,4 +359,5 @@ Codebelt repositories are normally strong-name signed with a `.snk` file in the 
 The final DocFX verification must run outside the working tree when possible. The `--verify-docfx-build` option copies the repository to a temp workspace, runs DocFX against the resolved `docfx.json` there, and removes the temp workspace afterward so generated API YAML, manifest files, and site output do not flood git status. Do not call the work complete until the final JSON reports `summary.fullVerificationRan: true`, `summary.canClaimCompletion: true`, `summary.remainingWorkItems: 0`, an empty `summary.remainingGates`, an empty `summary.remainingDiagnosticsByCode`, `summary.newlyIntroducedSkipMarkers: 0`, and `summary.interimArtifacts: 0`.
 
 If a command cannot be run, report the exact limitation or failure instead of claiming the documentation was verified.
+
 <!-- dotnet-docfx-digest:end -->
