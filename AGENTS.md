@@ -65,8 +65,8 @@ dotnet test --filter "FullyQualifiedName~TestTest"
 # Run tests with specific trait
 dotnet test --filter "Category=Unit"
 
-# Run tests with coverage
-dotnet test --collect:"XPlat Code Coverage"
+# Run tests with Microsoft.Testing.Platform coverage in Cobertura format
+dotnet test --coverage --coverage-output-format cobertura
 ```
 
 ### Benchmarks
@@ -199,7 +199,8 @@ namespace Codebelt.Extensions.Xunit  // Same as SUT
 
 - Assembly signing uses `xunit.snk` (skip for external builds)
 - MinVer handles versioning based on Git tags
-- Code coverage via coverlet
+- Code coverage uses Microsoft.Testing.Platform with the selected Microsoft.Testing.Extensions.CodeCoverage extension and produces Cobertura output for the existing ReportGenerator, GitHub summary/artifact, and Codecov flow. xUnit v4 uses Microsoft.Testing.Platform, but this extension is selected by the repository rather than required by xUnit v4 itself.
+- Do not add coverlet.collector or coverlet.msbuild, which are legacy VSTest/MSBuild integrations, or coverlet.MTP, which is an alternative MTP coverage engine not selected here.
 - SonarCloud and CodeQL analysis enabled
 
 ## Release Notes

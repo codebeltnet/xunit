@@ -7,6 +7,27 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [12.0.1] - 2026-09-11
+
+This is a patch release focused on dependency updates and resource management improvements for .NET 9 and later compatibility.
+
+### Changed
+
+- Upgraded Cuemon.Core, Cuemon.Extensions.AspNetCore, and Cuemon.Extensions.IO from 10.7.0 to 10.7.1,
+- Upgraded Microsoft.NET.Test.Sdk from 18.9.0 to 18.10.0,
+- Upgraded Microsoft.Testing.Extensions.CodeCoverage from 18.10.0 to 18.11.0,
+- Upgraded MinVer from 7.0.0 to 8.0.0,
+- Upgraded Microsoft.Bcl.AsyncInterfaces from 10.0.11 to 10.0.12 for netstandard2.0,
+- Upgraded Microsoft.Extensions.* packages (Configuration, EnvironmentVariables, FileExtensions, Json, Hosting, AspNetCore.TestHost) from 9.0.19 to 9.0.20 for .NET 9,
+- Upgraded Microsoft.Extensions.* packages (Configuration, EnvironmentVariables, FileExtensions, Json, Hosting, AspNetCore.TestHost) from 10.0.11 to 10.0.12 for .NET 10,
+- Migrated code coverage tooling from coverlet-based approach to Microsoft.Testing.Extensions.CodeCoverage for consistency with xUnit v3 testing framework.
+
+### Fixed
+
+- Proper implementation of IDisposable pattern in DeferredHostBuilder with protected Dispose(bool) method and GC.SuppressFinalize call,
+- Conditional IAsyncDisposable support in DeferredHostBuilder for .NET 9 and later to properly clean up async-disposable resources,
+- Updated test command documentation in contributing guide to use named --project argument instead of positional parameter, following dotnet CLI conventions.
+
 ## [12.0.0] - 2026-08-24
 
 This is a major release driven by the upgrade to xUnit v4.0.0, reflecting the decision to bump this library's major version in alignment with the xUnit framework's major release after careful consideration. The xUnit v4 upgrade introduces breaking changes to the testing framework that may require updates to existing test code.
@@ -526,7 +547,8 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 
 
-[Unreleased]: https://github.com/codebeltnet/xunit/compare/v12.0.0...HEAD
+[Unreleased]: https://github.com/codebeltnet/xunit/compare/v12.0.1...HEAD
+[12.0.1]: https://github.com/codebeltnet/xunit/compare/v12.0.0...v12.0.1
 [12.0.0]: https://github.com/codebeltnet/xunit/compare/v11.2.1...v12.0.0
 [11.2.1]: https://github.com/codebeltnet/xunit/compare/v11.2.0...v11.2.1
 [11.2.0]: https://github.com/codebeltnet/xunit/compare/v11.1.2...v11.2.0

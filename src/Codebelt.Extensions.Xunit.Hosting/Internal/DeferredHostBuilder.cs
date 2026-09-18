@@ -137,13 +137,27 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
 
         public void Dispose()
         {
-            _startedRegistration.Dispose();
-            _host.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _startedRegistration.Dispose();
+                _host.Dispose();
+            }
         }
 
         public async ValueTask DisposeAsync()
         {
+#if NET9_0_OR_GREATER
+            await _startedRegistration.DisposeAsync().ConfigureAwait(false);
+#else
             _startedRegistration.Dispose();
+#endif
+
             if (_host is IAsyncDisposable disposable)
             {
                 await disposable.DisposeAsync().ConfigureAwait(false);
