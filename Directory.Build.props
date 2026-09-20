@@ -95,7 +95,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.MTP" />
+    <PackageReference Include="Codebelt.Coverlet.MTP" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsTestProject)' == 'true'">

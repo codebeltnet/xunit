@@ -14,7 +14,7 @@
     <PackageVersion Include="Cuemon.Extensions.AspNetCore" Version="10.7.1" />
     <PackageVersion Include="Cuemon.Extensions.IO" Version="10.7.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
-    <PackageVersion Include="coverlet.MTP" Version="10.0.1" />
+    <PackageVersion Include="Codebelt.Coverlet.MTP" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Testing.Extensions.HangDump" Version="2.4.1" />
     <PackageVersion Include="MinVer" Version="8.0.0" />
     <PackageVersion Include="NativeLibraryLoader" Version="1.0.13" />
