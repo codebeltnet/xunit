@@ -139,6 +139,16 @@ public class DateSpanTest : Test
 - Do not rely on external systems except for xUnit itself and Codebelt.Extensions.Xunit (and derived from this).
 - Ensure tests are deterministic and repeatable.
 
+### Microsoft Testing Platform coverage
+
+- Microsoft.Testing.Platform is the test platform for this repository.
+- Use `coverlet.MTP` as the MTP-native coverage engine and OpenCover as the canonical Codebelt coverage format.
+- Pin `coverlet.MTP` to `8.0.1` for `net9.0` and `10.0.1` for `net10.0` and `net48`; the test-only net9 `Microsoft.Extensions.Configuration` transitive pin is `10.0.1`, while the shared non-test net9 pin remains `9.0.20`.
+- Do not add `coverlet.collector` or `coverlet.msbuild` to MTP-based test projects; they are legacy integrations.
+- Do not add `Microsoft.Testing.Extensions.CodeCoverage` as the coverage provider.
+- Keep MTP Coverlet coverage on supported modern .NET targets and `net48`; other .NET Framework targets remain test-only unless verified.
+- Use `Microsoft.Testing.Extensions.HangDump` for the MTP hang-dump flags forwarded by CI.
+
 ## 8. Test Doubles
 
 - Preferred test doubles include dummies, fakes, stubs and spies if and when the design allows it.

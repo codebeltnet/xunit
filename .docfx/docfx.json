@@ -12,6 +12,7 @@
         }
       ],
       "dest": "api",
+      "memberLayout": "separatePages",
       "filter": "filterConfig.yml",
       "properties": {
         "TargetFramework": "net10.0"
@@ -66,7 +67,8 @@
     "template": [
       "default",
       "modern",
-      "templates/modern"
+      "templates/modern",
+      "templates/ms-style"
     ],
     "overwrite": [
       {
@@ -85,6 +87,10 @@
     "noLangKeyword": false,
     "keepFileLink": false,
     "cleanupCacheHistory": false,
-    "disableGitFeatures": false
+    "disableGitFeatures": false,
+    "sitemap": {
+      "baseUrl": "https://xunit.codebelt.net/",
+      "changefreq": "monthly"
+    }
   }
 }
