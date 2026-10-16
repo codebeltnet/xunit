@@ -214,21 +214,17 @@ Refactoring always requires 100% unit test coverage of the functionality being r
 
 ### Test platform and coverage policy
 
-- Microsoft.Testing.Platform is the test platform for this repository.
-- `coverlet.MTP` is the selected MTP-native coverage engine.
-- Pin `coverlet.MTP` to `8.0.1` for `net9.0` and `10.0.1` for `net10.0` and `net48` test targets.
-- The `net9.0` test-only transitive `Microsoft.Extensions.Configuration` version required by Coverlet is `10.0.1`; keep the shared non-test `net9.0` pin at `9.0.20`.
-- OpenCover is the canonical Codebelt coverage interchange format.
-- `coverlet.collector` and `coverlet.msbuild` are legacy integrations and must not be added to MTP-based test projects.
-- `Microsoft.Testing.Extensions.CodeCoverage` is not the selected coverage provider.
-- MTP coverage is enabled for supported modern .NET targets and `net48`; other .NET Framework targets remain test-only unless verified.
+- Microsoft.Testing.Platform is the test platform, selected by `test.runner` in `global.json`.
+- `Codebelt.Coverlet.MTP` is the selected MTP-native coverage provider, referenced for all test projects in `Directory.Build.props`.
+- OpenCover is the canonical Codebelt coverage interchange format; collect it with `--coverlet --coverlet-output-format opencover`.
+- Do not add upstream `coverlet.MTP`, legacy `coverlet.collector` / `coverlet.msbuild`, or `Microsoft.Testing.Extensions.CodeCoverage` alongside the selected provider.
 - `Microsoft.Testing.Extensions.HangDump` provides MTP hang-dump diagnostics for the existing CI inputs.
 
 ## CI/Build Notes
 
 - Assembly signing uses `xunit.snk` (skip for external builds)
 - MinVer handles versioning based on Git tags
-- MTP coverage uses `coverlet.MTP` and emits OpenCover under TestResults.
+- MTP coverage uses `Codebelt.Coverlet.MTP` and emits OpenCover under TestResults through the reusable test workflow referenced in `.github/workflows/ci-pipeline.yml`.
 - SonarCloud and CodeQL analysis enabled
 
 ## Release Notes
@@ -497,16 +493,6 @@ public class DateSpanTest : Test
 - Keep tests focused and isolated.
 - Do not rely on external systems except for xUnit itself and Codebelt.Extensions.Xunit (and derived from this).
 - Ensure tests are deterministic and repeatable.
-
-#### Microsoft Testing Platform coverage
-
-- Microsoft.Testing.Platform is the test platform for this repository.
-- Use `coverlet.MTP` as the MTP-native coverage engine and OpenCover as the canonical Codebelt coverage format.
-- Pin `coverlet.MTP` to `8.0.1` for `net9.0` and `10.0.1` for `net10.0` and `net48`; the test-only net9 `Microsoft.Extensions.Configuration` transitive pin is `10.0.1`, while the shared non-test net9 pin remains `9.0.20`.
-- Do not add `coverlet.collector` or `coverlet.msbuild` to MTP-based test projects; they are legacy integrations.
-- Do not add `Microsoft.Testing.Extensions.CodeCoverage` as the coverage provider.
-- Keep MTP Coverlet coverage on supported modern .NET targets and `net48`; other .NET Framework targets remain test-only unless verified.
-- Use `Microsoft.Testing.Extensions.HangDump` for the MTP hang-dump flags forwarded by CI.
 
 ### 8. Test Doubles
 
