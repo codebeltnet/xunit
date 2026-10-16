@@ -7,6 +7,27 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [12.0.2] - 2026-10-15
+
+This is a patch release that updates package dependencies across all supported target frameworks and consolidates the agent guidance for this repository into `AGENTS.md`.
+
+### Changed
+
+- Upgraded Cuemon.Core, Cuemon.Extensions.AspNetCore, and Cuemon.Extensions.IO from 10.7.1 to 10.8.1,
+- Upgraded Microsoft.NET.Test.Sdk from 18.10.1 to 18.11.0,
+- Upgraded Codebelt.Coverlet.MTP from 10.0.1 to 10.1.0,
+- Upgraded Microsoft.Testing.Extensions.HangDump from 2.4.1 to 2.5.1,
+- Upgraded xunit.v3, xunit.v3.assert, xunit.v3.extensibility.core, and xunit.v3.runner.console from 4.0.1 to 4.0.2,
+- Upgraded xunit.runner.visualstudio from 4.0.0 to 4.0.1,
+- Upgraded Microsoft.Bcl.AsyncInterfaces from 10.0.12 to 10.0.13,
+- Upgraded Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost from 9.0.20 to 9.0.21 for .NET 9,
+- Upgraded Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost from 10.0.12 to 10.0.13 for .NET 10,
+- `AGENTS.md` expanded with the unit test, performance test, and XML documentation writing guidelines previously held in `.github/copilot-instructions.md`.
+
+### Removed
+
+- `.github/copilot-instructions.md`, whose agent guidance is now maintained in `AGENTS.md`.
+
 ## [12.0.1] - 2026-09-11
 
 This is a patch release focused on dependency updates and resource management improvements for .NET 9 and later compatibility.
@@ -547,7 +568,7 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 
 
-[Unreleased]: https://github.com/codebeltnet/xunit/compare/v12.0.1...HEAD
+[12.0.2]: https://github.com/codebeltnet/xunit/compare/v12.0.1...v12.0.2
 [12.0.1]: https://github.com/codebeltnet/xunit/compare/v12.0.0...v12.0.1
 [12.0.0]: https://github.com/codebeltnet/xunit/compare/v11.2.1...v12.0.0
 [11.2.1]: https://github.com/codebeltnet/xunit/compare/v11.2.0...v11.2.1
