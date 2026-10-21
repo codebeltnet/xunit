@@ -4,7 +4,7 @@ Guide for AI agents working on this .NET xUnit extensions library.
 
 ## Project Overview
 
-A .NET library providing extensions for xUnit v3 testing framework. Supports multi-targeting: `net10.0`, `net9.0`, `netstandard2.0` (source) and `net48` (tests on Windows).
+A .NET library providing extensions for xUnit v3 testing framework. Supports multi-targeting: `net11.0`, `net10.0`, `netstandard2.0` (source) and `net48` (tests on Windows).
 
 ## Repository Layout
 
@@ -17,10 +17,10 @@ A .NET library providing extensions for xUnit v3 testing framework. Supports mul
 
 ## Toolchain
 
-- .NET SDK with `LangVersion=latest`.
-- Source TFMs: `net10.0;net9.0;netstandard2.0`.
-- Test TFMs: `net10.0;net9.0` on Linux; adds `net48` on Windows.
-- Benchmark TFMs: `net10.0;net9.0;netstandard2.0`.
+- .NET 11 SDK with `LangVersion=latest`.
+- Source TFMs: `net11.0;net10.0;netstandard2.0` (App and AspNetCore target only `net11.0;net10.0`).
+- Test TFMs: `net11.0;net10.0` on Linux; adds `net48` on Windows where applicable.
+- Benchmark TFMs: `net11.0;net10.0;netstandard2.0`.
 - Central package management via `Directory.Packages.props` (`ManagePackageVersionsCentrally=true`).
 - CI runs on Linux (ubuntu-24.04) and Windows (windows-2025), both X64 and ARM64.
 - TFM compatibility is mandatory: proposals and code changes must work for all source TFMs. Do not assume `net10.0`/`net11.0` APIs exist in `netstandard2.0`; use conditional compilation (`#if NET10_0_OR_GREATER`) or compatible fallbacks where needed.
