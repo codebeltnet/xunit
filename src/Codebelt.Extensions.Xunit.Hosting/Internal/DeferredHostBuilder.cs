@@ -152,7 +152,7 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
 
         public async ValueTask DisposeAsync()
         {
-#if NET9_0_OR_GREATER
+#if NET10_0_OR_GREATER
             await _startedRegistration.DisposeAsync().ConfigureAwait(false);
 #else
             _startedRegistration.Dispose();
