@@ -5,7 +5,7 @@ This repository is part of the Codebelt .NET library estate. The instructions be
 ## Before you start
 
 - Read the repository `README.md` and open an issue before starting a non-trivial feature or behavioral change.
-- Use an installed .NET SDK that can build the target frameworks listed below. This repository currently targets: **net10.0, net48, net9.0, netstandard2.0**.
+- Use a .NET 11 SDK to build this repository. The current target frameworks are **net11.0, net10.0, netstandard2.0**, with **net48** additionally used for tests on Windows.
 - The solution is `Codebelt.Extensions.Xunit.slnx`. Central package versions are maintained in `Directory.Packages.props`.
 - The shared build behavior is in `Directory.Build.props` and `Directory.Build.targets`; repository-specific TFMs, package references and metadata remain local to this library.
 

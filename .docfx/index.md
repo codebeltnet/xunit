@@ -6,7 +6,9 @@ title: Extensions for xUnit by Codebelt
 
 # Extensions for xUnit by Codebelt
 
-Originally, this project was part of **Cuemon for .NET**, but with the forthcoming release of .NET 9, it was split into its own project.
+Originally part of **Cuemon for .NET**, this project was split into its own project ahead of the .NET 9 release.
+
+The current target frameworks are .NET 10 and .NET 11, with .NET Standard 2.0 available where applicable.
 
 This project is now part of [Extensions for xUnit by Codebelt](https://github.com/codebeltnet/xunit).
 
