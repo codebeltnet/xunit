@@ -7,6 +7,31 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [13.0.0] - 2026-10-22
+
+This is a major release that adds .NET 11 as a target framework and removes .NET 9, so consumers still targeting .NET 9 are no longer covered by this version. The remaining changes refresh package pins, test and benchmark targets, CI, and documentation to the new .NET 11 and .NET 10 baseline.
+
+### Added
+
+- .NET 11 (`net11.0`) as a target framework for Codebelt.Extensions.Xunit, Codebelt.Extensions.Xunit.App, Codebelt.Extensions.Xunit.Hosting, and Codebelt.Extensions.Xunit.Hosting.AspNetCore.
+
+### Changed
+
+- Test projects, benchmark projects, and bootstrapper reference applications now target `net11.0` alongside `net10.0`,
+- Upgraded Codebelt.Bootstrapper.Console, Codebelt.Bootstrapper.Web, and Codebelt.Bootstrapper.Worker from 5.2.2 to 5.2.3,
+- Upgraded Codebelt.Extensions.BenchmarkDotNet.Console from 1.3.4 to 1.3.5,
+- Upgraded Codebelt.Coverlet.MTP from 10.1.0 to 10.1.1,
+- Pinned Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost to 11.0.0-rc.2.26504.105 for .NET 11,
+- Package READMEs, the root README, the contributing guide, `AGENTS.md`, and the DocFX landing page and availability includes now list .NET 11 and .NET 10 instead of .NET 10 and .NET 9,
+- CI pipeline build, pack, test, SonarCloud, and CodeQL jobs enable the preview SDK so they can build against .NET 11,
+- Service update workflow derives its baseline version from the latest stable `vMAJOR.MINOR.PATCH` Git tag instead of the first CHANGELOG.md heading,
+- Release-note workflow reads the Availability line from the shared DocFX include files instead of a hardcoded fallback string.
+
+### Removed
+
+- `net9.0` target framework from the Codebelt.Extensions.Xunit, Codebelt.Extensions.Xunit.App, Codebelt.Extensions.Xunit.Hosting, and Codebelt.Extensions.Xunit.Hosting.AspNetCore packages and from the test projects,
+- .NET 9 version group of Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost at 9.0.21 in `Directory.Packages.props`; these packages remain pinned for .NET 10.
+
 ## [12.0.2] - 2026-10-15
 
 This is a patch release that updates package dependencies across all supported target frameworks and consolidates the agent guidance for this repository into `AGENTS.md`.
@@ -568,6 +593,7 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 
 
+[13.0.0]: https://github.com/codebeltnet/xunit/compare/v12.0.2...v13.0.0
 [12.0.2]: https://github.com/codebeltnet/xunit/compare/v12.0.1...v12.0.2
 [12.0.1]: https://github.com/codebeltnet/xunit/compare/v12.0.0...v12.0.1
 [12.0.0]: https://github.com/codebeltnet/xunit/compare/v11.2.1...v12.0.0
