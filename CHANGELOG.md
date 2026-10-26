@@ -7,6 +7,10 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [12.0.3] - 2026-10-26
+
+This is a service update that focuses on package dependencies.
+
 ## [12.0.2] - 2026-10-15
 
 This is a patch release that updates package dependencies across all supported target frameworks and consolidates the agent guidance for this repository into `AGENTS.md`.
