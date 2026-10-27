@@ -43,7 +43,7 @@ The CI test plan currently runs **5** project(s) and excludes **0** project(s). 
 
 ## Integration and infrastructure
 
-- `WSL-Ubuntu` — WSL distribution `Ubuntu-24.04`.
+- `WSL-Ubuntu` — WSL distribution `Ubuntu-26.04`.
 - `Docker-Ubuntu` — Docker image `codebeltnet/ubuntu-testrunner:8-9-10-11`.
 
 This repository has no repository-local `docker-compose.yml` service dependency in the current checkout.

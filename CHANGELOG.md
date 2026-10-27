@@ -9,28 +9,31 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 
 ## [13.0.0] - 2026-11-10
 
-This is a major release that adds .NET 11 as a target framework and removes .NET 9, so consumers still targeting .NET 9 are no longer covered by this version. The remaining changes refresh package pins, test and benchmark targets, CI, and documentation to the new .NET 11 and .NET 10 baseline.
+This is a major release that adds .NET 11 support and removes .NET 9 targets. It also updates dependencies, hosting diagnostics, contributor guidance, and the test environment.
 
 ### Added
 
-- .NET 11 (`net11.0`) as a target framework for Codebelt.Extensions.Xunit, Codebelt.Extensions.Xunit.App, Codebelt.Extensions.Xunit.Hosting, and Codebelt.Extensions.Xunit.Hosting.AspNetCore.
+- Added `net11.0` targets to Codebelt.Extensions.Xunit, Codebelt.Extensions.Xunit.App, Codebelt.Extensions.Xunit.Hosting, and Codebelt.Extensions.Xunit.Hosting.AspNetCore,
+- Added the `SonarAnalyzer.CSharp` 10.35.0.4138 build analyzer to source projects.
 
 ### Changed
 
-- Test projects, benchmark projects, and bootstrapper reference applications now target `net11.0` alongside `net10.0`,
-- Upgraded Codebelt.Bootstrapper.Console, Codebelt.Bootstrapper.Web, and Codebelt.Bootstrapper.Worker from 5.2.2 to 5.2.3,
-- Upgraded Codebelt.Extensions.BenchmarkDotNet.Console from 1.3.4 to 1.3.5,
-- Upgraded Codebelt.Coverlet.MTP from 10.1.0 to 10.1.1,
-- Pinned Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost to 11.0.0-rc.2.26504.105 for .NET 11,
-- Package READMEs, the root README, the contributing guide, `AGENTS.md`, and the DocFX landing page and availability includes now list .NET 11 and .NET 10 instead of .NET 10 and .NET 9,
-- CI pipeline build, pack, test, SonarCloud, and CodeQL jobs enable the preview SDK so they can build against .NET 11,
-- Service update workflow derives its baseline version from the latest stable `vMAJOR.MINOR.PATCH` Git tag instead of the first CHANGELOG.md heading,
-- Release-note workflow reads the Availability line from the shared DocFX include files instead of a hardcoded fallback string.
+- Updated test, benchmark, and reference application targets to .NET 10 and .NET 11, and enabled preview SDKs in the CI build, pack, test, SonarCloud, and CodeQL jobs,
+- Updated Codebelt.Bootstrapper.Console, Codebelt.Bootstrapper.Web, and Codebelt.Bootstrapper.Worker from 5.2.2 to 5.2.3, Codebelt.Extensions.BenchmarkDotNet.Console from 1.3.4 to 1.3.5, and Codebelt.Coverlet.MTP from 10.1.0 to 10.1.1,
+- Updated Cuemon.Core, Cuemon.Extensions.AspNetCore, and Cuemon.Extensions.IO from 10.8.1 to 10.8.2, and Microsoft.Bcl.AsyncInterfaces from 10.0.13 to 10.0.14 for .NET Standard,
+- Updated Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost from 10.0.13 to 10.0.14 in the .NET 10/.NET Standard version group, and added 11.0.0-rc.3.26522.148 pins for .NET 11,
+- Aligned the shared editor settings and combined the per-framework Docker test environments into `codebeltnet/ubuntu-testrunner:8-9-10-11`, while retaining the Ubuntu 26.04 WSL environment,
+- Updated the package and repository documentation for .NET 11 and .NET 10, and corrected the contributor guide's WSL distribution,
+- Updated the service-update workflow to derive its baseline version from Git tags and package availability from the DocFX include files.
+
+### Fixed
+
+- Preserved the original cancellation token when deferred host startup is canceled.
 
 ### Removed
 
-- `net9.0` target framework from the Codebelt.Extensions.Xunit, Codebelt.Extensions.Xunit.App, Codebelt.Extensions.Xunit.Hosting, and Codebelt.Extensions.Xunit.Hosting.AspNetCore packages and from the test projects,
-- .NET 9 version group of Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost at 9.0.21 in `Directory.Packages.props`; these packages remain pinned for .NET 10.
+- Removed `net9.0` targets from the four Codebelt.Extensions.Xunit packages and their test projects,
+- Removed the .NET 9 version declarations for Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost; the packages remain declared for supported frameworks.
 
 ## [12.0.2] - 2026-10-15
 
@@ -281,9 +284,9 @@ At the same time we also adapted xUnit v3 as this is the one in active developme
 
 > [!WARNING]
 > Design choices made in xUnit v3 are a bit puzzling to me, especially around something as important as versioning and requirement for executable projects.
-> 
+>
 > All good practices has been put aside, and for the majority of new packages, major version is baked into the package name itself (e.g., `xunit.v3` instead of just `xunit`).
-> 
+>
 > Semantic Versioning is all about conveying meaning and intent through version numbers, and this approach introduces unnecessary redundancy and makes long-term maintenance less smooth. Its a mess that could lead others down a slippery slope of wrongdoings due to the popularity of the framework.
 >
 > Another unfortunate design choice is the requirement of executable projects (i.e., output type `exe` instead of `library`). This has implications when you have optimized your CI to not waste CPU cycles on restoring/building test projects (build once strategy).
