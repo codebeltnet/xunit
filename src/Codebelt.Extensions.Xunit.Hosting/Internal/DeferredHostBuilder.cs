@@ -169,7 +169,7 @@ internal sealed class DeferredHostBuilder : IHostBuilder, IDisposable
 
         public async Task StartAsync(CancellationToken cancellationToken = default)
         {
-            using var registration = cancellationToken.Register(() => _hostStarted.TrySetCanceled());
+            using var registration = cancellationToken.Register(() => _hostStarted.TrySetCanceled(cancellationToken));
             await _hostStarted.Task.ConfigureAwait(false);
         }
 

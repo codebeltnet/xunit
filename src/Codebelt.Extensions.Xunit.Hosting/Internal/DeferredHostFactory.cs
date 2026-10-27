@@ -21,12 +21,7 @@ internal static class DeferredHostFactory
             });
         });
 
-        var hostFactory = ProgramHostFactoryResolver.ResolveHostFactory(assembly, stopApplication, deferredHostBuilder.ConfigureHostBuilder, deferredHostBuilder.EntryPointCompleted);
-        if (hostFactory == null)
-        {
-            throw new InvalidOperationException($"The entry point assembly '{assembly.GetName().Name}' does not expose a supported application host.");
-        }
-
+        var hostFactory = ProgramHostFactoryResolver.ResolveHostFactory(assembly, stopApplication, deferredHostBuilder.ConfigureHostBuilder, deferredHostBuilder.EntryPointCompleted) ?? throw new InvalidOperationException($"The entry point assembly '{assembly.GetName().Name}' does not expose a supported application host.");
         deferredHostBuilder.SetHostFactory(hostFactory);
         return HostBuilderFactory.Build(deferredHostBuilder, configureHost);
     }

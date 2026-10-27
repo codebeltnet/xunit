@@ -158,9 +158,11 @@ internal static class ProgramHostFactoryResolver
             }
             catch (TargetInvocationException ex) when (ex.InnerException?.GetType().Name == nameof(HostAbortedException))
             {
+                // Expected when stopping the entry point after capturing the host.
             }
             catch (HostAbortedException)
             {
+                // Expected when stopping the entry point after capturing the host.
             }
             catch (TargetInvocationException ex)
             {
@@ -177,10 +179,6 @@ internal static class ProgramHostFactoryResolver
                 CurrentListener.Value = null;
                 _entryPointCompleted?.Invoke(exception);
             }
-        }
-
-        private sealed class HostAbortedException : Exception
-        {
         }
     }
 
