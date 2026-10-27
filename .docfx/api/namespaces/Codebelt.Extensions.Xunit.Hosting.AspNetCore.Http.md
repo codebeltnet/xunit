@@ -1,4 +1,4 @@
-﻿---
+---
 uid: Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http
 summary: *content
 ---
