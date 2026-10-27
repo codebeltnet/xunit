@@ -108,8 +108,9 @@ dotnet test --project test/Codebelt.Extensions.Xunit.Tests --framework net10.0 -
 | IDE0022                | expression-bodied methods | style consistency     |
 | IDE0300/0301/0028/0305 | collection expressions    | netstandard2.0 compat |
 | CA1846/1847/1865-1867  | Span/char overloads       | netstandard2.0 compat |
-| IDE0330                | `System.Threading.Lock`   | requires net9.0+      |
 | Performance category   | various                   | netstandard2.0 compat |
+
+IDE0330 is not disabled. For dedicated lock fields in multi-targeted source projects, use `System.Threading.Lock` under `#if NET10_0_OR_GREATER` and a dedicated `object` in the fallback for `netstandard2.0`. Keep the `lock` expression statically typed as the selected field type; do not mix `Lock` and `Monitor` synchronization for the same protected state.
 
 ### Namespaces
 
