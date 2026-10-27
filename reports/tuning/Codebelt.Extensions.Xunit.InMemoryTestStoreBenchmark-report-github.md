@@ -8,8 +8,8 @@ BenchmarkDotNet v0.15.8, Windows 11 (10.0.26200.8737/25H2/2025Update/HudsonValle
   Job-IOAYXE : .NET 9.0.18 (9.0.18, 9.0.1826.31522), X64 RyuJIT x86-64-v3
   Job-GEUVPA : .NET Framework 4.8.1 (4.8.9337.0), X64 RyuJIT VectorSize=256
 
-PowerPlanMode=00000000-0000-0000-0000-000000000000  IterationTime=250ms  MaxIterationCount=20  
-MinIterationCount=15  WarmupCount=1  
+PowerPlanMode=00000000-0000-0000-0000-000000000000  IterationTime=250ms  MaxIterationCount=20
+MinIterationCount=15  WarmupCount=1
 
 ```
 | Method                                        | Runtime            | Count | Mean          | Error         | StdDev        | Median        | Min           | Max           | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |

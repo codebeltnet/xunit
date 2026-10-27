@@ -5,7 +5,7 @@ description: 'Writing Performance Benchmarks'
 
 # Benchmark Fixture Prompt (Tuning Benchmarks)
 
-This prompt defines how to generate performance tests (“benchmarks”) for a project/solution using BenchmarkDotNet.  
+This prompt defines how to generate performance tests (“benchmarks”) for a project/solution using BenchmarkDotNet.<br>
 Benchmarks are *not* unit tests — they are micro- or component-level performance measurements that belong under the `tuning/` directory and follow strict conventions.
 
 Copilot must follow these guidelines when generating benchmark fixtures.
@@ -14,15 +14,15 @@ Copilot must follow these guidelines when generating benchmark fixtures.
 
 ## 1. Naming and Placement
 
-- All benchmark projects live under the `tuning/` folder.  
+- All benchmark projects live under the `tuning/` folder.<br>
   Examples:
   - `tuning/<ProjectName>.Benchmarks/`
   - `tuning/<ProjectName>.Console.Benchmarks/`
 
-- **Namespaces must NOT end with `.Benchmarks`.**  
+- **Namespaces must NOT end with `.Benchmarks`.**<br>
   They must mirror the production assembly’s namespace.
 
-  Example:  
+  Example:<br>
   If benchmarking a type inside `YourProject.Console`, then:
 
   ```csharp
