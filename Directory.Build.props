@@ -43,6 +43,7 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>Recommended</AnalysisMode>
     <NoWarn>7035,CA2260</NoWarn>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(NuGetPackageRoot)' != ''">
@@ -51,6 +52,7 @@
 
   <ItemGroup Condition="'$(IsSourceProject)' == 'true'">
     <PackageReference Include="MinVer" PrivateAssets="all" />
+    <PackageReference Include="SonarAnalyzer.CSharp" PrivateAssets="all" />
     <None Include="..\..\.nuget\$(MSBuildProjectName)\icon.png" Pack="true" Visible="false" PackagePath="\" />
     <None Include="..\..\.nuget\$(MSBuildProjectName)\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
