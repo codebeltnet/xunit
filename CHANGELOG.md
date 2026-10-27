@@ -7,7 +7,7 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
-## [13.0.0] - 2026-10-22
+## [13.0.0] - 2026-11-10
 
 This is a major release that adds .NET 11 as a target framework and removes .NET 9, so consumers still targeting .NET 9 are no longer covered by this version. The remaining changes refresh package pins, test and benchmark targets, CI, and documentation to the new .NET 11 and .NET 10 baseline.
 
