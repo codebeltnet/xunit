@@ -43,6 +43,7 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>Recommended</AnalysisMode>
     <NoWarn>7035,CA2260</NoWarn>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
