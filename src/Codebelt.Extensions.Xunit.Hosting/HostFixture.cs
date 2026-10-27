@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +19,7 @@ public abstract class HostFixture : IHostFixture, IAsyncLifetime
     private readonly object _lock = new();
 #endif
 
-    private Func<IHost, CancellationToken, Task> _asyncHostRunnerCallback = async (host, cancellationToken) => 
+    private Func<IHost, CancellationToken, Task> _asyncHostRunnerCallback = async (host, cancellationToken) =>
     {
         if (SynchronizationContext.Current == null)
         {

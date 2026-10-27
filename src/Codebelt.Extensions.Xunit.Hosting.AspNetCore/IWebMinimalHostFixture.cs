@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Builder;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;

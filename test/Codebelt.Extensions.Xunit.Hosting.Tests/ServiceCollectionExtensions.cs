@@ -43,13 +43,13 @@ public class ServiceCollectionExtensions : Test
 
         Assert.NotNull(logger1);
         Assert.NotNull(loggerStore1);
-        
+
         Assert.NotNull(logger2);
         Assert.NotNull(loggerStore2);
 
         Assert.Equal(6, loggerStore1.Query().Count());
         Assert.Equal(7, loggerStore2.Query().Count());
-        
+
         Assert.Collection(loggerStore1.Query(),
             entry => Assert.Equal("Critical: SUT", entry.ToString()),
             entry => Assert.Equal("Trace: SUT", entry.ToString()),
@@ -98,13 +98,13 @@ public class ServiceCollectionExtensions : Test
 
         Assert.NotNull(logger1);
         Assert.NotNull(loggerStore1);
-        
+
         Assert.NotNull(logger2);
         Assert.NotNull(loggerStore2);
 
         Assert.Equal(6, loggerStore1.Query().Count());
         Assert.Equal(7, loggerStore2.Query().Count());
-        
+
         Assert.Collection(loggerStore1.Query(),
             entry => Assert.Equal("Critical: SUT", entry.ToString()),
             entry => Assert.Equal("Trace: SUT", entry.ToString()),
@@ -138,7 +138,7 @@ public class ServiceCollectionExtensions : Test
 
         Assert.Equal("Information: Test", store.Query().First().Message);
     }
-    
+
     [Fact]
     public void AddXunitTestLogging_ShouldAddXunitTestLogging_UsingHostTest_WithOutputToRunner()
     {
@@ -149,7 +149,7 @@ public class ServiceCollectionExtensions : Test
         });
 
         test.Host.Services.GetRequiredService<ITestOutputHelperAccessor>().TestOutput = TestOutput;
-        
+
         var logger = test.Host.Services.GetRequiredService<ILogger<ServiceCollectionExtensions>>();
         logger.LogInformation("Test");
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ internal sealed class XunitTestLoggerProvider : InMemoryTestStore<XunitTestLogge
             ? new XunitTestLogger(this, _accessor)
             : new XunitTestLogger(this, _output));
     }
-    
+
     public void WriteLoggerEntry(LogLevel logLevel, EventId eventId, string message)
     {
         Add(new XunitTestLoggerEntry(logLevel, eventId, message));

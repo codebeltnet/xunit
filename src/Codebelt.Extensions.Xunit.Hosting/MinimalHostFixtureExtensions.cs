@@ -1,4 +1,4 @@
-﻿namespace Codebelt.Extensions.Xunit.Hosting;
+namespace Codebelt.Extensions.Xunit.Hosting;
 
 /// <summary>
 /// Extension methods for the <see cref="IMinimalHostFixture"/> interface.
@@ -16,7 +16,7 @@ public static class MinimalHostFixtureExtensions
     /// </remarks>
     public static bool HasValidState(this IMinimalHostFixture hostFixture)
     {
-        return hostFixture.Host != null && 
+        return hostFixture.Host != null &&
                hostFixture.ConfigureHostCallback != null &&
                hostFixture.ConfigureCallback != null;
     }

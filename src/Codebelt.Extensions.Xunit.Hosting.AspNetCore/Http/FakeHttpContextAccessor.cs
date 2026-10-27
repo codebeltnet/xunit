@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features;

@@ -36,7 +36,7 @@ public abstract class Test : ITest, IAsyncLifetime
     /// </exception>
     public static bool Match(string expected, string actual, Action<WildcardOptions> setup = null)
     {
-        #if NETSTANDARD2_0
+#if NETSTANDARD2_0
         if (expected == null) { throw new ArgumentNullException(nameof(expected)); }
         if (actual == null) { throw new ArgumentNullException(nameof(actual)); }
 #else

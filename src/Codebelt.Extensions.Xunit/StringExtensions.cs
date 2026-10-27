@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD2_0_OR_GREATER
+#if NETSTANDARD2_0_OR_GREATER
 using System;
 using System.Text.RegularExpressions;
 

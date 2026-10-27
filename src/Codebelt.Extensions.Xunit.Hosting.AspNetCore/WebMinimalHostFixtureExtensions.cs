@@ -1,4 +1,4 @@
-﻿namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
+namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 
 /// <summary>
 /// Extension methods for the <see cref="IWebMinimalHostFixture"/> interface.
