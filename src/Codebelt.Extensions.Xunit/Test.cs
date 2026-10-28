@@ -13,7 +13,7 @@ namespace Codebelt.Extensions.Xunit;
 /// <seealso cref="ITestOutputHelper"/>
 public abstract class Test : ITest, IAsyncLifetime
 {
-#if NET9_0_OR_GREATER
+#if NET10_0_OR_GREATER
     private readonly Lock _lock = new();
 #else
     private readonly object _lock = new();
@@ -36,7 +36,7 @@ public abstract class Test : ITest, IAsyncLifetime
     /// </exception>
     public static bool Match(string expected, string actual, Action<WildcardOptions> setup = null)
     {
-        #if NETSTANDARD2_0
+#if NETSTANDARD2_0
         if (expected == null) { throw new ArgumentNullException(nameof(expected)); }
         if (actual == null) { throw new ArgumentNullException(nameof(actual)); }
 #else

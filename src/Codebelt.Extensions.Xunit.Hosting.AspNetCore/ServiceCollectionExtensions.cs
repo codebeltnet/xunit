@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http;
 using Microsoft.AspNetCore.Http;

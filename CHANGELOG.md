@@ -7,6 +7,34 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [13.0.0] - 2026-11-10
+
+This is a major release that adds .NET 11 support and removes .NET 9 targets. It also updates dependencies, hosting diagnostics, contributor guidance, and the test environment.
+
+### Added
+
+- Added `net11.0` targets to Codebelt.Extensions.Xunit, Codebelt.Extensions.Xunit.App, Codebelt.Extensions.Xunit.Hosting, and Codebelt.Extensions.Xunit.Hosting.AspNetCore,
+- Added the `SonarAnalyzer.CSharp` 10.35.0.4138 build analyzer to source projects.
+
+### Changed
+
+- Updated test, benchmark, and reference application targets to .NET 10 and .NET 11, and enabled preview SDKs in the CI build, pack, test, SonarCloud, and CodeQL jobs,
+- Updated Codebelt.Bootstrapper.Console, Codebelt.Bootstrapper.Web, and Codebelt.Bootstrapper.Worker from 5.2.2 to 5.2.3, Codebelt.Extensions.BenchmarkDotNet.Console from 1.3.4 to 1.3.5, and Codebelt.Coverlet.MTP from 10.1.0 to 10.1.1,
+- Updated Cuemon.Core, Cuemon.Extensions.AspNetCore, and Cuemon.Extensions.IO from 10.8.1 to 10.8.2, and Microsoft.Bcl.AsyncInterfaces from 10.0.13 to 10.0.14 for .NET Standard,
+- Updated Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost from 10.0.13 to 10.0.14 in the .NET 10/.NET Standard version group, and added 11.0.0-rc.3.26522.148 pins for .NET 11,
+- Aligned the shared editor settings and split the combined Docker test environment into `codebeltnet/ubuntu-testrunner:10` and `codebeltnet/ubuntu-testrunner:11`, while retaining the Ubuntu 26.04 WSL environment,
+- Updated the package and repository documentation for .NET 11 and .NET 10, and corrected the contributor guide's WSL distribution,
+- Updated the service-update workflow to derive its baseline version from Git tags and package availability from the DocFX include files.
+
+### Fixed
+
+- Preserved the original cancellation token when deferred host startup is canceled.
+
+### Removed
+
+- Removed `net9.0` targets from the four Codebelt.Extensions.Xunit packages and their test projects,
+- Removed the .NET 9 version declarations for Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost; the packages remain declared for supported frameworks.
+
 ## [12.0.2] - 2026-10-15
 
 This is a patch release that updates package dependencies across all supported target frameworks and consolidates the agent guidance for this repository into `AGENTS.md`.
@@ -256,9 +284,9 @@ At the same time we also adapted xUnit v3 as this is the one in active developme
 
 > [!WARNING]
 > Design choices made in xUnit v3 are a bit puzzling to me, especially around something as important as versioning and requirement for executable projects.
-> 
+>
 > All good practices has been put aside, and for the majority of new packages, major version is baked into the package name itself (e.g., `xunit.v3` instead of just `xunit`).
-> 
+>
 > Semantic Versioning is all about conveying meaning and intent through version numbers, and this approach introduces unnecessary redundancy and makes long-term maintenance less smooth. Its a mess that could lead others down a slippery slope of wrongdoings due to the popularity of the framework.
 >
 > Another unfortunate design choice is the requirement of executable projects (i.e., output type `exe` instead of `library`). This has implications when you have optimized your CI to not waste CPU cycles on restoring/building test projects (build once strategy).
@@ -568,6 +596,7 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 
 
+[13.0.0]: https://github.com/codebeltnet/xunit/compare/v12.0.2...v13.0.0
 [12.0.2]: https://github.com/codebeltnet/xunit/compare/v12.0.1...v12.0.2
 [12.0.1]: https://github.com/codebeltnet/xunit/compare/v12.0.0...v12.0.1
 [12.0.0]: https://github.com/codebeltnet/xunit/compare/v11.2.1...v12.0.0

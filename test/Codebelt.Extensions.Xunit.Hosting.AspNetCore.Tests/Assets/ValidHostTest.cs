@@ -11,11 +11,11 @@ public class ValidHostTest : WebHostTest<ManagedWebHostFixture>
 
     public override void ConfigureServices(IServiceCollection services)
     {
-        
+
     }
 
     public override void ConfigureApplication(IApplicationBuilder app)
     {
-        
+
     }
 }

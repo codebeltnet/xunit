@@ -4,7 +4,7 @@ Guide for AI agents working on this .NET xUnit extensions library.
 
 ## Project Overview
 
-A .NET library providing extensions for xUnit v3 testing framework. Supports multi-targeting: `net10.0`, `net9.0`, `netstandard2.0` (source) and `net48` (tests on Windows).
+A .NET library providing extensions for xUnit v3 testing framework. Supports multi-targeting: `net11.0`, `net10.0`, `netstandard2.0` (source) and `net48` (tests on Windows).
 
 ## Repository Layout
 
@@ -17,13 +17,13 @@ A .NET library providing extensions for xUnit v3 testing framework. Supports mul
 
 ## Toolchain
 
-- .NET SDK with `LangVersion=latest`.
-- Source TFMs: `net10.0;net9.0;netstandard2.0`.
-- Test TFMs: `net10.0;net9.0` on Linux; adds `net48` on Windows.
-- Benchmark TFMs: `net10.0;net9.0;netstandard2.0`.
+- .NET 11 SDK with `LangVersion=latest`.
+- Source TFMs: `net11.0;net10.0;netstandard2.0` (App and AspNetCore target only `net11.0;net10.0`).
+- Test TFMs: `net11.0;net10.0` on Linux; adds `net48` on Windows where applicable.
+- Benchmark TFMs: `net11.0;net10.0;netstandard2.0`.
 - Central package management via `Directory.Packages.props` (`ManagePackageVersionsCentrally=true`).
 - CI runs on Linux (ubuntu-24.04) and Windows (windows-2025), both X64 and ARM64.
-- TFM compatibility is mandatory: proposals and code changes must work for all source TFMs. Do not assume `net9.0`/`net10.0` APIs exist in `netstandard2.0`; use conditional compilation (`#if NET9_0_OR_GREATER`) or compatible fallbacks where needed.
+- TFM compatibility is mandatory: proposals and code changes must work for all source TFMs. Do not assume `net10.0`/`net11.0` APIs exist in `netstandard2.0`; use conditional compilation (`#if NET10_0_OR_GREATER`) or compatible fallbacks where needed.
 
 ## Build Commands
 
@@ -108,8 +108,9 @@ dotnet test --project test/Codebelt.Extensions.Xunit.Tests --framework net10.0 -
 | IDE0022                | expression-bodied methods | style consistency     |
 | IDE0300/0301/0028/0305 | collection expressions    | netstandard2.0 compat |
 | CA1846/1847/1865-1867  | Span/char overloads       | netstandard2.0 compat |
-| IDE0330                | `System.Threading.Lock`   | requires net9.0+      |
 | Performance category   | various                   | netstandard2.0 compat |
+
+IDE0330 is not disabled. For dedicated lock fields in multi-targeted source projects, use `System.Threading.Lock` under `#if NET10_0_OR_GREATER` and a dedicated `object` in the fallback for `netstandard2.0`. Keep the `lock` expression statically typed as the selected field type; do not mix `Lock` and `Monitor` synchronization for the same protected state.
 
 ### Namespaces
 
@@ -363,7 +364,7 @@ This document provides instructions for writing unit tests for a project/solutio
 
 ### 1. Base Class
 
-**Always inherit from the `Test` base class** for all unit test classes.  
+**Always inherit from the `Test` base class** for all unit test classes.<br>
 This ensures consistent setup, teardown, and output handling across all tests.
 
 > Important: Do NOT add `using Xunit.Abstractions`. xUnit v3 no longer exposes that namespace; including it is incorrect and will cause compilation errors. Use the `Codebelt.Extensions.Xunit` Test base class and `using Xunit;` as shown in the examples below. If you need access to test output, rely on the Test base class (which accepts the appropriate output helper) rather than importing `Xunit.Abstractions`.
@@ -510,13 +511,13 @@ public class DateSpanTest : Test
 
 **Pattern name:** Public Facade Testing (also referred to as *Public API Proxy Testing*)
 
-**Description:**  
+**Description:**<br>
 Internal classes and methods must be validated by exercising the public API that consumes them. Tests should assert observable behavior exposed by the public surface rather than targeting internal implementation details directly.
 
 #### Example Mapping
 
-- **Internal helper:** `DelimitedString` (internal static class)  
-- **Public API:** `TestOutputHelperExtensions.WriteLines()` (public extension method)  
+- **Internal helper:** `DelimitedString` (internal static class)<br>
+- **Public API:** `TestOutputHelperExtensions.WriteLines()` (public extension method)<br>
 - **Test strategy:** Write tests for `WriteLines()` and verify its public behavior. The internal call to `DelimitedString.Create()` is exercised implicitly.
 
 #### Benefits
