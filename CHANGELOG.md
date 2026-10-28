@@ -22,7 +22,7 @@ This is a major release that adds .NET 11 support and removes .NET 9 targets. It
 - Updated Codebelt.Bootstrapper.Console, Codebelt.Bootstrapper.Web, and Codebelt.Bootstrapper.Worker from 5.2.2 to 5.2.3, Codebelt.Extensions.BenchmarkDotNet.Console from 1.3.4 to 1.3.5, and Codebelt.Coverlet.MTP from 10.1.0 to 10.1.1,
 - Updated Cuemon.Core, Cuemon.Extensions.AspNetCore, and Cuemon.Extensions.IO from 10.8.1 to 10.8.2, and Microsoft.Bcl.AsyncInterfaces from 10.0.13 to 10.0.14 for .NET Standard,
 - Updated Microsoft.Extensions.Configuration, Microsoft.Extensions.Configuration.EnvironmentVariables, Microsoft.Extensions.Configuration.FileExtensions, Microsoft.Extensions.Configuration.Json, Microsoft.Extensions.Hosting, and Microsoft.AspNetCore.TestHost from 10.0.13 to 10.0.14 in the .NET 10/.NET Standard version group, and added 11.0.0-rc.3.26522.148 pins for .NET 11,
-- Aligned the shared editor settings and combined the per-framework Docker test environments into `codebeltnet/ubuntu-testrunner:8-9-10-11`, while retaining the Ubuntu 26.04 WSL environment,
+- Aligned the shared editor settings and split the combined Docker test environment into `codebeltnet/ubuntu-testrunner:10` and `codebeltnet/ubuntu-testrunner:11`, while retaining the Ubuntu 26.04 WSL environment,
 - Updated the package and repository documentation for .NET 11 and .NET 10, and corrected the contributor guide's WSL distribution,
 - Updated the service-update workflow to derive its baseline version from Git tags and package availability from the DocFX include files.
 
