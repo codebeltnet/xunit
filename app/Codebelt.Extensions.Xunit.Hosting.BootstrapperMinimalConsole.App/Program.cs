@@ -26,7 +26,8 @@ public sealed class Program : MinimalConsoleProgram<Program>
         try
         {
             await Task.Delay(Timeout.Infinite, cancellationToken).ConfigureAwait(false);
-        } catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
         }
     }

@@ -11,15 +11,15 @@ namespace Codebelt.Extensions.Xunit.Hosting;
 /// </summary>
 public static class ServiceCollectionExtensions
 {
-    /// <summary> 
+    /// <summary>
     /// Adds a unit test optimized implementation of logging to the <paramref name="services"/> collection.
-    /// </summary> 
-    /// <param name="services">The <see cref="IServiceCollection"/> to extend.</param> 
-    /// <param name="minimumLevel">The <see cref="LogLevel"/> that specifies the minimum level to include for the logging.</param> 
-    /// <returns>A reference to <paramref name="services" /> so that additional configuration calls can be chained.</returns> 
-    /// <exception cref="ArgumentNullException"> 
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to extend.</param>
+    /// <param name="minimumLevel">The <see cref="LogLevel"/> that specifies the minimum level to include for the logging.</param>
+    /// <returns>A reference to <paramref name="services" /> so that additional configuration calls can be chained.</returns>
+    /// <exception cref="ArgumentNullException">
     /// <paramref name="services"/> cannot be null.
-    /// </exception> 
+    /// </exception>
     public static IServiceCollection AddXunitTestLogging(this IServiceCollection services, LogLevel minimumLevel = LogLevel.Trace)
     {
         if (services == null) { throw new ArgumentNullException(nameof(services)); }
@@ -38,17 +38,17 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    /// <summary> 
-    /// Adds a unit test optimized implementation of output logging to the <paramref name="services"/> collection. 
-    /// </summary> 
-    /// <param name="services">The <see cref="IServiceCollection"/> to extend.</param> 
-    /// <param name="output">The <see cref="ITestOutputHelper"/> that provides the output for the logging.</param> 
-    /// <param name="minimumLevel">The <see cref="LogLevel"/> that specifies the minimum level to include for the logging.</param> 
-    /// <returns>A reference to <paramref name="services" /> so that additional configuration calls can be chained.</returns> 
-    /// <exception cref="ArgumentNullException"> 
-    /// <paramref name="services"/> cannot be null -or- 
-    /// <paramref name="output"/> cannot be null. 
-    /// </exception> 
+    /// <summary>
+    /// Adds a unit test optimized implementation of output logging to the <paramref name="services"/> collection.
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to extend.</param>
+    /// <param name="output">The <see cref="ITestOutputHelper"/> that provides the output for the logging.</param>
+    /// <param name="minimumLevel">The <see cref="LogLevel"/> that specifies the minimum level to include for the logging.</param>
+    /// <returns>A reference to <paramref name="services" /> so that additional configuration calls can be chained.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="services"/> cannot be null -or-
+    /// <paramref name="output"/> cannot be null.
+    /// </exception>
     public static IServiceCollection AddXunitTestLogging(this IServiceCollection services, ITestOutputHelper output, LogLevel minimumLevel = LogLevel.Trace)
     {
 #if NETSTANDARD2_0

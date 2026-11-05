@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>Codebelt.Extensions.Xunit.Hosting</RootNamespace>
@@ -21,6 +21,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Codebelt.Extensions.Xunit.Hosting\Codebelt.Extensions.Xunit.Hosting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <ProjectReference Include="..\..\app\Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App\Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalConsole.App.csproj" />
   </ItemGroup>
 
 </Project>

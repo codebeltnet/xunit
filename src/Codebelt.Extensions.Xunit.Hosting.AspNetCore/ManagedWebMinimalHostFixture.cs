@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
@@ -56,7 +56,7 @@ public class ManagedWebMinimalHostFixture : ManagedMinimalHostFixture, IWebMinim
 
         ConfigureApplicationCallback(webApplication);
         Application = webApplication;
-        
+
         Host = webApplication;
 
         AsyncHostRunnerCallback(Host, CancellationToken.None);

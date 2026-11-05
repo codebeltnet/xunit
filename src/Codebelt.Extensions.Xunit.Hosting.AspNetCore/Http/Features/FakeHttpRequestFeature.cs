@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using Microsoft.AspNetCore.Http.Features;
 
 namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features;

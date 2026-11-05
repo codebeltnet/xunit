@@ -375,4 +375,5 @@ FodyWeavers.xsd
 # Strong-Name Key
 *.snk
 
-.bot/
+.bot/*
+!.bot/README.md
