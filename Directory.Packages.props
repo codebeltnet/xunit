@@ -14,8 +14,8 @@
     <PackageVersion Include="Cuemon.Extensions.AspNetCore" Version="10.8.2" />
     <PackageVersion Include="Cuemon.Extensions.IO" Version="10.8.2" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
-    <PackageVersion Include="Codebelt.Coverlet.MTP" Version="10.1.1" />
-    <PackageVersion Include="Microsoft.Testing.Extensions.HangDump" Version="2.5.1" />
+    <PackageVersion Include="Codebelt.Coverlet.MTP" Version="10.1.2" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.HangDump" Version="2.5.2" />
     <PackageVersion Include="MinVer" Version="8.0.0" />
     <PackageVersion Include="NativeLibraryLoader" Version="1.0.13" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" Condition="'$(MSBuildProjectName)' == 'Codebelt.Extensions.Xunit.Tests'" />
