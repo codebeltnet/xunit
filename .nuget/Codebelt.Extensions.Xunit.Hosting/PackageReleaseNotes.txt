@@ -4,6 +4,9 @@ Availability: .NET 11, .NET 10 and .NET Standard 2.0
 # ALM
 - CHANGED Target frameworks by adding .NET 11 (net11.0) and removing .NET 9 (net9.0), so the package now targets .NET 11, .NET 10 and .NET Standard 2.0
 
+# Breaking Changes
+- .NET 9 consumers must target .NET 10 or later.
+
 Version: 12.0.2
 Availability: .NET 10, .NET 9 and .NET Standard 2.0
 
