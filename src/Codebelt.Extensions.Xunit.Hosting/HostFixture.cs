@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -13,13 +13,13 @@ namespace Codebelt.Extensions.Xunit.Hosting;
 /// <seealso cref="IHostFixture" />
 public abstract class HostFixture : IHostFixture, IAsyncLifetime
 {
-#if NET9_0_OR_GREATER
+#if NET10_0_OR_GREATER
     private readonly Lock _lock = new();
 #else
     private readonly object _lock = new();
 #endif
 
-    private Func<IHost, CancellationToken, Task> _asyncHostRunnerCallback = async (host, cancellationToken) => 
+    private Func<IHost, CancellationToken, Task> _asyncHostRunnerCallback = async (host, cancellationToken) =>
     {
         if (SynchronizationContext.Current == null)
         {
@@ -119,7 +119,7 @@ public abstract class HostFixture : IHostFixture, IAsyncLifetime
     /// <summary>
     /// Called when this object is being disposed by <see cref="DisposeAsync()"/>.
     /// </summary>
-#if NET9_0_OR_GREATER
+#if NET10_0_OR_GREATER
     protected virtual async ValueTask OnDisposeManagedResourcesAsync()
     {
         if (Host is IAsyncDisposable asyncDisposable)

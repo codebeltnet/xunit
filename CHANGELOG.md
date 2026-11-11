@@ -7,6 +7,43 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
+## [13.0.0] - 2026-11-11
+
+This is a major release that adds .NET 11 targets and removes .NET 9 targets. It also adds priority-based test method ordering, updates dependencies and test infrastructure, and fixes deferred host cancellation, host-abort handling, and documentation asset caching.
+
+### Added
+
+- .NET 11 targets for the four Codebelt.Extensions.Xunit packages,
+- `PriorityAttribute` and `PriorityTestMethodOrderer` in the Codebelt.Extensions.Xunit namespace, which run test methods by numeric priority (lower values first), order methods without a priority last, and break ties by method name,
+- `SonarAnalyzer.CSharp` 10.35.0.4138 as a source-project analyzer,
+- A tracked `.bot/README.md` explaining that other workspace material remains local-only.
+
+### Changed
+
+- Updated test, benchmark, and reference application targets to .NET 11 and .NET 10, enabled preview SDKs in CI, and moved Linux CI jobs to Ubuntu 26.04,
+- Updated `Codebelt.Bootstrapper.Console`, `Codebelt.Bootstrapper.Web`, and `Codebelt.Bootstrapper.Worker` from 5.2.2 to 5.2.3; `Codebelt.Extensions.BenchmarkDotNet.Console` from 1.3.4 to 1.3.5; `Codebelt.Coverlet.MTP` from 10.1.0 to 11.0.0; and `Microsoft.Testing.Extensions.HangDump` from 2.5.1 to 2.5.2,
+- Updated `Cuemon.Core`, `Cuemon.Extensions.AspNetCore`, and `Cuemon.Extensions.IO` from 10.8.1 to 11.0.0 and `Microsoft.Bcl.AsyncInterfaces` from 10.0.13 to 10.0.15 for .NET Standard,
+- Updated `xunit.v3`, `xunit.v3.assert`, `xunit.v3.extensibility.core`, and `xunit.v3.runner.console` from 4.0.2 to 4.0.3, and `Microsoft.NET.Test.Sdk` from 18.11.0 to 18.11.1,
+- Updated `Microsoft.Extensions.Configuration`, `Microsoft.Extensions.Configuration.EnvironmentVariables`, `Microsoft.Extensions.Configuration.FileExtensions`, `Microsoft.Extensions.Configuration.Json`, `Microsoft.Extensions.Hosting`, and `Microsoft.AspNetCore.TestHost` from 10.0.13 to 10.0.15 for .NET 10 and .NET Standard, and declared 11.0.0 for .NET 11,
+- Added type-level API reference pages for public types in the Codebelt.Extensions.Xunit namespace,
+- Required file-scoped namespaces in the editor configuration, and enforced code style and SonarAnalyzer.CSharp during source builds,
+- Split the Docker test environment into .NET 10 and .NET 11 runners,
+- Updated package notes, repository documentation, and contributor guidance for the supported frameworks and test environments,
+- Service-update automation derives its baseline from Git tags, retains a newer planned release, validates release dates, and derives package availability from DocFX includes.
+
+### Removed
+
+- .NET 9 targets from the four packages and their test projects; the App and Hosting.AspNetCore packages require consumers to target .NET 10 or later, while the other two retain .NET Standard 2.0 assets,
+- The .NET 9 conditional declarations for `Microsoft.Extensions.Configuration`, `Microsoft.Extensions.Configuration.EnvironmentVariables`, `Microsoft.Extensions.Configuration.FileExtensions`, `Microsoft.Extensions.Configuration.Json`, `Microsoft.Extensions.Hosting`, and `Microsoft.AspNetCore.TestHost`; declarations remain for supported frameworks,
+- The `Xunit.v3.Priority` 1.1.18 package reference from the Hosting unit tests, replaced by the in-library priority ordering,
+- The repository's benchmark prompt.
+
+### Fixed
+
+- Preserved the original cancellation token when deferred host startup is canceled,
+- Used the framework's `HostAbortedException` instead of a private copy when stopping the entry point after capturing the host,
+- Documentation fingerprinted assets use immutable caching for successful and 304 responses, no-store for errors, and full responses instead of ranges.
+
 ## [12.0.2] - 2026-10-15
 
 This is a patch release that updates package dependencies across all supported target frameworks and consolidates the agent guidance for this repository into `AGENTS.md`.
@@ -256,9 +293,9 @@ At the same time we also adapted xUnit v3 as this is the one in active developme
 
 > [!WARNING]
 > Design choices made in xUnit v3 are a bit puzzling to me, especially around something as important as versioning and requirement for executable projects.
-> 
+>
 > All good practices has been put aside, and for the majority of new packages, major version is baked into the package name itself (e.g., `xunit.v3` instead of just `xunit`).
-> 
+>
 > Semantic Versioning is all about conveying meaning and intent through version numbers, and this approach introduces unnecessary redundancy and makes long-term maintenance less smooth. Its a mess that could lead others down a slippery slope of wrongdoings due to the popularity of the framework.
 >
 > Another unfortunate design choice is the requirement of executable projects (i.e., output type `exe` instead of `library`). This has implications when you have optimized your CI to not waste CPU cycles on restoring/building test projects (build once strategy).
@@ -568,6 +605,7 @@ This major release is first and foremost focused on ironing out any wrinkles tha
 
 
 
+[13.0.0]: https://github.com/codebeltnet/xunit/compare/v12.0.2...v13.0.0
 [12.0.2]: https://github.com/codebeltnet/xunit/compare/v12.0.1...v12.0.2
 [12.0.1]: https://github.com/codebeltnet/xunit/compare/v12.0.0...v12.0.1
 [12.0.0]: https://github.com/codebeltnet/xunit/compare/v11.2.1...v12.0.0

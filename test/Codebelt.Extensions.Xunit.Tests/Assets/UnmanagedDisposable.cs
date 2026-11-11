@@ -28,7 +28,7 @@ public class UnmanagedDisposable : Test
 
     public UnmanagedDisposable()
     {
-#if NET9_0_OR_GREATER
+#if NET10_0_OR_GREATER
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             if (NativeLibrary.TryLoad("kernel32.dll", GetType().Assembly, DllImportSearchPath.System32, out _libHandle))
@@ -102,7 +102,7 @@ public class UnmanagedDisposable : Test
 
     protected override void OnDisposeUnmanagedResources()
     {
-#if NET9_0_OR_GREATER
+#if NET10_0_OR_GREATER
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             if (_handle != IntPtr.Zero)

@@ -23,7 +23,7 @@ permissions:
 jobs:
   init:
     name: initialize
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       run-mac-tests: ${{ steps.vars.outputs.run-mac-tests }}
       run-privileged-jobs: ${{ steps.vars.outputs.run-privileged-jobs }}
@@ -59,10 +59,11 @@ jobs:
         configuration: [Debug, Release]
     uses: codebeltnet/jobs-dotnet-build/.github/workflows/default.yml@v3
     with:
+      include-preview: true
       configuration: ${{ matrix.configuration }}
       strong-name-key-filename: ${{ needs.init.outputs.strong-name-key-filename }}
       build-switches: ${{ needs.init.outputs.build-switches }}
-      runs-on: ${{ matrix.arch == 'ARM64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
+      runs-on: ${{ matrix.arch == 'ARM64' && 'ubuntu-26.04-arm' || 'ubuntu-26.04' }}
       upload-build-artifact-name: build-${{ matrix.configuration }}-${{ matrix.arch }}
     secrets: inherit
 
@@ -74,6 +75,7 @@ jobs:
         configuration: [Debug, Release]
     uses: codebeltnet/jobs-dotnet-pack/.github/workflows/default.yml@v3
     with:
+      include-preview: true
       configuration: ${{ matrix.configuration }}
       version: ${{ needs.build.outputs.version }}
       download-build-artifact-pattern: build-${{ matrix.configuration }}-X64
@@ -88,7 +90,8 @@ jobs:
         arch: [X64, ARM64]
     uses: codebeltnet/jobs-dotnet-test/.github/workflows/default.yml@v3
     with:
-      runs-on: ${{ matrix.arch == 'ARM64' && 'ubuntu-24.04-arm' || 'ubuntu-24.04' }}
+      include-preview: true
+      runs-on: ${{ matrix.arch == 'ARM64' && 'ubuntu-26.04-arm' || 'ubuntu-26.04' }}
       configuration: ${{ matrix.configuration }}
       build-switches: -p:SkipSignAssembly=true
       restore: true # we need to restore the packages for the test project
@@ -105,6 +108,7 @@ jobs:
         arch: [X64, ARM64]
     uses: codebeltnet/jobs-dotnet-test/.github/workflows/default.yml@v3
     with:
+      include-preview: true
       runs-on: ${{ matrix.arch == 'ARM64' && 'windows-11-arm' || 'windows-2025' }}
       configuration: ${{ matrix.configuration }}
       build-switches: -p:SkipSignAssembly=true
@@ -123,6 +127,7 @@ jobs:
         configuration: [Debug, Release]
     uses: codebeltnet/jobs-dotnet-test/.github/workflows/default.yml@v3
     with:
+      include-preview: true
       runs-on: ${{ matrix.arch == 'ARM64' && 'macos-26' || 'macos-26-intel' }}
       configuration: ${{ matrix.configuration }}
       build-switches: -p:SkipSignAssembly=true
@@ -134,7 +139,7 @@ jobs:
     if: ${{ always() }}
     name: test-qualitygate
     needs: [init, test_linux, test_windows, test_mac]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Evaluate test results
         shell: bash
@@ -180,6 +185,7 @@ jobs:
     needs: [init, build, test_qualitygate]
     uses: codebeltnet/jobs-sonarcloud/.github/workflows/default.yml@v3
     with:
+      include-preview: true
       organization: geekle
       projectKey: xunit
       version: ${{ needs.build.outputs.version }}
@@ -199,6 +205,8 @@ jobs:
     name: call-codeql
     needs: [init, build, test_qualitygate]
     uses: codebeltnet/jobs-codeql/.github/workflows/default.yml@v3
+    with:
+      include-preview: true
     permissions:
       security-events: write
 

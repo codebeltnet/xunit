@@ -45,7 +45,7 @@ public class ManagedWebHostFixtureTest : Test
         // Assert
         Assert.Equal(callback, fixture.ConfigureApplicationCallback);
     }
-    
+
     [Fact]
     public void ConfigureHost_ValidHostTest_ConfiguresHostCorrectly()
     {

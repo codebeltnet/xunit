@@ -9,7 +9,7 @@ internal static class HostBuilderFactory
     {
         configureHost?.Invoke(hostBuilder);
 
-#if NET9_0_OR_GREATER
+#if NET10_0_OR_GREATER
         hostBuilder.UseDefaultServiceProvider(o =>
         {
             o.ValidateOnBuild = true;

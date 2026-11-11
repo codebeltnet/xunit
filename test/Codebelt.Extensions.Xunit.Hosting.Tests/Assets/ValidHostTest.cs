@@ -12,6 +12,6 @@ public class ValidHostTest : HostTest<ManagedHostFixture>
 
     public override void ConfigureServices(IServiceCollection services)
     {
-        
+
     }
 }

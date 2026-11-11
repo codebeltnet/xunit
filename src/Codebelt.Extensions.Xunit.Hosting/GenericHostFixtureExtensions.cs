@@ -1,4 +1,4 @@
-﻿namespace Codebelt.Extensions.Xunit.Hosting;
+namespace Codebelt.Extensions.Xunit.Hosting;
 
 /// <summary>
 /// Extension methods for the <see cref="IGenericHostFixture"/> interface.
@@ -16,7 +16,7 @@ public static class GenericHostFixtureExtensions
     /// </remarks>
     public static bool HasValidState(this IGenericHostFixture hostFixture)
     {
-        return hostFixture.ConfigureServicesCallback != null && 
+        return hostFixture.ConfigureServicesCallback != null &&
                hostFixture.ConfigureHostCallback != null;
     }
 }

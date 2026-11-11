@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Codebelt.Extensions.Xunit.Hosting.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,11 @@ namespace Codebelt.Extensions.Xunit.Hosting;
 /// <seealso cref="IEnvironmentTest" />
 public abstract class HostTest : Test, IHostTest
 {
+#if NET10_0_OR_GREATER
+    private readonly Lock _hostLock = new();
+#else
     private readonly object _hostLock = new();
+#endif
     private IHost _host;
     private bool _hostStartAttempted;
 
