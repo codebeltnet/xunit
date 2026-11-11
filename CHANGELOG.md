@@ -7,37 +7,42 @@ For more details, please refer to `PackageReleaseNotes.txt` on a per assembly ba
 > [!NOTE]
 > Changelog entries prior to version 8.4.0 was migrated from previous versions of Cuemon.Extensions.Xunit, Cuemon.Extensions.Xunit.Hosting, and Cuemon.Extensions.Xunit.Hosting.AspNetCore.
 
-## [13.0.0] - 2026-11-10
+## [13.0.0] - 2026-11-11
 
-This is a major release that adds .NET 11 and removes .NET 9 targets. It updates dependencies and test infrastructure and fixes deferred host cancellation and shutdown handling.
+This is a major release that adds .NET 11 targets and removes .NET 9 targets. It also adds priority-based test method ordering, updates dependencies and test infrastructure, and fixes deferred host cancellation, host-abort handling, and documentation asset caching.
 
 ### Added
 
 - .NET 11 targets for the four Codebelt.Extensions.Xunit packages,
+- `PriorityAttribute` and `PriorityTestMethodOrderer` in the Codebelt.Extensions.Xunit namespace, which run test methods by numeric priority (lower values first), order methods without a priority last, and break ties by method name,
 - `SonarAnalyzer.CSharp` 10.35.0.4138 as a source-project analyzer,
 - A tracked `.bot/README.md` explaining that other workspace material remains local-only.
 
 ### Changed
 
-- Updated test, benchmark, and reference application targets, enabled preview SDKs in CI, and moved Linux CI jobs to Ubuntu 26.04,
-- Updated `Codebelt.Bootstrapper.Console`, `Codebelt.Bootstrapper.Web`, and `Codebelt.Bootstrapper.Worker` from 5.2.2 to 5.2.3; `Codebelt.Extensions.BenchmarkDotNet.Console` from 1.3.4 to 1.3.5; `Codebelt.Coverlet.MTP` from 10.1.0 to 10.1.1; and `Microsoft.Testing.Extensions.HangDump` from 2.5.1 to 2.5.2,
-- Updated `Cuemon.Core`, `Cuemon.Extensions.AspNetCore`, and `Cuemon.Extensions.IO` from 10.8.1 to 10.8.2 and `Microsoft.Bcl.AsyncInterfaces` from 10.0.13 to 10.0.14 for .NET Standard,
-- Updated `Microsoft.Extensions.Configuration`, `Microsoft.Extensions.Configuration.EnvironmentVariables`, `Microsoft.Extensions.Configuration.FileExtensions`, `Microsoft.Extensions.Configuration.Json`, `Microsoft.Extensions.Hosting`, and `Microsoft.AspNetCore.TestHost` from 10.0.13 to 10.0.14 in the .NET 10/.NET Standard declaration group; .NET 11 declarations use 11.0.0-rc.3.26522.148,
-- Required file-scoped C# namespaces, corrected the Sonar rule link, and split the Docker test environment into .NET 10 and .NET 11 runners,
+- Updated test, benchmark, and reference application targets to .NET 11 and .NET 10, enabled preview SDKs in CI, and moved Linux CI jobs to Ubuntu 26.04,
+- Updated `Codebelt.Bootstrapper.Console`, `Codebelt.Bootstrapper.Web`, and `Codebelt.Bootstrapper.Worker` from 5.2.2 to 5.2.3; `Codebelt.Extensions.BenchmarkDotNet.Console` from 1.3.4 to 1.3.5; `Codebelt.Coverlet.MTP` from 10.1.0 to 11.0.0; and `Microsoft.Testing.Extensions.HangDump` from 2.5.1 to 2.5.2,
+- Updated `Cuemon.Core`, `Cuemon.Extensions.AspNetCore`, and `Cuemon.Extensions.IO` from 10.8.1 to 11.0.0 and `Microsoft.Bcl.AsyncInterfaces` from 10.0.13 to 10.0.15 for .NET Standard,
+- Updated `xunit.v3`, `xunit.v3.assert`, `xunit.v3.extensibility.core`, and `xunit.v3.runner.console` from 4.0.2 to 4.0.3, and `Microsoft.NET.Test.Sdk` from 18.11.0 to 18.11.1,
+- Updated `Microsoft.Extensions.Configuration`, `Microsoft.Extensions.Configuration.EnvironmentVariables`, `Microsoft.Extensions.Configuration.FileExtensions`, `Microsoft.Extensions.Configuration.Json`, `Microsoft.Extensions.Hosting`, and `Microsoft.AspNetCore.TestHost` from 10.0.13 to 10.0.15 for .NET 10 and .NET Standard, and declared 11.0.0 for .NET 11,
+- Added type-level API reference pages for public types in the Codebelt.Extensions.Xunit namespace,
+- Required file-scoped namespaces in the editor configuration, and enforced code style and SonarAnalyzer.CSharp during source builds,
+- Split the Docker test environment into .NET 10 and .NET 11 runners,
 - Updated package notes, repository documentation, and contributor guidance for the supported frameworks and test environments,
-- Service-update automation derives its baseline from Git tags, retains a newer planned release, validates release dates, and derives package availability from DocFX includes,
-- Fingerprinted documentation assets use immutable caching for successful and 304 responses, no-store for errors, and full responses instead of ranges.
+- Service-update automation derives its baseline from Git tags, retains a newer planned release, validates release dates, and derives package availability from DocFX includes.
 
 ### Removed
 
 - .NET 9 targets from the four packages and their test projects; the App and Hosting.AspNetCore packages require consumers to target .NET 10 or later, while the other two retain .NET Standard 2.0 assets,
 - The .NET 9 conditional declarations for `Microsoft.Extensions.Configuration`, `Microsoft.Extensions.Configuration.EnvironmentVariables`, `Microsoft.Extensions.Configuration.FileExtensions`, `Microsoft.Extensions.Configuration.Json`, `Microsoft.Extensions.Hosting`, and `Microsoft.AspNetCore.TestHost`; declarations remain for supported frameworks,
+- The `Xunit.v3.Priority` 1.1.18 package reference from the Hosting unit tests, replaced by the in-library priority ordering,
 - The repository's benchmark prompt.
 
 ### Fixed
 
 - Preserved the original cancellation token when deferred host startup is canceled,
-- Handled the expected host-abort exception when stopping the entry point after capturing the host.
+- Used the framework's `HostAbortedException` instead of a private copy when stopping the entry point after capturing the host,
+- Documentation fingerprinted assets use immutable caching for successful and 304 responses, no-store for errors, and full responses instead of ranges.
 
 ## [12.0.2] - 2026-10-15
 
