@@ -8,10 +8,16 @@ An open-source project (MIT license) that targets and complements the [xUnit.net
 
 Your versatile xUnit companion for:
 - Modern development with `.NET 10` and `.NET 11`,
-- Cross-platform libraries with `.NET Standard 2` (where applicable),
-- Legacy applications on `.NET Framework 4.6.2` and newer.
+- Cross-platform libraries targeting `.NET Standard 2.0` where applicable,
+- Legacy applications on `.NET Framework 4.6.2` and newer through compatible packages that target `.NET Standard 2.0`.
 
 It is, by heart, free, flexible and built to extend and boost your agile codebelt.
+
+## Target Frameworks
+
+All packages target `.NET 11` and `.NET 10`. `Codebelt.Extensions.Xunit` and `Codebelt.Extensions.Xunit.Hosting` also target `.NET Standard 2.0`.
+
+Dedicated `.NET 9` targets have been removed, and earlier .NET releases are unsupported. The two packages that target `.NET Standard 2.0` may still be consumed by older .NET or .NET Framework projects when their APIs, dependencies and test runner are compatible.
 
 ## 📚 Documentation
 
