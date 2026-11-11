@@ -29,12 +29,13 @@ public sealed class PriorityTestMethodOrderer : ITestMethodOrderer
 #endif
 
         return testMethods
-            .OrderBy(testMethod => GetPriority(testMethod))
+            .OrderBy(testMethod => !GetPriority(testMethod).HasValue)
+            .ThenBy(testMethod => GetPriority(testMethod))
             .ThenBy(testMethod => testMethod.MethodName, StringComparer.Ordinal)
             .ToArray();
     }
 
-    private static int GetPriority(ITestMethod testMethod)
+    private static int? GetPriority(ITestMethod testMethod)
     {
         if (testMethod.Traits.TryGetValue("Priority", out var values) &&
             int.TryParse(values.FirstOrDefault(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var priority))
@@ -42,6 +43,6 @@ public sealed class PriorityTestMethodOrderer : ITestMethodOrderer
             return priority;
         }
 
-        return int.MaxValue;
+        return null;
     }
 }
