@@ -7,11 +7,10 @@ using Cuemon.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Xunit;
-using Xunit.v3.Priority;
 
 namespace Codebelt.Extensions.Xunit.Hosting;
 
-[TestCaseOrderer(typeof(PriorityOrderer))]
+[TestMethodOrderer(typeof(PriorityTestMethodOrderer))]
 public class MinimalHostTestTest : MinimalHostTest<ManagedMinimalHostFixture>
 {
     private bool _isHostRunning = false;

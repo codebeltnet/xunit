@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <PackageReference Include="Cuemon.Core" />
-    <PackageReference Include="Xunit.v3.Priority" />
   </ItemGroup>
 
   <ItemGroup>
