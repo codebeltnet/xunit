@@ -20,4 +20,16 @@ public class ResponseFeatureExample
         Console.WriteLine(response.StatusCode);
     }
 }
+
+internal static class RunExample
+{
+    static void Main()
+    {
+        new ResponseFeatureExample().Demonstrate();
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="08b911ef79f0b743282e37c9"><a href="~/run-actions/08b911ef79f0b743282e37c9/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/08b911ef79f0b743282e37c9/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

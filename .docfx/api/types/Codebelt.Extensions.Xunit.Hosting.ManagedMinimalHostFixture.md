@@ -35,3 +35,7 @@ public class MinimalWorkerTest : MinimalHostTest<ManagedMinimalHostFixture>
 
 public class MetricsTracker;
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="6a59b7744a7d9994ffc04782"><a href="~/run-actions/6a59b7744a7d9994ffc04782/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/6a59b7744a7d9994ffc04782/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

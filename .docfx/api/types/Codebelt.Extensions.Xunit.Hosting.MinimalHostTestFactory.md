@@ -23,4 +23,16 @@ public class MinimalHostFactoryExample
         Console.WriteLine(version);
     }
 }
+
+internal static class RunExample
+{
+    static void Main()
+    {
+        new MinimalHostFactoryExample().Demonstrate();
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="e3f79d1c0f2fa85276cee2fb"><a href="~/run-actions/e3f79d1c0f2fa85276cee2fb/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/e3f79d1c0f2fa85276cee2fb/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

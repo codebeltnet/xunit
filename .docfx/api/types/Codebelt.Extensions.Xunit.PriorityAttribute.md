@@ -35,4 +35,8 @@ public class InitializationTest : Test
 }
 ```
 
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="812efaa205554c7bdcd80831"><a href="~/run-actions/812efaa205554c7bdcd80831/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/812efaa205554c7bdcd80831/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->
+
 [!INCLUDE [availability-default](../../includes/availability-default.md)]

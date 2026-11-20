@@ -4,9 +4,10 @@ example:
 - *content
 ---
 
-The test project references a worker application's entry-point assembly. `ApplicationHostFactory.Create<TEntryPoint>` preserves the compatibility path, including direct use of an application's `CreateHostBuilder` when it is available. `ApplicationTestFactory.Create<TEntryPoint>` uses `ManagedApplicationFixture<TEntryPoint>` by default when the application entry point should own startup; pass an explicit fixture when a shared test context needs to customize its lifecycle. Because this lower-level factory returns the host directly, the caller still owns disposal.
+Use `ApplicationHostFactory.Create<TEntryPoint>` when you need a built `IHost` and will own its disposal. This standalone console example uses its own executable as the entry-point assembly to demonstrate the compatibility path. The factory calls `CreateHostBuilder` directly, applies the service registration supplied by the caller, and builds the host. `Main` resolves and prints the configured worker identity. In a test of an existing worker, reference the application project and use its entry-point type as `TEntryPoint`. Use `ApplicationTestFactory.Create<TEntryPoint>` when the application entry point should own startup.
 
 ```csharp
+using System;
 using Codebelt.Extensions.Xunit.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -39,8 +40,17 @@ public sealed class WorkerProgram
 
     public static void Main(string[] args)
     {
-        using var host = CreateHostBuilder(args).Build();
-        host.Run();
+        var identity = new ApplicationHostFactoryExample().GetTestIdentity();
+        if (identity != "Test inventory worker")
+        {
+            throw new InvalidOperationException(identity);
+        }
+
+        Console.WriteLine(identity);
     }
 }
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="ff2e361441bdc3028ab188a9"><a href="~/run-actions/ff2e361441bdc3028ab188a9/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/ff2e361441bdc3028ab188a9/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

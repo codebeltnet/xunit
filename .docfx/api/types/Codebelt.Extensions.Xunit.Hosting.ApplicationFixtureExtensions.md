@@ -8,6 +8,7 @@ The following example validates that an `IApplicationFixture<TEntryPoint>` has b
 
 ```csharp
 using Codebelt.Extensions.Xunit.Hosting;
+using Xunit;
 
 namespace HostFixtureTests;
 
@@ -18,4 +19,18 @@ public class HostStateGuard
         return fixture.HasValidState<TEntryPoint>();
     }
 }
+
+public sealed class RunExample
+{
+    [Fact]
+    public void ExercisesExample()
+    {
+        using var fixture = new ManagedApplicationFixture<RunExample>();
+        Assert.False(new HostStateGuard().EnsureFixtureIsReady(fixture));
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="e7dbb5ba733b205469239b03"><a href="~/run-actions/e7dbb5ba733b205469239b03/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/e7dbb5ba733b205469239b03/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

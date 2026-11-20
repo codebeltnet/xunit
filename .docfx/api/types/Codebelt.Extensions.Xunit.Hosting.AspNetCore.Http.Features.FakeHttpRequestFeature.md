@@ -20,4 +20,16 @@ public class RequestFeatureExample
         Console.WriteLine(request.Method);
     }
 }
+
+internal static class RunExample
+{
+    static void Main()
+    {
+        new RequestFeatureExample().Demonstrate();
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="f5ed7c321a52580d7ce11408"><a href="~/run-actions/f5ed7c321a52580d7ce11408/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/f5ed7c321a52580d7ce11408/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

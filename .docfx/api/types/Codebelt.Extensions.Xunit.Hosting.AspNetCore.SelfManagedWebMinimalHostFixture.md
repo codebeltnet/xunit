@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Xunit;
 
 namespace DeferredHealthEndpoint.Tests;
 
@@ -38,4 +39,17 @@ public sealed class SelfManagedWebMinimalHostFixtureExample
 }
 
 public sealed record HealthState(string Value);
+
+public sealed class RunExample
+{
+    [Fact]
+    public async Task ExercisesExample()
+    {
+        Assert.Equal("healthy", await new SelfManagedWebMinimalHostFixtureExample().StartHealthEndpointWhenReadyAsync());
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="3c3b98167b30d6985017ec27"><a href="~/run-actions/3c3b98167b30d6985017ec27/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/3c3b98167b30d6985017ec27/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

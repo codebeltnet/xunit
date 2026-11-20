@@ -42,12 +42,16 @@ public class MiddlewareTest : WebHostTest<ManagedWebHostFixture>
     }
 }
 
-public class TestMiddleware
+public class TestMiddleware(RequestDelegate next)
 {
-    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    public async Task InvokeAsync(HttpContext context)
     {
         context.Response.Headers["X-Test"] = "true";
         await next(context);
     }
 }
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="927ca9f6a3bf893bc52887f4"><a href="~/run-actions/927ca9f6a3bf893bc52887f4/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/927ca9f6a3bf893bc52887f4/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

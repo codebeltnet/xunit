@@ -34,11 +34,31 @@ public class MinimalApiTest : MinimalWebHostTest<ManagedWebMinimalHostFixture>
     }
 }
 
-internal class TestMiddleware
+public class TestMiddleware(RequestDelegate next)
 {
-    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    public async Task InvokeAsync(HttpContext context)
     {
+        context.Response.Headers["X-Test"] = "true";
         await next(context);
     }
 }
+
+public sealed class RunExample(ManagedWebMinimalHostFixture fixture, ITestOutputHelper output) : MinimalApiTest(fixture, output)
+{
+    [Fact]
+    public async Task BuildsAndInvokesTheConfiguredPipeline()
+    {
+        var context = new DefaultHttpContext
+        {
+            RequestServices = Application.ApplicationServices
+        };
+        await Application.Build()(context);
+        Assert.Equal("true", context.Response.Headers["X-Test"].ToString());
+        Assert.NotNull(context.RequestServices.GetRequiredService<IHttpContextAccessor>());
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="00acdae546dce87b654496e1"><a href="~/run-actions/00acdae546dce87b654496e1/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/00acdae546dce87b654496e1/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->
