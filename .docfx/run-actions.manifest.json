@@ -1,0 +1,876 @@
+{
+  "schemaVersion": 1,
+  "examples": [
+    {
+      "id": "00acdae546dce87b654496e1",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using System.Threading.Tasks;\nusing Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\nusing Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Hosting;\nusing Xunit;\n\nnamespace WebFixtureTests;\n\npublic class MinimalApiTest : MinimalWebHostTest<ManagedWebMinimalHostFixture>\n{\n    public MinimalApiTest(ManagedWebMinimalHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)\n    {\n    }\n\n    protected override void ConfigureHost(IHostApplicationBuilder hb)\n    {\n        hb.Services.AddFakeHttpContextAccessor();\n    }\n\n    public override void ConfigureApplication(IApplicationBuilder app)\n    {\n        app.UseMiddleware<TestMiddleware>();\n    }\n}\n\npublic class TestMiddleware(RequestDelegate next)\n{\n    public async Task InvokeAsync(HttpContext context)\n    {\n        context.Response.Headers[\"X-Test\"] = \"true\";\n        await next(context);\n    }\n}\n\npublic sealed class RunExample(ManagedWebMinimalHostFixture fixture, ITestOutputHelper output) : MinimalApiTest(fixture, output)\n{\n    [Fact]\n    public async Task BuildsAndInvokesTheConfiguredPipeline()\n    {\n        var context = new DefaultHttpContext\n        {\n            RequestServices = Application.ApplicationServices\n        };\n        await Application.Build()(context);\n        Assert.Equal(\"true\", context.Response.Headers[\"X-Test\"].ToString());\n        Assert.NotNull(context.RequestServices.GetRequiredService<IHttpContextAccessor>());\n    }\n}"
+      }
+    },
+    {
+      "id": "0308118a47b5c02daa7b32be",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using System.Collections.Generic;\nusing Codebelt.Extensions.Xunit;\nusing Xunit;\n\nnamespace Example.Tests;\n\npublic class EnumerableOutputTest : Test\n{\n    public EnumerableOutputTest(ITestOutputHelper output) : base(output) { }\n\n    [Fact]\n    public void ShouldWriteSequenceItems()\n    {\n        IEnumerable<int> values = new List<int> { 1, 2, 3 };\n        TestOutput.WriteLines(values);\n        Assert.True(HasTestOutput);\n    }\n}"
+      }
+    },
+    {
+      "id": "038a1c806225b412a6f986c1",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit;\nusing Xunit;\n\nnamespace Example.Tests;\n\npublic class WildcardExampleTest : Test\n{\n    public WildcardExampleTest(ITestOutputHelper output) : base(output) { }\n\n    [Fact]\n    public void ShouldMatchConfiguredPattern()\n    {\n        var options = new WildcardOptions { ThrowOnNoMatch = true };\n        Assert.True(Match(\"cache*\", \"cached\", setup => setup.ThrowOnNoMatch = options.ThrowOnNoMatch));\n    }\n}"
+      }
+    },
+    {
+      "id": "08b911ef79f0b743282e37c9",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "sdk": "Microsoft.NET.Sdk.Web",
+        "source": "using System;\nusing Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features;\n\nnamespace WebFixtureTests;\n\npublic class ResponseFeatureExample\n{\n    public void Demonstrate()\n    {\n        var response = new FakeHttpResponseFeature();\n        Console.WriteLine(response.StatusCode);\n    }\n}\n\ninternal static class RunExample\n{\n    static void Main()\n    {\n        new ResponseFeatureExample().Demonstrate();\n    }\n}"
+      }
+    },
+    {
+      "id": "10457ac34cce1cbadb26aee1",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit;\nusing Xunit;\n\nnamespace Example.Tests;\n\npublic class ArrayOutputTest : Test\n{\n    public ArrayOutputTest(ITestOutputHelper output) : base(output) { }\n\n    [Fact]\n    public void ShouldWriteArrayItems()\n    {\n        TestOutput.WriteLines(new int[] { 1, 2, 3 });\n        Assert.True(HasTestOutput);\n    }\n}"
+      }
+    },
+    {
+      "id": "1130af506703020850fdadea",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting;\nusing Xunit;\n\nnamespace HostFixtureTests;\n\npublic class HostStateGuard\n{\n    public bool EnsureFixtureIsReady(IGenericHostFixture fixture)\n    {\n        return fixture.HasValidState();\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        using var fixture = new ManagedHostFixture();\n        Assert.False(new HostStateGuard().EnsureFixtureIsReady(fixture));\n        using var app = HostTestFactory.Create(hostFixture: fixture);\n        Assert.True(new HostStateGuard().EnsureFixtureIsReady(fixture));\n    }\n}"
+      }
+    },
+    {
+      "id": "18b0746bf3da1d84f81b5274",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Logging;\nusing Xunit;\n\nnamespace HostFixtureTests;\n\npublic class ExampleFixture\n{\n    public IServiceCollection ConfigureServices(IServiceCollection services)\n    {\n        services.AddXunitTestLogging(LogLevel.Information);\n        services.AddXunitTestLoggingOutputHelperAccessor();\n        return services;\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        using var provider = new ExampleFixture().ConfigureServices(new ServiceCollection()).BuildServiceProvider();\n        Assert.IsType<Codebelt.Extensions.Xunit.TestOutputHelperAccessor>(provider.GetRequiredService<Codebelt.Extensions.Xunit.ITestOutputHelperAccessor>());\n        var logger = provider.GetRequiredService<ILogger<RunExample>>();\n        logger.LogInformation(\"storage ready\");\n        Assert.Contains(logger.GetTestStore().Query(), entry => entry.Severity == LogLevel.Information && entry.Message == \"Information: storage ready\");\n    }\n}"
+      }
+    },
+    {
+      "id": "1e869fe39c4833386733c21f",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using System.Threading.Tasks;\nusing Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\nusing Microsoft.Extensions.DependencyInjection;\nusing Xunit;\n\nnamespace HealthEndpoint.Tests;\n\npublic sealed class MinimalWebHostTestFactoryExample\n{\n    public async Task<string> ReadHealthStateAsync()\n    {\n        using var response = await MinimalWebHostTestFactory.RunAsync(\n            services => services.AddSingleton(new HealthState(\"healthy\")),\n            app => app.Run(context =>\n            {\n                var health = context.RequestServices.GetRequiredService<HealthState>();\n                return context.Response.WriteAsync(health.Value);\n            })).ConfigureAwait(false);\n\n        return await response.Content.ReadAsStringAsync().ConfigureAwait(false);\n    }\n}\n\npublic sealed record HealthState(string Value);\n\npublic sealed class RunExample\n{\n    [Fact]\n    public async Task ExercisesExample()\n    {\n        Assert.Equal(\"healthy\", await new MinimalWebHostTestFactoryExample().ReadHealthStateAsync());\n    }\n}"
+      }
+    },
+    {
+      "id": "1ec9196292addaca42a7eef1",
+      "strategy": "repository",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "repository": "codebeltnet/xunit",
+      "commit": "84b13767cb9484f8f3a36a71875662edfdb3e511",
+      "project": "test/Codebelt.Extensions.Xunit.Hosting.FunctionalTests/Codebelt.Extensions.Xunit.Hosting.FunctionalTests.csproj",
+      "test": "Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWorkerApplicationTestTest.ShouldBootstrapMinimalWorkerProgram",
+      "framework": "net11.0",
+      "image": "mcr.microsoft.com/dotnet/sdk:11.0"
+    },
+    {
+      "id": "21b422ce67f920d801901db0",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Hosting;\nusing Xunit;\n\nnamespace WebFixtureTests;\n\npublic class WebHostIntegrationTest\n{\n    [Fact]\n    public void HostShouldBeStarted()\n    {\n        using var fixture = new BlockingManagedWebHostFixture();\n        using var app = WebHostTestFactory.Create(hostFixture: fixture);\n\n        Assert.True(fixture.HasValidState());\n        var lifetime = app.Host.Services.GetRequiredService<IHostApplicationLifetime>();\n        Assert.True(lifetime.ApplicationStarted.IsCancellationRequested);\n    }\n}"
+      }
+    },
+    {
+      "id": "38b60f4b4c1a588bbefe92f1",
+      "strategy": "repository",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "repository": "codebeltnet/xunit",
+      "commit": "84b13767cb9484f8f3a36a71875662edfdb3e511",
+      "project": "test/Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests/Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests.csproj",
+      "test": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.WebApplicationTestFactoryTest.Create_ShouldApplyWebHostConfiguration_WhenWebHostSetupIsProvided",
+      "framework": "net11.0",
+      "image": "mcr.microsoft.com/dotnet/sdk:11.0"
+    },
+    {
+      "id": "3a1dbfc0e010519636b7091e",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "sdk": "Microsoft.NET.Sdk.Web",
+        "source": "using System;\nusing Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http;\n\nnamespace WebFixtureTests;\n\npublic class HttpContextExample\n{\n    public void Demonstrate()\n    {\n        var accessor = new FakeHttpContextAccessor();\n        Console.WriteLine(accessor.HttpContext.Request.Method);\n    }\n}\n\ninternal static class RunExample\n{\n    static void Main()\n    {\n        new HttpContextExample().Demonstrate();\n    }\n}"
+      }
+    },
+    {
+      "id": "3c3b98167b30d6985017ec27",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "Microsoft.AspNetCore.TestHost@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using System.Threading.Tasks;\nusing Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\nusing Microsoft.AspNetCore.TestHost;\nusing Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Hosting;\nusing Xunit;\n\nnamespace DeferredHealthEndpoint.Tests;\n\npublic sealed class SelfManagedWebMinimalHostFixtureExample\n{\n    public async Task<string> StartHealthEndpointWhenReadyAsync()\n    {\n        using var host = MinimalWebHostTestFactory.Create(\n            services => services.AddSingleton(new HealthState(\"healthy\")),\n            pipelineSetup: app => app.Run(context =>\n            {\n                var health = context.RequestServices.GetRequiredService<HealthState>();\n                return context.Response.WriteAsync(health.Value);\n            }),\n            hostFixture: new SelfManagedWebMinimalHostFixture());\n\n        await host.Host.StartAsync().ConfigureAwait(false);\n        using var client = host.Host.GetTestClient();\n\n        return await client.GetStringAsync(\"/\").ConfigureAwait(false);\n    }\n}\n\npublic sealed record HealthState(string Value);\n\npublic sealed class RunExample\n{\n    [Fact]\n    public async Task ExercisesExample()\n    {\n        Assert.Equal(\"healthy\", await new SelfManagedWebMinimalHostFixtureExample().StartHealthEndpointWhenReadyAsync());\n    }\n}"
+      }
+    },
+    {
+      "id": "45fcccef5fc861315b50c55e",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit;\nusing Xunit;\n\nnamespace Example.Tests;\n\npublic class OutputLinesTest : Test\n{\n    public OutputLinesTest(ITestOutputHelper output) : base(output) { }\n\n    [Fact]\n    public void ShouldWriteValuesOnSeparateLines()\n    {\n        TestOutput.WriteLines(\"started\", 2, \"finished\");\n        Assert.True(HasTestOutput);\n    }\n}"
+      }
+    },
+    {
+      "id": "4c5e94adccd20cab4da52078",
+      "strategy": "repository",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "repository": "codebeltnet/xunit",
+      "commit": "84b13767cb9484f8f3a36a71875662edfdb3e511",
+      "project": "test/Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests/Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests.csproj",
+      "test": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.WebApplicationTestTest.ShouldBootstrapApplication_WhenEntryPointUsesModernProgramPattern",
+      "framework": "net11.0",
+      "image": "mcr.microsoft.com/dotnet/sdk:11.0"
+    },
+    {
+      "id": "513a785b0e0abbe2284270b9",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit;\nusing Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Logging;\nusing Xunit;\n\nnamespace HostFixtureTests;\n\npublic class LogInspector\n{\n    public ITestStore<XunitTestLoggerEntry> GetEntries(ILogger logger)\n    {\n        return logger.GetTestStore();\n    }\n\n    public ITestStore<XunitTestLoggerEntry> GetEntries<T>(ILogger<T> logger)\n    {\n        return logger.GetTestStore<T>();\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        var services = new ServiceCollection();\n        services.AddXunitTestLogging();\n        using var provider = services.BuildServiceProvider();\n        var logger = provider.GetRequiredService<ILogger<LogInspector>>();\n        logger.LogWarning(\"queue ready\");\n        var inspector = new LogInspector();\n        Assert.Contains(inspector.GetEntries((ILogger)logger).Query(), entry => entry.Severity == LogLevel.Warning && entry.Message == \"Warning: queue ready\");\n        Assert.Contains(inspector.GetEntries(logger).Query(), entry => entry.Severity == LogLevel.Warning && entry.Message == \"Warning: queue ready\");\n    }\n}"
+      }
+    },
+    {
+      "id": "515575be5bb7683cac9903a5",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using System.Threading.Tasks;\nusing Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Hosting;\nusing Xunit;\n\nnamespace WorkerLifecycle.Tests;\n\npublic sealed class SelfManagedHostFixtureExample\n{\n    public async Task StartAfterAttachingObserverAsync()\n    {\n        using var host = HostTestFactory.Create(\n            hostFixture: new SelfManagedHostFixture());\n\n        var started = false;\n        var lifetime = host.Host.Services.GetRequiredService<IHostApplicationLifetime>();\n        using var registration = lifetime.ApplicationStarted.Register(() => started = true);\n\n        Assert.False(started);\n        await host.Host.StartAsync().ConfigureAwait(false);\n        Assert.True(started);\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public async Task ExercisesExample()\n    {\n        await new SelfManagedHostFixtureExample().StartAfterAttachingObserverAsync();\n    }\n}"
+      }
+    },
+    {
+      "id": "545543e49c6bf054a9e06186",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit;\nusing Xunit;\n\nnamespace Example.Tests;\n\npublic class OutputAccessorTest : Test\n{\n    public OutputAccessorTest(ITestOutputHelper output) : base(output) { }\n\n    [Fact]\n    public void ShouldExposeCurrentOutput()\n    {\n        var accessor = new TestOutputHelperAccessor(TestOutput);\n        Assert.Same(TestOutput, accessor.TestOutput);\n    }\n}"
+      }
+    },
+    {
+      "id": "549c3e82bd0bcb99e9f05bfa",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Xunit;\n\nnamespace WebFixtureTests;\n\npublic class WebAppStateGuard\n{\n    public bool EnsureFixtureIsReady<TEntryPoint>(IWebApplicationFixture<TEntryPoint> fixture) where TEntryPoint : class\n    {\n        return fixture.HasValidState<TEntryPoint>();\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        using var fixture = new ManagedWebApplicationFixture<RunExample>();\n        Assert.False(new WebAppStateGuard().EnsureFixtureIsReady(fixture));\n    }\n}"
+      }
+    },
+    {
+      "id": "578d467fd203f66cc41b0364",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit;\nusing Xunit;\n\nnamespace Example.Tests;\n\npublic class MixedOutputTest : Test\n{\n    public MixedOutputTest(ITestOutputHelper output) : base(output) { }\n\n    [Fact]\n    public void ShouldWriteMixedValues()\n    {\n        TestOutput.WriteLines((object)\"cache\", 3);\n        Assert.True(HasTestOutput);\n    }\n}"
+      }
+    },
+    {
+      "id": "5e35a33e56470f93afbedf19",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using System;\nusing Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.DependencyInjection;\nusing Xunit;\n\nnamespace HostFixtureTests;\n\npublic class ServiceResolver\n{\n    public T Resolve<T>(IServiceProvider provider) where T : notnull\n    {\n        return provider.GetRequiredScopedService<T>();\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        var services = new ServiceCollection();\n        services.AddScoped(_ => new object());\n        using var provider = services.BuildServiceProvider(new ServiceProviderOptions\n        {\n            ValidateScopes = true\n        });\n        Assert.NotSame(new ServiceResolver().Resolve<object>(provider), new ServiceResolver().Resolve<object>(provider));\n    }\n}"
+      }
+    },
+    {
+      "id": "6a59b7744a7d9994ffc04782",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Hosting;\nusing Xunit;\n\nnamespace HostFixtureTests;\n\npublic class MinimalWorkerTest : MinimalHostTest<ManagedMinimalHostFixture>\n{\n    public MinimalWorkerTest(ManagedMinimalHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)\n    {\n    }\n\n    protected override void ConfigureHost(IHostApplicationBuilder hb)\n    {\n        hb.Services.AddSingleton<MetricsTracker>();\n        hb.Services.AddXunitTestLogging();\n    }\n\n    [Fact]\n    public void Host_ShouldNotBeNull()\n    {\n        Assert.NotNull(Host);\n    }\n}\n\npublic class MetricsTracker;"
+      }
+    },
+    {
+      "id": "782f24d34260070258f6d164",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using System;\nusing Codebelt.Extensions.Xunit;\nusing Xunit;\nusing Xunit.Sdk;\n\nnamespace Example.Tests;\n\n[TestMethodOrderer(typeof(PriorityTestMethodOrderer))]\npublic class CacheLifecycleTest : Test\n{\n    private static bool _initialized;\n\n    public CacheLifecycleTest(ITestOutputHelper output) : base(output) { }\n\n    [Fact, Priority(-1)]\n    public void ShouldInitializeCache()\n    {\n        var orderer = new PriorityTestMethodOrderer();\n        Assert.Empty(orderer.OrderTestMethods<ITestMethod>(Array.Empty<ITestMethod>()));\n        _initialized = true;\n    }\n\n    [Fact, Priority(0)]\n    public void ShouldUseInitializedCache()\n    {\n        Assert.True(_initialized);\n    }\n}"
+      }
+    },
+    {
+      "id": "812efaa205554c7bdcd80831",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit;\nusing Xunit;\n\nnamespace Example.Tests;\n\n[TestMethodOrderer(typeof(PriorityTestMethodOrderer))]\npublic class InitializationTest : Test\n{\n    private static string _value;\n\n    public InitializationTest(ITestOutputHelper output) : base(output) { }\n\n    [Fact, Priority(0)]\n    public void ShouldInitializeFirst()\n    {\n        var priority = new PriorityAttribute(0);\n        Assert.Equal(0, priority.Priority);\n        _value = \"ready\";\n    }\n\n    [Fact, Priority(1)]\n    public void ShouldReadInitializedValue()\n    {\n        Assert.Equal(\"ready\", _value);\n    }\n}"
+      }
+    },
+    {
+      "id": "90a8cd444bd08a0115613e58",
+      "strategy": "repository",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "repository": "codebeltnet/xunit",
+      "commit": "84b13767cb9484f8f3a36a71875662edfdb3e511",
+      "project": "test/Codebelt.Extensions.Xunit.Hosting.FunctionalTests/Codebelt.Extensions.Xunit.Hosting.FunctionalTests.csproj",
+      "test": "Codebelt.Extensions.Xunit.Hosting.ApplicationTestFactoryTest.Create_ShouldBootstrapApplication_WhenEntryPointUsesBootstrapperMinimalWorkerProgram",
+      "framework": "net11.0",
+      "image": "mcr.microsoft.com/dotnet/sdk:11.0"
+    },
+    {
+      "id": "927ca9f6a3bf893bc52887f4",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using System.Threading.Tasks;\nusing Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\nusing Microsoft.Extensions.DependencyInjection;\nusing Xunit;\n\nnamespace WebFixtureTests;\n\npublic class MiddlewareTest : WebHostTest<ManagedWebHostFixture>\n{\n    public MiddlewareTest(ManagedWebHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)\n    {\n    }\n\n    public override void ConfigureServices(IServiceCollection services)\n    {\n        services.AddFakeHttpContextAccessor();\n    }\n\n    public override void ConfigureApplication(IApplicationBuilder app)\n    {\n        app.UseMiddleware<TestMiddleware>();\n    }\n\n    [Fact]\n    public async Task Middleware_ShouldAddHeader()\n    {\n        var pipeline = Application.Build();\n        var context = new DefaultHttpContext();\n        await pipeline(context);\n        Assert.True(context.Response.Headers.ContainsKey(\"X-Test\"));\n    }\n}\n\npublic class TestMiddleware(RequestDelegate next)\n{\n    public async Task InvokeAsync(HttpContext context)\n    {\n        context.Response.Headers[\"X-Test\"] = \"true\";\n        await next(context);\n    }\n}"
+      }
+    },
+    {
+      "id": "947406357e3e26b26a71a538",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "Microsoft.AspNetCore.TestHost@10.0.15"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "sdk": "Microsoft.NET.Sdk.Web",
+        "source": "using System;\nusing System.Net.Http;\nusing System.Threading.Tasks;\nusing Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.TestHost;\n\nnamespace WebFixtureTests;\n\npublic class HttpClientExample\n{\n    public async Task DemonstrateAsync(HttpClient client)\n    {\n        var response = await client.ToHttpResponseMessageAsync().ConfigureAwait(false);\n        Console.WriteLine(response.StatusCode);\n    }\n}\n\ninternal static class RunExample\n{\n    static async Task Main()\n    {\n        using var app = WebHostTestFactory.Create(pipelineSetup: app => app.Run(context =>\n        {\n            context.Response.StatusCode = 202;\n            return Task.CompletedTask;\n        }));\n        using var client = app.Host.GetTestClient();\n        await new HttpClientExample().DemonstrateAsync(client);\n    }\n}"
+      }
+    },
+    {
+      "id": "9a558a9a581c6b11ccb28057",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.Logging;\nusing Xunit;\n\nnamespace HostFixtureTests;\n\npublic class LogEntryExample\n{\n    public string FormatEntry()\n    {\n        var entry = new XunitTestLoggerEntry(LogLevel.Warning, new EventId(1001, \"MyEvent\"), \"Something unexpected happened.\");\n        return entry.ToString();\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        Assert.Equal(\"Something unexpected happened.\", new LogEntryExample().FormatEntry());\n    }\n}"
+      }
+    },
+    {
+      "id": "9cdeb08f8ba8f3b361a98c58",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.DependencyInjection;\nusing Xunit;\n\nnamespace WorkerServices.Tests;\n\npublic sealed class HostTestFactoryExample\n{\n    public string ResolveWorkerStatus()\n    {\n        using var host = HostTestFactory.Create(\n            services => services.AddSingleton(new WorkerStatus(\"ready\")));\n\n        var status = host.Host.Services.GetRequiredService<WorkerStatus>();\n        return status.Value;\n    }\n}\n\npublic sealed record WorkerStatus(string Value);\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        Assert.Equal(\"ready\", new HostTestFactoryExample().ResolveWorkerStatus());\n    }\n}"
+      }
+    },
+    {
+      "id": "a31971b360a8c557b87f6684",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using System.Linq;\nusing Codebelt.Extensions.Xunit;\nusing Xunit;\n\nnamespace Example.Tests;\n\npublic class StoreExample\n{\n    public bool HasMatchingItem()\n    {\n        var store = new InMemoryTestStore<string>();\n        store.Add(\"cached\");\n        store.Add(\"other\");\n        return store.Count == 2 && store.Query(value => value == \"cached\").Single() == \"cached\";\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        Assert.True(new StoreExample().HasMatchingItem());\n    }\n}"
+      }
+    },
+    {
+      "id": "b4149382f121a5ffc3c057df",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using System.Threading.Tasks;\nusing Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.DependencyInjection;\nusing Xunit;\n\nnamespace MinimalWorkerLifecycle.Tests;\n\npublic sealed class SelfManagedMinimalHostFixtureExample\n{\n    public async Task ConfigureBeforeStartingAsync()\n    {\n        using var host = MinimalHostTestFactory.Create(\n            services => services.AddSingleton(new StartupState(\"configured\")),\n            hostFixture: new SelfManagedMinimalHostFixture());\n\n        var beforeStart = host.Host.Services.GetRequiredService<StartupState>();\n        Assert.Equal(\"configured\", beforeStart.Value);\n\n        await host.Host.StartAsync().ConfigureAwait(false);\n\n        var afterStart = host.Host.Services.GetRequiredService<StartupState>();\n        Assert.Same(beforeStart, afterStart);\n    }\n}\n\npublic sealed record StartupState(string Value);\n\npublic sealed class RunExample\n{\n    [Fact]\n    public async Task ExercisesExample()\n    {\n        await new SelfManagedMinimalHostFixtureExample().ConfigureBeforeStartingAsync();\n    }\n}"
+      }
+    },
+    {
+      "id": "becb2fe7446fc1571dc86953",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting;\nusing Xunit;\n\nnamespace HostFixtureTests;\n\npublic class HostStateGuard\n{\n    public bool EnsureFixtureIsReady(IMinimalHostFixture fixture)\n    {\n        return fixture.HasValidState();\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        using var fixture = new ManagedMinimalHostFixture();\n        Assert.False(new HostStateGuard().EnsureFixtureIsReady(fixture));\n        using var app = MinimalHostTestFactory.Create(hostFixture: fixture);\n        Assert.True(new HostStateGuard().EnsureFixtureIsReady(fixture));\n    }\n}"
+      }
+    },
+    {
+      "id": "d565f9c40d015b247963fdee",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Microsoft.AspNetCore.Builder;\nusing Microsoft.Extensions.Hosting;\nusing Xunit;\n\nnamespace WebFixtureTests;\n\npublic class BuilderConverter\n{\n    public IHostBuilder Convert(IHostApplicationBuilder builder)\n    {\n        return builder.ToHostBuilder();\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ReturnsTheWebHostBuilder()\n    {\n        var builder = WebApplication.CreateBuilder();\n        Assert.Same(builder.Host, new BuilderConverter().Convert(builder));\n    }\n}"
+      }
+    },
+    {
+      "id": "d71e8ed85f1221cb41308b31",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using System.Threading.Tasks;\nusing Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\nusing Microsoft.Extensions.DependencyInjection;\nusing Xunit;\n\nnamespace RequestPipeline.Tests;\n\npublic sealed class WebHostTestFactoryExample\n{\n    public async Task<string> InvokeStatusMiddlewareAsync()\n    {\n        using var response = await WebHostTestFactory.RunAsync(\n            services => services.AddSingleton(new PipelineStatus(\"ready\")),\n            app => app.Run(context =>\n            {\n                var status = context.RequestServices.GetRequiredService<PipelineStatus>();\n                return context.Response.WriteAsync(status.Value);\n            })).ConfigureAwait(false);\n\n        return await response.Content.ReadAsStringAsync().ConfigureAwait(false);\n    }\n}\n\npublic sealed record PipelineStatus(string Value);\n\npublic sealed class RunExample\n{\n    [Fact]\n    public async Task ExercisesExample()\n    {\n        Assert.Equal(\"ready\", await new WebHostTestFactoryExample().InvokeStatusMiddlewareAsync());\n    }\n}"
+      }
+    },
+    {
+      "id": "dd2fa1a038dbc1220b366a53",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Xunit;\n\nnamespace WebFixtureTests;\n\npublic class WebMinimalHostStateGuard\n{\n    public bool EnsureFixtureIsReady(IWebMinimalHostFixture fixture)\n    {\n        return fixture.HasValidState();\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        using var fixture = new ManagedWebMinimalHostFixture();\n        Assert.False(new WebMinimalHostStateGuard().EnsureFixtureIsReady(fixture));\n        using var app = MinimalWebHostTestFactory.Create(hostFixture: fixture);\n        Assert.True(new WebMinimalHostStateGuard().EnsureFixtureIsReady(fixture));\n    }\n}"
+      }
+    },
+    {
+      "id": "dfdd064179bf4643e1a0b2bf",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Xunit;\n\nnamespace WebFixtureTests;\n\npublic class WebHostStateGuard\n{\n    public bool EnsureFixtureIsReady(IWebHostFixture fixture)\n    {\n        return fixture.HasValidState();\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        using var fixture = new ManagedWebHostFixture();\n        Assert.False(new WebHostStateGuard().EnsureFixtureIsReady(fixture));\n        using var app = WebHostTestFactory.Create(hostFixture: fixture);\n        Assert.True(new WebHostStateGuard().EnsureFixtureIsReady(fixture));\n    }\n}"
+      }
+    },
+    {
+      "id": "e3f79d1c0f2fa85276cee2fb",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15"
+        ],
+        "source": "using System;\nusing Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.DependencyInjection;\n\nnamespace HostFixtureTests;\n\npublic class MinimalHostFactoryExample\n{\n    public void Demonstrate()\n    {\n        using var host = MinimalHostTestFactory.Create(\n            services => services.AddSingleton(new Version(1, 0, 0)));\n        var version = host.Host.Services.GetRequiredService<Version>();\n        Console.WriteLine(version);\n    }\n}\n\ninternal static class RunExample\n{\n    static void Main()\n    {\n        new MinimalHostFactoryExample().Demonstrate();\n    }\n}"
+      }
+    },
+    {
+      "id": "e7dbb5ba733b205469239b03",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting;\nusing Xunit;\n\nnamespace HostFixtureTests;\n\npublic class HostStateGuard\n{\n    public bool EnsureFixtureIsReady<TEntryPoint>(IApplicationFixture<TEntryPoint> fixture) where TEntryPoint : class\n    {\n        return fixture.HasValidState<TEntryPoint>();\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        using var fixture = new ManagedApplicationFixture<RunExample>();\n        Assert.False(new HostStateGuard().EnsureFixtureIsReady(fixture));\n    }\n}"
+      }
+    },
+    {
+      "id": "f27f77d838407171b56f9073",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.AspNetCore.TestHost@10.0.15"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "sdk": "Microsoft.NET.Sdk.Web",
+        "source": "// Program.cs\nusing System;\nusing Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Microsoft.AspNetCore.Builder;\nusing Microsoft.AspNetCore.Http;\nusing Microsoft.AspNetCore.TestHost;\nusing Microsoft.Extensions.Hosting;\n\nusing var host = WebHostTestFactory.Create(\n    pipelineSetup: app => app.Run(context =>\n        context.Response.WriteAsync(\"started on demand\")),\n    hostFixture: new SelfManagedWebHostFixture());\n\nawait host.Host.StartAsync().ConfigureAwait(false);\nusing var client = host.Host.GetTestClient();\n\nConsole.WriteLine(await client.GetStringAsync(\"/\").ConfigureAwait(false));"
+      }
+    },
+    {
+      "id": "f3c0856195727da12ff2925f",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "source": "using Codebelt.Extensions.Xunit.Hosting.AspNetCore;\nusing Microsoft.AspNetCore.Http;\nusing Microsoft.Extensions.DependencyInjection;\nusing Xunit;\n\nnamespace WebFixtureTests;\n\npublic class ExampleFixture\n{\n    public IServiceCollection ConfigureServices(IServiceCollection services)\n    {\n        return services.AddFakeHttpContextAccessor(ServiceLifetime.Scoped);\n    }\n}\n\npublic sealed class RunExample\n{\n    [Fact]\n    public void ExercisesExample()\n    {\n        using var provider = new ExampleFixture().ConfigureServices(new ServiceCollection()).BuildServiceProvider();\n        using var scope = provider.CreateScope();\n        Assert.IsType<Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.FakeHttpContextAccessor>(scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>());\n    }\n}"
+      }
+    },
+    {
+      "id": "f5ed7c321a52580d7ce11408",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "sdk": "Microsoft.NET.Sdk.Web",
+        "source": "using System;\nusing Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features;\n\nnamespace WebFixtureTests;\n\npublic class RequestFeatureExample\n{\n    public void Demonstrate()\n    {\n        var request = new FakeHttpRequestFeature();\n        Console.WriteLine(request.Method);\n    }\n}\n\ninternal static class RunExample\n{\n    static void Main()\n    {\n        new RequestFeatureExample().Demonstrate();\n    }\n}"
+      }
+    },
+    {
+      "id": "ff2e361441bdc3028ab188a9",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15"
+        ],
+        "source": "using System;\nusing Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Hosting;\n\nnamespace WorkerApp.Tests;\n\npublic sealed class ApplicationHostFactoryExample\n{\n    public string GetTestIdentity()\n    {\n        using IHost host = ApplicationHostFactory.Create<WorkerProgram>(builder =>\n        {\n            builder.ConfigureServices(services =>\n                services.AddSingleton(new WorkerIdentity(\"Test inventory worker\")));\n        });\n\n        var identity = host.Services.GetRequiredService<WorkerIdentity>();\n        return identity.Name;\n    }\n}\n\npublic sealed record WorkerIdentity(string Name);\n\npublic sealed class WorkerProgram\n{\n    public static IHostBuilder CreateHostBuilder(string[] args)\n    {\n        return Host.CreateDefaultBuilder(args);\n    }\n\n    public static void Main(string[] args)\n    {\n        var identity = new ApplicationHostFactoryExample().GetTestIdentity();\n        if (identity != \"Test inventory worker\")\n        {\n            throw new InvalidOperationException(identity);\n        }\n\n        Console.WriteLine(identity);\n    }\n}"
+      }
+    },
+    {
+      "id": "aa478d74f298d8c98e6cd1bf",
+      "strategy": "standalone",
+      "transports": [
+        "native",
+        "docker"
+      ],
+      "image": "codebeltnet/csrun:10",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "source": "using System.Threading;\nusing System.Threading.Tasks;\nusing Codebelt.Extensions.Xunit.Hosting;\nusing Microsoft.Extensions.DependencyInjection;\nusing Microsoft.Extensions.Hosting;\nusing Xunit;\n\nnamespace HostFixtureTests;\n\npublic class BackgroundServiceTest : HostTest<ManagedHostFixture>\n{\n    public BackgroundServiceTest(ManagedHostFixture hostFixture, ITestOutputHelper output) : base(hostFixture, output)\n    {\n    }\n\n    public override void ConfigureServices(IServiceCollection services)\n    {\n        services.AddHostedService<TestWorker>();\n        services.AddXunitTestLogging();\n    }\n\n    [Fact]\n    public void Host_ShouldBeRunning()\n    {\n        Assert.NotNull(Host);\n    }\n}\n\npublic class TestWorker : BackgroundService\n{\n    protected override async Task ExecuteAsync(CancellationToken stoppingToken)\n    {\n        while (!stoppingToken.IsCancellationRequested)\n        {\n            await Task.Delay(100, stoppingToken);\n        }\n    }\n}"
+      }
+    }
+  ]
+}
