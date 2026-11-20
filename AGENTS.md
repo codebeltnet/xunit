@@ -294,7 +294,6 @@ Follow the scoped guidance in this file:
 - [Writing XML documentation](#writing-xml-documentation)
 
 <!-- dotnet-docfx-digest:start -->
-
 ## DocFX Documentation Maintenance
 
 When changing public .NET APIs, keep the DocFX documentation current in the same change set.
@@ -343,9 +342,7 @@ Before completing documentation work, run the relevant verification commands, no
 
 ```bash
 dotnet build
-
 dotnet test
-
 dotnet run --file <resolved-skill-dir>/scripts/docfx.cs -- --repo-root . --build-api-model --validate-samples --verify-docfx-build
 ```
 
@@ -354,7 +351,6 @@ Codebelt repositories are normally strong-name signed with a `.snk` file in the 
 The final DocFX verification must run outside the working tree when possible. The `--verify-docfx-build` option copies the repository to a temp workspace, runs DocFX against the resolved `docfx.json` there, and removes the temp workspace afterward so generated API YAML, manifest files, and site output do not flood git status. Do not call the work complete until the final JSON reports `summary.fullVerificationRan: true`, `summary.canClaimCompletion: true`, `summary.remainingWorkItems: 0`, an empty `summary.remainingGates`, an empty `summary.remainingDiagnosticsByCode`, `summary.newlyIntroducedSkipMarkers: 0`, and `summary.interimArtifacts: 0`.
 
 If a command cannot be run, report the exact limitation or failure instead of claiming the documentation was verified.
-
 <!-- dotnet-docfx-digest:end -->
 
 ## Writing Unit Tests
