@@ -1,0 +1,629 @@
+{
+  "examples": [
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.ApplicationFixtureExtensions",
+      "sourceSha256": "90B08550FC34DE0144BF28F6ADB2577A59AEC596EB8B6060D545A9B56CD34377",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.ApplicationHostFactory",
+      "sourceSha256": "42FEDED83B95259C5771DBE3B83C0323599941985C3D71B510F80C1448BB3771",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.ApplicationTestFactory",
+      "sourceSha256": "7473E8AE20820AD58942D6212B5A7DCD428922FD0EEF1985E7D05F9CAC6E8D23",
+      "repository": "codebeltnet/xunit",
+      "commit": "84b13767cb9484f8f3a36a71875662edfdb3e511",
+      "project": "test/Codebelt.Extensions.Xunit.Hosting.FunctionalTests/Codebelt.Extensions.Xunit.Hosting.FunctionalTests.csproj",
+      "test": "Codebelt.Extensions.Xunit.Hosting.ApplicationTestFactoryTest.Create_ShouldBootstrapApplication_WhenEntryPointUsesBootstrapperMinimalWorkerProgram",
+      "framework": "net11.0",
+      "image": "mcr.microsoft.com/dotnet/sdk:11.0",
+      "explanation": "The scripts run the maintained worker integration test and verify its registered marker and Development environment."
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.BlockingManagedWebHostFixture",
+      "sourceSha256": "CD729B010424B55A26B7607AC78059BC5F610C522C2DCF312E7AD6A8A602E7FC",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.HostBuilderApplicationExtensions",
+      "sourceSha256": "340FBC3BD83E80B5B8AD6FAA66020C285458A08A608961D7D33BFA1B841FEFF4",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.FakeHttpContextAccessor",
+      "sourceSha256": "DCFB8604280E9AC15FFABA700B4055745F26AB9AD9E2F25C3A455EB50AEE7376",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "sdk": "Microsoft.NET.Sdk.Web"
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features.FakeHttpRequestFeature",
+      "sourceSha256": "A68A4CA3ACD2C8F668D4D343A9B36AB6E84D6CC1B506473700E973B97D053B94",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "sdk": "Microsoft.NET.Sdk.Web"
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.Http.Features.FakeHttpResponseFeature",
+      "sourceSha256": "7549EF36EB77D3203099D1DFEF5584A8AAEBD3ED8E537D6BF752D3231191C33D",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "sdk": "Microsoft.NET.Sdk.Web"
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.HttpClientExtensions",
+      "sourceSha256": "FABF1EB669FF7CC6B2BDB803E7CC6120EF9FE117823C720690A57522435C1468",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "Microsoft.AspNetCore.TestHost@10.0.15"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "sdk": "Microsoft.NET.Sdk.Web"
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.ManagedWebApplicationFixture`1",
+      "sourceSha256": "8A75CECB985C8FCE6F9C0C1211311D40867D82B83ED060008D75E7A3F963EFE3",
+      "repository": "codebeltnet/xunit",
+      "commit": "84b13767cb9484f8f3a36a71875662edfdb3e511",
+      "project": "test/Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests/Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests.csproj",
+      "test": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.WebApplicationTestTest.ShouldBootstrapApplication_WhenEntryPointUsesModernProgramPattern",
+      "framework": "net11.0",
+      "image": "mcr.microsoft.com/dotnet/sdk:11.0",
+      "explanation": "The scripts start the maintained ASP.NET Core application through the same fixture and verify its HTTP response."
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.ManagedWebHostFixture",
+      "sourceSha256": "2CC0B80DE03471AD6DD8210B4FDF2FA037751EF8B38AD43B1C611FC553EDA979",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.ManagedWebMinimalHostFixture",
+      "sourceSha256": "9D12413E06F45213763C5BAD14B3B2796097B1F773D18BDA1F8CBF90F7CF1268",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.MinimalWebHostTestFactory",
+      "sourceSha256": "869F4EDAF75D120A8A7F73B37C8E87002B0B006BABF480ECA0BFDCD5939E1F73",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.SelfManagedWebHostFixture",
+      "sourceSha256": "8C67EA9DD2F57A0DB37E7EE5E5516CE5655B61EE90C4097CFAE7EC8CD9B9F59D",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.AspNetCore.TestHost@10.0.15"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "sdk": "Microsoft.NET.Sdk.Web"
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.SelfManagedWebMinimalHostFixture",
+      "sourceSha256": "BD4DED8434BE4E8F5C88402103358DBCC12C4548C89FC48C060587BDB9CE3C5C",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "Microsoft.AspNetCore.TestHost@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.ServiceCollectionExtensions",
+      "sourceSha256": "FFE4DD6394228DC8E7DF1EF37C5377AF341AD84C0E18D3B83CFE51ED671CC8F0",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.WebApplicationFixtureExtensions",
+      "sourceSha256": "9C8A41C5E80934D69DF60798533A7E8BE07CA4210608BBDD2230C757179A8EC5",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.WebApplicationTestFactory",
+      "sourceSha256": "1DB1DAAA9965BF42F736A4BC3788B4261DF4EF52799B83E6F733AB1BD53EA7D3",
+      "repository": "codebeltnet/xunit",
+      "commit": "84b13767cb9484f8f3a36a71875662edfdb3e511",
+      "project": "test/Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests/Codebelt.Extensions.Xunit.Hosting.AspNetCore.FunctionalTests.csproj",
+      "test": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.WebApplicationTestFactoryTest.Create_ShouldApplyWebHostConfiguration_WhenWebHostSetupIsProvided",
+      "framework": "net11.0",
+      "image": "mcr.microsoft.com/dotnet/sdk:11.0",
+      "explanation": "The scripts run the maintained integration test, which overrides services and configuration and verifies the results through HTTP endpoints."
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.WebHostFixtureExtensions",
+      "sourceSha256": "CEDFFF39E914FF47421AE5A4F37CA1564DCAC8252903585B3B53DB069663492B",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.WebHostTestFactory",
+      "sourceSha256": "F2DCAE2A6B67B77ADED3A2B726B4ABA20276D3C0FBDFB57F153447D8312005EE",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.AspNetCore.WebMinimalHostFixtureExtensions",
+      "sourceSha256": "F30F392FC9E68CBA4BCCB949F0CF36307DCC6A0FFF2DEA05F4641ACB4EA13900",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting.AspNetCore@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ],
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.GenericHostFixtureExtensions",
+      "sourceSha256": "6DA99A91947A5C64953DDD8F7B42EC74AE39C3EDFBF9F2DB69A31B9B2D0B90AC",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.HostTestFactory",
+      "sourceSha256": "DBB1A94CF50D0C71616D4482DFD2FF1A4D5F8EA387340B6D4C98A5A4F84E6652",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.LoggerExtensions",
+      "sourceSha256": "D2C65C928AF86623AF7F8B754C254F1A64B7FEB61F6168559FD1FC1862A08DEB",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.ManagedApplicationFixture`1",
+      "sourceSha256": "47B0C1FBA94E7B43C8753D0A8242801B328E6B463B6EEDAEB640D4F8A262633E",
+      "repository": "codebeltnet/xunit",
+      "commit": "84b13767cb9484f8f3a36a71875662edfdb3e511",
+      "project": "test/Codebelt.Extensions.Xunit.Hosting.FunctionalTests/Codebelt.Extensions.Xunit.Hosting.FunctionalTests.csproj",
+      "test": "Codebelt.Extensions.Xunit.Hosting.BootstrapperMinimalWorkerApplicationTestTest.ShouldBootstrapMinimalWorkerProgram",
+      "framework": "net11.0",
+      "image": "mcr.microsoft.com/dotnet/sdk:11.0",
+      "explanation": "The scripts run this test in its original application and test projects."
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.ManagedHostFixture",
+      "sourceSha256": "6F9E6E2F82AB916A7A36CC2259AA97366A800843E8B1913EE7C2D79580861DA8",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.ManagedMinimalHostFixture",
+      "sourceSha256": "D0D64093FAF614E7658650534934F6771BB45486D43E7A241D573347840E6DBE",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.MinimalHostFixtureExtensions",
+      "sourceSha256": "47A5CB15CC0563C81176ADE58748B75704DA88BCA3549BEF914BD63CED52125C",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.MinimalHostTestFactory",
+      "sourceSha256": "45A7CCD7F1EF9A48A33565AEAC7B5A005AD4AA11E12ADD506911B10614205E87",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "console",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.SelfManagedHostFixture",
+      "sourceSha256": "7B4FC8E01BFCFACAF488EB329E5F50B3F9EEB7F42BF26D59D54C6F69754FB32B",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.SelfManagedMinimalHostFixture",
+      "sourceSha256": "E1641265DF178540A21BD769CA1A9CD162901D03813C9D723B18349652B19A6B",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.ServiceCollectionExtensions",
+      "sourceSha256": "96463CFB4DADE2AA027CBD21C1A8E380C83914669832CEE2C447DEDDCCAFC9C6",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.ServiceProviderExtensions",
+      "sourceSha256": "C9C4438BD3D356FA0C39F5F86FAF6E984D9A1253A0A5D8EAEAD280AAAB31569B",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.Hosting.XunitTestLoggerEntry",
+      "sourceSha256": "5DBC97E4CD56C7D3072FE73E9BBA6F90326CFE7952A57823024464DA85802D3C",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit.Hosting@13.0.0",
+          "Microsoft.Extensions.Hosting@10.0.15",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.InMemoryTestStore`1",
+      "sourceSha256": "71987946D4476C5106392E6DB007FE7B11CFE39D4EAA4CA1B04539D1EC7C7F7C",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.PriorityAttribute",
+      "sourceSha256": "93FF0CA8DBB21BE3475B9DED2131644055C82C6BF81A6D5F51DE91564C44FD78",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.PriorityTestMethodOrderer",
+      "sourceSha256": "8A21672EB35CB508A5A70D51D8813A009DE6C9B7099E766FDA6BBF8A6DA360BF",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.TestOutputHelperAccessor",
+      "sourceSha256": "4C6461C6EBDE9468850148117F4972F3C9C25E6F22138521AAB7852B60162109",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.TestOutputHelperExtensions",
+      "sourceSha256": "BE11774854DE0AF823285BDCAD5BF6B02FD6CFF9D1673B10C6F0CE3D043E5799",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.TestOutputHelperExtensions.WriteLines(Xunit.ITestOutputHelper,System.Object[])",
+      "sourceSha256": "985FBA10ABE737D5BEE72A19B028BCA6739A84C7B790695AEEC66BCC73BE7713",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.TestOutputHelperExtensions.WriteLines``1(Xunit.ITestOutputHelper,``0[])",
+      "sourceSha256": "32E90B18345F4AF2EDBA67EDA4F5D6B231292147F40B9B541243F22A2DE71426",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.TestOutputHelperExtensions.WriteLines``1(Xunit.ITestOutputHelper,System.Collections.Generic.IEnumerable{``0})",
+      "sourceSha256": "6BF4CBD17324584A087D6EF92F873474DD288AA42EAB5DB33665CADCFEF49734",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    },
+    {
+      "uid": "Codebelt.Extensions.Xunit.WildcardOptions",
+      "sourceSha256": "9E421444D2AB0A979A150637043D0070DCB60D5517C3E595AB902F7C3A7A17E9",
+      "manifest": {
+        "schemaVersion": 1,
+        "mode": "test",
+        "framework": "net10.0",
+        "dependsOn": [
+          "Codebelt.Extensions.Xunit@13.0.0",
+          "xunit.v3@4.0.3"
+        ]
+      }
+    }
+  ]
+}
