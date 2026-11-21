@@ -25,4 +25,6 @@ public class OutputAccessorTest : Test
 }
 ```
 
-[!INCLUDE [availability-default](../../includes/availability-default.md)]
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="545543e49c6bf054a9e06186"><a href="~/run-actions/545543e49c6bf054a9e06186/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/545543e49c6bf054a9e06186/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

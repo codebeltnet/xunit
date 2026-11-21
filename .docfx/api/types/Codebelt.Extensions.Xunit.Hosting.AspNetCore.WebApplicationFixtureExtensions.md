@@ -8,6 +8,7 @@ The following example validates that an `IWebApplicationFixture<TEntryPoint>` ha
 
 ```csharp
 using Codebelt.Extensions.Xunit.Hosting.AspNetCore;
+using Xunit;
 
 namespace WebFixtureTests;
 
@@ -18,4 +19,18 @@ public class WebAppStateGuard
         return fixture.HasValidState<TEntryPoint>();
     }
 }
+
+public sealed class RunExample
+{
+    [Fact]
+    public void ExercisesExample()
+    {
+        using var fixture = new ManagedWebApplicationFixture<RunExample>();
+        Assert.False(new WebAppStateGuard().EnsureFixtureIsReady(fixture));
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="549c3e82bd0bcb99e9f05bfa"><a href="~/run-actions/549c3e82bd0bcb99e9f05bfa/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/549c3e82bd0bcb99e9f05bfa/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

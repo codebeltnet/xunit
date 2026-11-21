@@ -367,6 +367,7 @@ FodyWeavers.xsd
 /.docfx/api/**/*.yml
 /.docfx/**/*.manifest
 /.docfx/.vscode/docfx-assistant
+/.docfx/run-actions/
 
 ### VisualStudioCode ###
 .vscode/*

@@ -33,4 +33,17 @@ public sealed class SelfManagedMinimalHostFixtureExample
 }
 
 public sealed record StartupState(string Value);
+
+public sealed class RunExample
+{
+    [Fact]
+    public async Task ExercisesExample()
+    {
+        await new SelfManagedMinimalHostFixtureExample().ConfigureBeforeStartingAsync();
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="b4149382f121a5ffc3c057df"><a href="~/run-actions/b4149382f121a5ffc3c057df/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/b4149382f121a5ffc3c057df/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

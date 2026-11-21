@@ -294,7 +294,6 @@ Follow the scoped guidance in this file:
 - [Writing XML documentation](#writing-xml-documentation)
 
 <!-- dotnet-docfx-digest:start -->
-
 ## DocFX Documentation Maintenance
 
 When changing public .NET APIs, keep the DocFX documentation current in the same change set.
@@ -323,7 +322,7 @@ Both namespace overwrite files and type overwrite files are required deliverable
 
 `docfx.json` must keep namespace and type overwrite files in separate subdirectories. `build.overwrite` must include both `api/namespaces/**/*.md` (for namespace pages) and `api/types/**/*.md` (for type pages). `build.content` must exclude both `api/namespaces/**` and `api/types/**` to prevent overwrite Markdown from being treated as conceptual content. Do not use `api/**/*.md` under `build.overwrite` or `build.content`.
 
-Availability must be documented by referencing the appropriate include file when one exists, or by adding explicit availability text when no suitable include exists. Availability must reflect the actual target frameworks, conditional compilation, and project configuration.
+Availability must be documented on namespace overview pages under `.docfx/api/namespaces/*` by referencing the appropriate `[!INCLUDE ...]` file when one exists, or by adding explicit availability text when no suitable include exists. Under `.docfx/api/`, `[!INCLUDE ...]` directives are only allowed in `.docfx/api/namespaces/*` — never on type pages (`.docfx/api/types/*`), never in other files under `.docfx/api/`, and never after examples. Only modify DocFX Markdown files under `.docfx/api/`; leave Markdown files outside `.docfx/api/` untouched. Availability must reflect the actual target frameworks, conditional compilation, and project configuration.
 
 For conditionally compiled APIs, choose the executable test framework from the asset that contains the API. Inspect the preprocessor condition, project TFMs, package `lib/` assets, and resolved consumer asset before changing a sample. For APIs under `NETSTANDARD2_0` or `NETSTANDARD2_0_OR_GREATER`, when modern `lib/netX.0/` assets also exist, use `net48` (or another supported .NET Framework target from `net462` onward) so the consumer selects `lib/netstandard2.0/`. Never use `netstandard*` as an executable target, and never use a modern `netX.0` target when it selects an asset where the API is absent. For other TFM guards, select a runnable consumer TFM that resolves to the containing asset and confirm that selection from restore or build evidence.
 
@@ -343,9 +342,7 @@ Before completing documentation work, run the relevant verification commands, no
 
 ```bash
 dotnet build
-
 dotnet test
-
 dotnet run --file <resolved-skill-dir>/scripts/docfx.cs -- --repo-root . --build-api-model --validate-samples --verify-docfx-build
 ```
 
@@ -354,7 +351,6 @@ Codebelt repositories are normally strong-name signed with a `.snk` file in the 
 The final DocFX verification must run outside the working tree when possible. The `--verify-docfx-build` option copies the repository to a temp workspace, runs DocFX against the resolved `docfx.json` there, and removes the temp workspace afterward so generated API YAML, manifest files, and site output do not flood git status. Do not call the work complete until the final JSON reports `summary.fullVerificationRan: true`, `summary.canClaimCompletion: true`, `summary.remainingWorkItems: 0`, an empty `summary.remainingGates`, an empty `summary.remainingDiagnosticsByCode`, `summary.newlyIntroducedSkipMarkers: 0`, and `summary.interimArtifacts: 0`.
 
 If a command cannot be run, report the exact limitation or failure instead of claiming the documentation was verified.
-
 <!-- dotnet-docfx-digest:end -->
 
 ## Writing Unit Tests

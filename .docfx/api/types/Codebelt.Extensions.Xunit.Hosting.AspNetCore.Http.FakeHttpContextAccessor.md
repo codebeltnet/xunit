@@ -20,4 +20,16 @@ public class HttpContextExample
         Console.WriteLine(accessor.HttpContext.Request.Method);
     }
 }
+
+internal static class RunExample
+{
+    static void Main()
+    {
+        new HttpContextExample().Demonstrate();
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="3a1dbfc0e010519636b7091e"><a href="~/run-actions/3a1dbfc0e010519636b7091e/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/3a1dbfc0e010519636b7091e/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

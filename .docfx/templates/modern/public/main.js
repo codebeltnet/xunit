@@ -10,3 +10,5 @@ export default {
     document.body.appendChild(script);
   }
 };
+
+import './run-actions.js';

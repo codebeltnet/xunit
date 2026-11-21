@@ -46,3 +46,7 @@ public class TestWorker : BackgroundService
     }
 }
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="aa478d74f298d8c98e6cd1bf"><a href="~/run-actions/aa478d74f298d8c98e6cd1bf/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/aa478d74f298d8c98e6cd1bf/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

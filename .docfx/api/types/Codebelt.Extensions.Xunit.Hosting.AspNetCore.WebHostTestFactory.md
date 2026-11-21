@@ -12,6 +12,7 @@ using Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
 namespace RequestPipeline.Tests;
 
@@ -32,4 +33,17 @@ public sealed class WebHostTestFactoryExample
 }
 
 public sealed record PipelineStatus(string Value);
+
+public sealed class RunExample
+{
+    [Fact]
+    public async Task ExercisesExample()
+    {
+        Assert.Equal("ready", await new WebHostTestFactoryExample().InvokeStatusMiddlewareAsync());
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="d71e8ed85f1221cb41308b31"><a href="~/run-actions/d71e8ed85f1221cb41308b31/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/d71e8ed85f1221cb41308b31/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->

@@ -31,4 +31,17 @@ public sealed class SelfManagedHostFixtureExample
         Assert.True(started);
     }
 }
+
+public sealed class RunExample
+{
+    [Fact]
+    public async Task ExercisesExample()
+    {
+        await new SelfManagedHostFixtureExample().StartAfterAttachingObserverAsync();
+    }
+}
 ```
+
+<!-- docfx-run-actions:start -->
+<div class="docfx-run-actions" data-example-id="515575be5bb7683cac9903a5"><a href="~/run-actions/515575be5bb7683cac9903a5/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/515575be5bb7683cac9903a5/docker.ps1" data-transport="docker">View Docker Script</a></div>
+<!-- docfx-run-actions:end -->
