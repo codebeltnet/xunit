@@ -9,21 +9,31 @@ Use `SelfManagedWebHostFixture` when a conventional test pipeline must exist bef
 ```csharp
 // Program.cs
 using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 
-using var host = WebHostTestFactory.Create(
-    pipelineSetup: app => app.Run(context =>
-        context.Response.WriteAsync("started on demand")),
-    hostFixture: new SelfManagedWebHostFixture());
+namespace Codebelt.Extensions.Xunit.Hosting.AspNetCore;
 
-await host.Host.StartAsync().ConfigureAwait(false);
-using var client = host.Host.GetTestClient();
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        using var host = WebHostTestFactory.Create(
+            pipelineSetup: app => app.Run(context =>
+                context.Response.WriteAsync("started on demand")),
+            hostFixture: new SelfManagedWebHostFixture());
 
-Console.WriteLine(await client.GetStringAsync("/").ConfigureAwait(false));
+        await host.Host.StartAsync().ConfigureAwait(false);
+        using var client = host.Host.GetTestClient();
+
+        Console.WriteLine(await client.GetStringAsync("/").ConfigureAwait(false));
+    }
+}
 ```
 
 <!-- docfx-run-actions:start -->
