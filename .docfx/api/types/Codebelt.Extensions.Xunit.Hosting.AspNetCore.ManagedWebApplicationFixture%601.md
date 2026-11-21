@@ -39,6 +39,7 @@ public class WebApplicationTestTest : WebApplicationTest<ModernProgram, ManagedW
         Assert.True(response.IsSuccessStatusCode);
         Assert.Equal("Modern Program|Development", body);
     }
+}
 ```
 
 <!-- docfx-run-actions:start -->
