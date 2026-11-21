@@ -37,5 +37,3 @@ public sealed class RunExample
 <!-- docfx-run-actions:start -->
 <div class="docfx-run-actions" data-example-id="a31971b360a8c557b87f6684"><a href="~/run-actions/a31971b360a8c557b87f6684/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/a31971b360a8c557b87f6684/docker.ps1" data-transport="docker">View Docker Script</a></div>
 <!-- docfx-run-actions:end -->
-
-[!INCLUDE [availability-default](../../includes/availability-default.md)]

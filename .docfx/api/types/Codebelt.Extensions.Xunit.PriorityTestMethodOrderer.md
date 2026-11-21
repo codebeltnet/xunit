@@ -40,5 +40,3 @@ public class CacheLifecycleTest : Test
 <!-- docfx-run-actions:start -->
 <div class="docfx-run-actions" data-example-id="782f24d34260070258f6d164"><a href="~/run-actions/782f24d34260070258f6d164/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/782f24d34260070258f6d164/docker.ps1" data-transport="docker">View Docker Script</a></div>
 <!-- docfx-run-actions:end -->
-
-[!INCLUDE [availability-default](../../includes/availability-default.md)]

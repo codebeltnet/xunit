@@ -28,5 +28,3 @@ public class WildcardExampleTest : Test
 <!-- docfx-run-actions:start -->
 <div class="docfx-run-actions" data-example-id="038a1c806225b412a6f986c1"><a href="~/run-actions/038a1c806225b412a6f986c1/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/038a1c806225b412a6f986c1/docker.ps1" data-transport="docker">View Docker Script</a></div>
 <!-- docfx-run-actions:end -->
-
-[!INCLUDE [availability-default](../../includes/availability-default.md)]

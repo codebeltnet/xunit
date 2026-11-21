@@ -29,8 +29,6 @@ public class OutputLinesTest : Test
 <div class="docfx-run-actions" data-example-id="45fcccef5fc861315b50c55e"><a href="~/run-actions/45fcccef5fc861315b50c55e/native.ps1" data-transport="native">View Native Script</a> · <a href="~/run-actions/45fcccef5fc861315b50c55e/docker.ps1" data-transport="docker">View Docker Script</a></div>
 <!-- docfx-run-actions:end -->
 
-[!INCLUDE [availability-default](../../includes/availability-default.md)]
-
 ---
 uid: Codebelt.Extensions.Xunit.TestOutputHelperExtensions.WriteLines(Xunit.ITestOutputHelper,System.Object[])
 example:
